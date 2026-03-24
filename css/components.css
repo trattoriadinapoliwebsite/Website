@@ -47,8 +47,8 @@
   white-space: nowrap;
   color: var(--text);
 
-  border-top: 5px solid var(--accent);
-  border-bottom: 5px solid var(--accent);
+  border-top: 5px solid var(--border-gold);
+  border-bottom: 5px solid var(--border-gold);
 
   background: linear-gradient(
     90deg,
