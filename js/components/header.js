@@ -1,6 +1,6 @@
 export async function loadHeader() {
   const el = document.getElementById('header');
-  const res = await fetch('./partials/header.html');
+  const res = await fetch('/Website/partials/header.html');
   el.innerHTML = await res.text();
 
   initSpecialBanner();
