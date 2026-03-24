@@ -11,6 +11,10 @@
   --border-gold: #b08006;
   --dark-text: #141414;
   --white: #ffffff;
+  --hover: #105200;
+  --green: #009246;
+  --white: #ffffff;
+  --red: #ce2b37;
 
   /* Typography */
   --font-primary: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
