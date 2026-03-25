@@ -9,7 +9,7 @@
   --accent-red: #7f1d1d;
   --accent-green: #09aa06;
   --border-gold: #b08006;
-  --dark-text: #141414;
+  --dark-text: #000000;
   --white: #ffffff;
   --hover: #105200;
   --green: #009246;
@@ -83,6 +83,7 @@ h1, h2, h3, h4 {
 
 p {
   margin-bottom: var(--space-sm);
+  font-size: 1.5rem;
 }
 
 /* =========================
