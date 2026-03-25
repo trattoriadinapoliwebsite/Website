@@ -1,0 +1,161 @@
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  min-height: 80vh;
+  background: var(--cream);
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--space-lg);
+  gap: var(--space-md);
+}
+
+.hero-left img {
+  max-width: 250px;
+}
+
+.hero-left a {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--accent-red);
+}
+
+.hero-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================
+   RESERVATION CTA
+========================= */
+
+.resy-cta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.resy-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.resy-content {
+  padding: var(--space-md);
+}
+
+.resy-content h2 {
+  font-size: 2rem;
+  color: var(--accent-red);
+}
+
+.resy-content p {
+  max-width: 400px;
+}
+
+/* =========================
+   TO-GO CTA
+========================= */
+
+.toast-cta {
+  position: relative;
+  height: 60vh;
+
+  background: url('../../assets/ordering.webp') center/cover no-repeat;
+}
+
+.toast-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+
+  color: var(--white);
+  text-align: center;
+}
+
+.toast-overlay h2 {
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+}
+
+/* =========================
+   CONTACT
+========================= */
+
+.contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+.contact-info {
+  max-width: 500px;
+}
+
+.contact-info h2 {
+  color: var(--accent-red);
+}
+
+.contact-form {
+  display: none;
+}
+
+.contact-form.active {
+  display: block;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-left {
+    align-items: center;
+    text-align: center;
+  }
+
+  .resy-cta {
+    grid-template-columns: 1fr;
+  }
+
+  .contact {
+    grid-template-columns: 1fr;
+  }
+}
