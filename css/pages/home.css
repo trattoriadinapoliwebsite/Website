@@ -78,10 +78,10 @@
 .toast-cta {
   position: relative;
   height: 40vh;
-  margin: var(--space-md) auto;
-  max-width: 1200px;
+  margin: 0 auto;
+  max-width: 100%;
 
-  background: url('../../assets/ordering.webp') center/cover no-repeat;
+  background: url('../../assets/ordering.webP') center/cover no-repeat;
 }
 
 .toast-overlay {
