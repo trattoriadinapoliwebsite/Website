@@ -109,7 +109,7 @@
 
 .contact {
   position: relative;
-  background: url('../../assets/contactbg.webp') center/cover no-repeat;
+  background: url('../../assets/contactbg.webP') center/cover no-repeat;
 
   display: flex;
   justify-content: center;
