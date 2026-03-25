@@ -101,17 +101,18 @@ p {
 
 .btn:hover {
   background: var(--accent-green);
+  border: 2px solid var(--border-gold);
 }
 
 .btn.secondary {
-  background: transparent;
-  border: 2px solid var(--accent-red);
-  color: var(--accent-red);
+  background: var(--accent-red);
+  color: var(--white);
 }
 
 .btn.secondary:hover {
-  background: var(--accent-red);
+  background: var(--accent-green);
   color: var(--white);
+  border: 2px solid var(--border-gold);
 }
 
 /* =========================
@@ -120,11 +121,11 @@ p {
 
 section {
   padding: var(--space-lg) var(--space-sm);
-  background: var(--cream);
+  background: var(--gray-bg);
 }
 
 section:nth-child(even) {
-  background: var(--gray-bg);
+  background: var(--cream);
 }
 
 /* =========================
