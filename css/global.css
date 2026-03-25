@@ -120,7 +120,7 @@ p {
 ========================= */
 
 section {
-  padding: var(--space-lg) var(--space-sm);
+  padding: 0;
   background: var(--gray-bg);
 }
 
