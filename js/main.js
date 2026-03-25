@@ -1,17 +1,24 @@
 import { loadHeader } from './components/header.js';
 
-function initContactToggle() {
-  const btn = document.getElementById('contact-toggle');
-  const form = document.getElementById('contact-form');
+function initContactFlip() {
+  const card = document.getElementById('contact-card');
+  const openBtn = document.getElementById('contact-toggle');
+  const closeBtn = document.getElementById('contact-close');
 
-  if (!btn || !form) return;
+  if (!card || !openBtn) return;
 
-  btn.addEventListener('click', () => {
-    form.classList.toggle('active');
+  openBtn.addEventListener('click', () => {
+    card.classList.add('flipped');
   });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      card.classList.remove('flipped');
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   loadHeader();
-  initContactToggle();
+  initContactFlip();
 });
