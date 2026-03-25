@@ -7,7 +7,7 @@
   margin: var(--space-lg) auto;
   display: grid;
   grid-template-columns: 2fr 3fr;
-  background: var(--white);
+  background: var(--graybg);
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
@@ -24,15 +24,16 @@
 .hero-left a {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--accent-red);
+  color: var(--white);
   order: -1;
 }
 
 .hero-left img {
-  max-width: 220px;
+  max-width: 160px;
 }
 
 .hero-right img {
+  margin: 0 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -54,6 +55,7 @@
 
 .resy-image img {
   width: 100%;
+  margin: 0 0;
   max-height: 300px;
   object-fit: cover;
   border-radius: 8px;
