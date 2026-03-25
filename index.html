@@ -123,37 +123,46 @@
     </section>
 
     <!-- CONTACT -->
-    <section class="contact">
+<section class="contact">
 
-      <div class="contact-info">
-        <h2>Better yet, come see us in person!</h2>
+  <div class="contact-card" id="contact-card">
 
-        <p>
-          We love our customers, so feel free to visit during normal business hours.
-        </p>
+    <div class="contact-inner">
+
+      <!-- FRONT -->
+      <div class="contact-front">
+        <h2>Better yet, see us in person!</h2>
+
+        <p>We love our customers, so feel free to visit during normal business hours.</p>
 
         <p><strong>Trattoria Di Napoli</strong></p>
         <p>904 Commerce Street, Perry, Georgia 31069</p>
         <p><a href="tel:14782240025">478-224-0025</a></p>
-
-        <p><strong>Hours</strong></p>
-        <p>Open Tuesday-Saturday: 11:00 am - 09:00 pm</p>
 
         <button id="contact-toggle" class="btn secondary">
           Contact Us
         </button>
       </div>
 
-      <div class="contact-form" id="contact-form">
+      <!-- BACK -->
+      <div class="contact-back">
         <form>
           <input type="text" placeholder="Name" required />
           <input type="email" placeholder="Email" required />
           <textarea placeholder="Message"></textarea>
           <button type="submit">Send</button>
+
+          <button type="button" id="contact-close" class="btn secondary">
+            Back
+          </button>
         </form>
       </div>
 
-    </section>
+    </div>
+
+  </div>
+
+</section>
 
   </main>
 
