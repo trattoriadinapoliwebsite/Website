@@ -125,10 +125,6 @@ section {
   background: var(--gray-bg);
 }
 
-section:nth-child(even) {
-  background: var(--cream);
-}
-
 /* =========================
    Utility
 ========================= */
