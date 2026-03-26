@@ -39,6 +39,108 @@
   object-fit: cover;
 }
 
+/* =========================
+   Bi-Weekly Special
+========================= */
+
+ /* Contain layout math */
+ .special-feature,
+ .special-feature * {
+   box-sizing: border-box;
+ }
+
+ .special-feature {
+   position: relative;
+   width: 100%;
+   max-width: 100vw;
+   overflow-x: hidden;
+   padding: clamp(4rem, 10vw, 8rem) 1rem
+     clamp(2.5rem, 6vw, 5rem);
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ }
+
+ /* IMAGE */
+ .special-image-wrap {
+   position: relative;
+   z-index: 2;
+   margin-bottom: clamp(-7rem, -10vw, -4rem);
+   will-change: transform;
+ }
+
+ .special-image {
+   width: clamp(200px, 70vw, 380px);
+   height: clamp(200px, 70vw, 380px);
+   max-width: 100%;
+   object-fit: cover;
+   border-radius: 50%;
+   border: 5px solid var(--accent-gold);
+   display: block;
+   will-change: transform;
+ }
+
+ /* CARD */
+ .special-card {
+   width: 100%;
+   max-width: min(680px, 100%);
+   background: var(--page-bg);
+   border: 1px solid var(--gray-bg);
+   padding: clamp(6rem, 12vw, 9rem)
+     clamp(1.5rem, 4vw, 3rem)
+     clamp(2.5rem, 6vw, 4rem);
+   text-align: center;
+   box-shadow:
+     0 30px 60px rgba(0, 0, 0, 0.35),
+     inset 0 1px 0 rgba(255, 255, 255, 0.04);
+   opacity: 0;
+   transform: translateY(12px);
+   transition: opacity 0.6s ease, transform 0.6s ease;
+ }
+
+ .special-feature.is-active .special-card {
+   opacity: 1;
+   transform: translateY(0);
+ }
+
+ /* EYEBROW */
+ .special-eyebrow {
+   font-size: 0.75rem;
+   letter-spacing: 0.18em;
+   text-transform: uppercase;
+   color: var(--border-gold);
+   margin-bottom: 0.75rem;
+ }
+
+ /* TITLE */
+ .special-title {
+   font-size: clamp(1.5rem, 5vw, 2.3rem);
+   font-weight: 500;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: var(--white);
+   margin-bottom: 1.25rem;
+   position: relative;
+ }
+
+ .special-title::after {
+   content: "";
+   display: block;
+   width: 42px;
+   height: 1px;
+   background: var(--border-gold);
+   margin: 1.25rem auto 0;
+   opacity: 0.85;
+ }
+
+ /* DESCRIPTION */
+ .special-description {
+   font-size: clamp(0.95rem, 4vw, 1.1rem);
+   color: var(--white);
+   line-height: 1.65;
+   margin: 0 auto;
+   max-width: 42ch;
+ }
 
 /* =========================
    RESERVATIONS
