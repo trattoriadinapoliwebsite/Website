@@ -103,25 +103,127 @@
    CONTACT SECTION
 ========================= */
 
+/* =========================
+   CONTACT SECTION (STABLE)
+========================= */
+
 .contact {
   position: relative;
   width: 100%;
   background: url('/assets/contactbg.webp') center/cover no-repeat;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-md);
+
   padding: 8rem 1rem;
+  gap: 2rem;
 }
 
 .contact h1 {
   font-size: 2.5rem;
   color: var(--white);
   text-align: center;
-  z-index: 2;
 }
 
+/* =========================
+   CARD SYSTEM
+========================= */
+
+.contact-card {
+  width: 100%;
+  max-width: 800px;
+  height: 500px;
+  perspective: 2000px;
+  position: relative;
+}
+
+/* THIS WAS MISSING LOGICALLY */
+.contact-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* =========================
+   FRONT / BACK LAYERS
+========================= */
+
+.contact-front,
+.contact-back {
+  position: absolute;
+  inset: 0;
+
+  padding: var(--space-lg);
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--gray-bg);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+  overflow: hidden; /* FIX overflow issue */
+}
+
+/* FRONT */
+.contact-front {
+  z-index: 2;
+  transform-origin: left center;
+
+  transition:
+    transform 1s cubic-bezier(.55,.02,.2,1),
+    opacity 0.4s ease 0.6s;
+
+  pointer-events: auto;
+}
+
+/* BACK */
+.contact-back {
+  z-index: 1;
+  pointer-events: none; /* disabled until open */
+}
+
+/* =========================
+   FLIP STATE
+========================= */
+
+.contact-card.flipped .contact-front {
+  transform: rotateY(-140deg) translateX(-30px) scaleX(0.96);
+  opacity: 0;
+  pointer-events: none; /* CRITICAL FIX */
+}
+
+.contact-card.flipped .contact-back {
+  pointer-events: auto; /* enable interaction */
+}
+
+/* =========================
+   SHADOW (curl illusion)
+========================= */
+
+.contact-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.35),
+    rgba(0,0,0,0.1),
+    transparent
+  );
+
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.contact-card.flipped .contact-front::after {
+  opacity: 1;
+}
 .social-label {
   margin-top: var(--space-md);
   font-weight: 500;
@@ -149,92 +251,84 @@
 }
 
 .socials svg {
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   fill: var(--dark-text);
 }
 
 .socials a:hover svg {
   fill: var(--white);
 }
+
 /* =========================
-   PAGE TURN (ROLLING)
+   FORM STYLING
 ========================= */
 
-.contact-card {
+.contact-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* wrapper */
+.input-group {
   position: relative;
   width: 100%;
-  max-width: 800px;
-  height: 500px;
-  perspective: 2200px;
-  z-index: 2;
-  overflow: hidden;
 }
 
-/* BACK LAYER */
-.contact-back {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: var(--gray-bg);
-  padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/* inputs */
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  border: 1px solid #ccc;
+  outline: none;
+  background: var(--white);
+  font-size: 1rem;
 }
 
-/* FRONT PAGE */
-.contact-front {
+/* textarea sizing */
+.input-group textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+/* labels */
+.input-group label {
   position: absolute;
-  inset: 0;
-  z-index: 2;
+  left: 1rem;
+  top: 1rem;
+
+  color: #777;
+  pointer-events: none;
+
+  transition: all 0.3s ease;
+}
+
+/* ACTIVE STATE */
+.input-group input:focus + label,
+.input-group input:valid + label,
+.input-group textarea:focus + label,
+.input-group textarea:valid + label {
+  top: -10px;
+  left: 0.8rem;
+
+  font-size: 0.75rem;
+  color: var(--accent-red);
+
   background: var(--gray-bg);
-  padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  transform-origin: left center;
-  transition:
-    transform 1s cubic-bezier(.55,.02,.2,1),
-    opacity 0.4s ease 0.6s; /* delayed fade */
+  padding: 0 5px;
 
-  will-change: transform, opacity;
+  transform: translateY(-2px);
 }
 
-/* ROLL MOTION */
-.contact-card.flipped .contact-front {
-  transform:
-    rotateY(-140deg)
-    translateX(-40px)
-    scaleX(0.96);
-
-  opacity: 0;
-}
-
-/* CURL SHADOW */
-.contact-front::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    to right,
-    rgba(0,0,0,0.35),
-    rgba(0,0,0,0.15),
-    transparent
-  );
-
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.contact-card.flipped .contact-front::after {
-  opacity: 1;
+/* subtle wave effect */
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 2px rgba(127,29,29,0.15);
 }
 
 /* =========================
