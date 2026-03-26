@@ -156,15 +156,29 @@
 
       <!-- BACK -->
       <div class="contact-back">
-        <form>
-          <input type="text" placeholder="Name" required />
-          <input type="email" placeholder="Email" required />
-          <textarea placeholder="Message"></textarea>
+        <form class="contact-form">
+        
+          <div class="input-group">
+            <input type="text" required />
+            <label>Name</label>
+          </div>
+        
+          <div class="input-group">
+            <input type="email" required />
+            <label>Email</label>
+          </div>
+        
+          <div class="input-group">
+            <textarea required></textarea>
+            <label>Message</label>
+          </div>
+        
           <button type="submit">Send</button>
-
+        
           <button type="button" id="contact-close" class="btn secondary">
             Back
           </button>
+        
         </form>
       </div>
 
