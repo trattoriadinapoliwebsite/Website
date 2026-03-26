@@ -24,7 +24,7 @@
 .hero-left a {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(black);
+  color: var(--dark-text);
   order: -1;
 }
 
@@ -76,7 +76,7 @@
 .toast-cta {
   position: relative;
   height: 30vh;
-  margin: 0 auto;
+  margin: 0 auto 4rem auto;
   max-width: 100%;
   background: url('../../assets/ordering.webP') center/cover no-repeat;
 }
@@ -108,31 +108,69 @@
 
 .contact {
   position: relative;
-  background: url('../../assets/contactbg.webp') center/cover no-repeat;
-  width: 100%;
-  height: 100%;
+  background: url('/assets/contactbg.webp') center/cover no-repeat;
+  margin-top: 4rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* KEY FIX */
   align-items: center;
-
-  padding: 6rem 1rem;
+  justify-content: center;
+  gap: var(--space-md); /* spacing between h1 + card */
+  padding: 8rem 1rem; /* more breathing room */
 }
 
-.contact h1{
-  font-size: 2rem;
-  color: ;
-
+.contact h1 {
+  font-size: 2.5rem;
+  color: var(--white);
+  text-align: center;
+  z-index: 2;
 }
+
 .contact::before {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.5);
 }
+.social-label {
+  margin-top: var(--space-md);
+  font-weight: 500;
+}
 
+.socials {
+  display: flex;
+  gap: 1rem;
+  margin: var(--space-sm) 0;
+}
 
+.socials a {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: var(--white);
+
+  transition: transform 0.2s ease, background 0.2s;
+}
+
+.socials a:hover {
+  transform: translateY(-3px);
+  background: var(--accent-red);
+}
+
+.socials svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--dark-text);
+}
+
+.socials a:hover svg {
+  fill: var(--white);
+}
 /* =========================
-   FLIP CARD SYSTEM
+   PAGE TURN (BOOK STYLE)
 ========================= */
 
 .contact-card {
@@ -140,25 +178,11 @@
   width: 100%;
   max-width: 800px;
   height: 500px;
-  perspective: 1200px;
+  perspective: 2000px;
   z-index: 2;
 }
 
-/* Inner wrapper that flips */
-.contact-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s ease;
-  transform-style: preserve-3d;
-}
-
-/* Flip state */
-.contact-card.flipped .contact-inner {
-  transform: rotateY(180deg);
-}
-
-/* Shared face styles */
+/* STACKING (not mirrored) */
 .contact-front,
 .contact-back {
   position: absolute;
@@ -173,41 +197,42 @@
   align-items: center;
 
   text-align: center;
-  backface-visibility: hidden;
-
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* Front side */
-.contact-front h2 {
-  color: var(--accent-red);
-}
-
-/* Back side (form) */
+/* BACK sits underneath */
 .contact-back {
-  transform: rotateY(180deg);
+  z-index: 1;
 }
 
-.contact-back form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+/* FRONT is the "page" */
+.contact-front {
+  z-index: 2;
+
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(.65,.05,.36,1);
 }
 
-.contact-back input,
-.contact-back textarea {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
+/* PAGE TURN */
+.contact-card.flipped .contact-front {
+  transform: rotateY(-160deg) skewY(-2deg);
 }
 
-.contact-back button {
-  margin-top: var(--space-sm);
+/* subtle shadow during turn */
+.contact-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.25), transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+  border-radius: 8px;
 }
 
+.contact-card.flipped .contact-front::after {
+  opacity: 1;
+}
 
 /* =========================
    RESPONSIVE
