@@ -4,7 +4,7 @@
 
 .hero {
   max-width: 1600px;
-  margin: var(--space-md) auto;
+  margin: var(--space-lg) auto 4rem;
   display: grid;
   grid-template-columns: 2fr 3fr;
   background: var(--gray-bg);
@@ -45,8 +45,8 @@
 ========================= */
 
 .resy-cta {
-  max-width: 1400px;
-  margin: auto;
+  max-width: 1200px;
+  margin: 4rem auto 4rem auto;
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: var(--space-lg);
@@ -55,7 +55,6 @@
 
 .resy-image img {
   width: 100%;
-  margin: 0 0;
   max-height: 100%;
   object-fit: cover;
 }
@@ -75,8 +74,8 @@
 
 .toast-cta {
   position: relative;
-  height: 30vh;
-  margin: 0 auto 4rem auto;
+  height: 25vh;
+  margin: 4rem auto 4rem auto;
   max-width: 100%;
   background: url('../../assets/ordering.webP') center/cover no-repeat;
 }
@@ -85,12 +84,10 @@
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.55);
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   color: var(--white);
   text-align: center;
   gap: var(--space-sm);
@@ -108,14 +105,29 @@
 
 .contact {
   position: relative;
+  width: 100%;
   background: url('/assets/contactbg.webp') center/cover no-repeat;
-  margin-top: 4rem;
   display: flex;
-  flex-direction: column; /* KEY FIX */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-md); /* spacing between h1 + card */
-  padding: 8rem 1rem; /* more breathing room */
+  gap: var(--space-md);
+  padding: 8rem 1rem;
+  isolation: isolate; 
+}
+
+/* overlay */
+.contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* bring content above overlay */
+.contact > * {
+  position: relative;
+  z-index: 2;
 }
 
 .contact h1 {
@@ -125,12 +137,6 @@
   z-index: 2;
 }
 
-.contact::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-}
 .social-label {
   margin-top: var(--space-md);
   font-weight: 500;
@@ -148,10 +154,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-  background: var(--white);
-
   transition: transform 0.2s ease, background 0.2s;
 }
 
@@ -161,8 +164,8 @@
 }
 
 .socials svg {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   fill: var(--dark-text);
 }
 
@@ -170,7 +173,7 @@
   fill: var(--white);
 }
 /* =========================
-   PAGE TURN (BOOK STYLE)
+   PAGE TURN (ROLLING)
 ========================= */
 
 .contact-card {
@@ -178,56 +181,71 @@
   width: 100%;
   max-width: 800px;
   height: 500px;
-  perspective: 2000px;
+  perspective: 2200px;
   z-index: 2;
+  overflow: hidden; /* FIXES CONTENT BLEED */
 }
 
-/* STACKING (not mirrored) */
-.contact-front,
+/* BACK LAYER */
 .contact-back {
   position: absolute;
   inset: 0;
-
+  z-index: 1;
   background: var(--gray-bg);
   padding: var(--space-lg);
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  text-align: center;
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* BACK sits underneath */
-.contact-back {
-  z-index: 1;
-}
-
-/* FRONT is the "page" */
+/* FRONT PAGE */
 .contact-front {
+  position: absolute;
+  inset: 0;
   z-index: 2;
-
+  background: var(--gray-bg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
   transform-origin: left center;
-  transition: transform 0.9s cubic-bezier(.65,.05,.36,1);
+  transition:
+    transform 1s cubic-bezier(.55,.02,.2,1),
+    opacity 0.4s ease 0.6s; /* delayed fade */
+
+  will-change: transform, opacity;
 }
 
-/* PAGE TURN */
+/* ROLL MOTION */
 .contact-card.flipped .contact-front {
-  transform: rotateY(-160deg) skewY(-2deg);
+  transform:
+    rotateY(-140deg)
+    translateX(-40px)
+    scaleX(0.96);
+
+  opacity: 0;
 }
 
-/* subtle shadow during turn */
+/* CURL SHADOW */
 .contact-front::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.25), transparent);
+
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.35),
+    rgba(0,0,0,0.15),
+    transparent
+  );
+
   opacity: 0;
-  transition: opacity 0.5s;
-  border-radius: 8px;
+  transition: opacity 0.5s ease;
 }
 
 .contact-card.flipped .contact-front::after {
