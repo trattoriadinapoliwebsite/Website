@@ -113,21 +113,6 @@
   justify-content: center;
   gap: var(--space-md);
   padding: 8rem 1rem;
-  isolation: isolate; 
-}
-
-/* overlay */
-.contact::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-/* bring content above overlay */
-.contact > * {
-  position: relative;
-  z-index: 2;
 }
 
 .contact h1 {
@@ -183,7 +168,7 @@
   height: 500px;
   perspective: 2200px;
   z-index: 2;
-  overflow: hidden; /* FIXES CONTENT BLEED */
+  overflow: hidden;
 }
 
 /* BACK LAYER */
