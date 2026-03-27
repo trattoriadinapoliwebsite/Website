@@ -56,8 +56,6 @@
    width: 100%;
    max-width: 100vw;
    overflow-x: hidden;
-   padding: clamp(4rem, 10vw, 8rem) 1rem
-     clamp(2.5rem, 6vw, 5rem);
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -72,8 +70,8 @@
  }
 
  .special-image {
-   width: clamp(200px, 70vw, 380px);
-   height: clamp(200px, 70vw, 380px);
+   width: clamp(200px, 90vw, 380px);
+   height: clamp(200px, 90vw, 380px);
    max-width: 100%;
    border-radius: 50%;
    border: 5px solid var(--accent-gold);
@@ -84,7 +82,7 @@
  /* CARD */
  .special-card {
    width: 100%;
-   max-width: min(680px, 100%);
+   max-width: 900px;
    background: var(--page-bg);
    border: 1px solid var(--gray-bg);
    padding: clamp(6rem, 12vw, 9rem)
