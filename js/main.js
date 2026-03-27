@@ -18,96 +18,70 @@ function initContactFlip() {
   }
 }
 
-function initspecialrotate() {
-      const section = document.currentScript.closest(".special-feature");
-      const img = section.querySelector(".special-image");
-      if (!img) return;
+function initSpecialRotate() {
+  const section = document.querySelector(".special-feature");
+  if (!section) return;
 
-      /* Respect reduced motion */
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ) {
-        return;
-      }
+  const img = section.querySelector(".special-image");
+  if (!img) return;
 
-      let targetRotation = 0;
-      let currentRotation = 0;
-      let lastTouchY = null;
-      let isVisible = false;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      const ease = 0.08;
-      const MAX_STEP = 22; /* slightly more rotation */
+  let targetRotation = 0;
+  let currentRotation = 0;
+  let lastTouchY = null;
+  let isVisible = false;
 
-      /* Visibility + fade-in */
-      if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            isVisible = entry.isIntersecting;
-            section.classList.toggle("is-active", isVisible);
-          },
-          { rootMargin: "150px 0px", threshold: 0 }
-        );
-        observer.observe(section);
-      } else {
-        isVisible = true;
-        section.classList.add("is-active");
-      }
+  const ease = 0.08;
+  const MAX_STEP = 22;
 
-      /* Desktop input */
-      window.addEventListener(
-        "wheel",
-        (e) => {
-          if (!isVisible) return;
-          const delta = Math.max(
-            -MAX_STEP,
-            Math.min(MAX_STEP, e.deltaY)
-          );
-          targetRotation += delta * 0.4;
-        },
-        { passive: true }
-      );
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      isVisible = entry.isIntersecting;
+      section.classList.toggle("is-active", isVisible);
+    },
+    { rootMargin: "150px 0px", threshold: 0 }
+  );
 
-      /* Mobile input */
-      window.addEventListener(
-        "touchmove",
-        (e) => {
-          if (!isVisible || e.touches.length !== 1) return;
-          const y = e.touches[0].clientY;
+  observer.observe(section);
 
-          if (lastTouchY !== null) {
-            const delta = lastTouchY - y;
-            const clamped = Math.max(
-              -MAX_STEP,
-              Math.min(MAX_STEP, delta)
-            );
-            targetRotation += clamped * 1.0;
-          }
+  window.addEventListener("wheel", (e) => {
+    if (!isVisible) return;
+    const delta = Math.max(-MAX_STEP, Math.min(MAX_STEP, e.deltaY));
+    targetRotation += delta * 0.4;
+  }, { passive: true });
 
-          lastTouchY = y;
-        },
-        { passive: true }
-      );
+  window.addEventListener("touchmove", (e) => {
+    if (!isVisible || e.touches.length !== 1) return;
 
-      window.addEventListener("touchend", () => {
-        lastTouchY = null;
-      });
+    const y = e.touches[0].clientY;
 
-      /* Render loop */
-      function animate() {
-        if (isVisible) {
-          currentRotation +=
-            (targetRotation - currentRotation) * ease;
-          img.style.transform = `rotate(${currentRotation}deg)`;
-        }
-        requestAnimationFrame(animate);
-      }
-
-      animate();
+    if (lastTouchY !== null) {
+      const delta = lastTouchY - y;
+      const clamped = Math.max(-MAX_STEP, Math.min(MAX_STEP, delta));
+      targetRotation += clamped;
     }
+
+    lastTouchY = y;
+  }, { passive: true });
+
+  window.addEventListener("touchend", () => {
+    lastTouchY = null;
+  });
+
+  function animate() {
+    if (isVisible) {
+      currentRotation += (targetRotation - currentRotation) * ease;
+      img.style.transform = `rotate(${currentRotation}deg)`;
+    }
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   loadHeader();
   initContactFlip();
-  initspecialrotate();
+  initSpecialRotate();
 });
