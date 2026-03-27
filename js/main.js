@@ -25,31 +25,59 @@ function initSpecialRotate() {
   const img = section.querySelector(".special-image");
   if (!img) return;
 
-  let currentRotation = 0;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
   let targetRotation = 0;
+  let currentRotation = 0;
+  let lastTouchY = null;
+  let isVisible = false;
 
-  function update() {
-    const rect = section.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
+  const ease = 0.08;
+  const MAX_STEP = 22;
 
-    // progress through viewport (0 → 1)
-    const progress = 1 - (rect.top / windowHeight);
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      isVisible = entry.isIntersecting;
+      section.classList.toggle("is-active", isVisible);
+    },
+    { rootMargin: "150px 0px", threshold: 0 }
+  );
 
-    // clamp
-    const clamped = Math.max(0, Math.min(1.5, progress));
+  observer.observe(section);
 
-    // map to rotation range
-    targetRotation = clamped * 180; // adjust intensity here
+  window.addEventListener("wheel", (e) => {
+    if (!isVisible) return;
+    const delta = Math.max(-MAX_STEP, Math.min(MAX_STEP, e.deltaY));
+    targetRotation += delta * 0.4;
+  }, { passive: true });
 
-    // smooth interpolation
-    currentRotation += (targetRotation - currentRotation) * 0.08;
+  window.addEventListener("touchmove", (e) => {
+    if (!isVisible || e.touches.length !== 1) return;
 
-    img.style.transform = `rotate(${currentRotation}deg)`;
+    const y = e.touches[0].clientY;
 
-    requestAnimationFrame(update);
+    if (lastTouchY !== null) {
+      const delta = lastTouchY - y;
+      const clamped = Math.max(-MAX_STEP, Math.min(MAX_STEP, delta));
+      targetRotation += clamped;
+    }
+
+    lastTouchY = y;
+  }, { passive: true });
+
+  window.addEventListener("touchend", () => {
+    lastTouchY = null;
+  });
+
+  function animate() {
+    if (isVisible) {
+      currentRotation += (targetRotation - currentRotation) * ease;
+      img.style.transform = `rotate(${currentRotation}deg)`;
+    }
+    requestAnimationFrame(animate);
   }
 
-  update();
+  animate();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
