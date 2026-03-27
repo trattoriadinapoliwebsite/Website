@@ -65,12 +65,12 @@
  .special-image-wrap {
    position: relative;
    z-index: 2;
-   margin-bottom: clamp(-4rem, -2rem, -1rem);
+   margin-bottom: clamp(-8rem, -6rem, -4rem);
    will-change: transform;
  }
 
  .special-image {
-   border: 5px solid var(--accent-gold);
+   border: 5px solid var(--border-gold);
    width: clamp(300px, 35vw, 600px);
    height: clamp(300px, 35vw, 600px);
    border-radius: 50%;
