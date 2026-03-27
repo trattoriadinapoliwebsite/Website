@@ -51,6 +51,7 @@
 
  .special-feature {
    position: relative;
+   background: var(--page-bg);
    width: 100%;
    max-width: 100vw;
    overflow-x: hidden;
@@ -208,7 +209,7 @@
 .contact {
   position: relative;
   width: 100%;
-  background: url('../../assets/hero.webP') center/cover no-repeat;
+  background: url('../../assets/hero.webp') center/cover no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
