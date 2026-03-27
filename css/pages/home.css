@@ -32,6 +32,7 @@
 }
 
 .hero-right img {
+  margin:0 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -55,8 +56,8 @@
 }
 
 .special-image {
-  width: clamp(180px, 50vw, 340px);
-  height: clamp(180px, 50vw, 340px);
+  width: clamp(200px, 70vw, 380px);
+  height: clamp(200px, 70vw, 380px);
   object-fit: cover;
   border-radius: 50%;
   border: 5px solid var(--border-gold);
@@ -117,6 +118,7 @@
 }
 
 .resy-image img {
+  margin: 0 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -153,10 +155,10 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  color: var(--white);
 }
 
 .toast-overlay h2 {
+  color: var(--accent-red);
   font-size: clamp(1.5rem, 4vw, 2rem);
   letter-spacing: 2px;
 }
@@ -177,7 +179,7 @@
 .contact h1 {
   font-size: clamp(2rem, 5vw, 2.6rem);
   font-family: 'Playfair Display', serif;
-  color: var(--white);
+  color: var(--accent-red);
   letter-spacing: 0.08em;
 }
 
@@ -270,10 +272,6 @@
   opacity: 0.9;
 }
 
-.contact-card.flipped .contact-front::before,
-.contact-card.flipped .contact-front::after {
-  opacity: 1;
-}
 
 .contact-card.flipped .contact-back {
   pointer-events: auto;
