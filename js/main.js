@@ -25,59 +25,31 @@ function initSpecialRotate() {
   const img = section.querySelector(".special-image");
   if (!img) return;
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  let targetRotation = 0;
   let currentRotation = 0;
-  let lastTouchY = null;
-  let isVisible = false;
+  let targetRotation = 0;
 
-  const ease = 0.08;
-  const MAX_STEP = 22;
+  function update() {
+    const rect = section.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
 
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      isVisible = entry.isIntersecting;
-      section.classList.toggle("is-active", isVisible);
-    },
-    { rootMargin: "150px 0px", threshold: 0 }
-  );
+    // progress through viewport (0 → 1)
+    const progress = 1 - (rect.top / windowHeight);
 
-  observer.observe(section);
+    // clamp
+    const clamped = Math.max(0, Math.min(1.5, progress));
 
-  window.addEventListener("wheel", (e) => {
-    if (!isVisible) return;
-    const delta = Math.max(-MAX_STEP, Math.min(MAX_STEP, e.deltaY));
-    targetRotation += delta * 0.4;
-  }, { passive: true });
+    // map to rotation range
+    targetRotation = clamped * 180; // adjust intensity here
 
-  window.addEventListener("touchmove", (e) => {
-    if (!isVisible || e.touches.length !== 1) return;
+    // smooth interpolation
+    currentRotation += (targetRotation - currentRotation) * 0.08;
 
-    const y = e.touches[0].clientY;
+    img.style.transform = `rotate(${currentRotation}deg)`;
 
-    if (lastTouchY !== null) {
-      const delta = lastTouchY - y;
-      const clamped = Math.max(-MAX_STEP, Math.min(MAX_STEP, delta));
-      targetRotation += clamped;
-    }
-
-    lastTouchY = y;
-  }, { passive: true });
-
-  window.addEventListener("touchend", () => {
-    lastTouchY = null;
-  });
-
-  function animate() {
-    if (isVisible) {
-      currentRotation += (targetRotation - currentRotation) * ease;
-      img.style.transform = `rotate(${currentRotation}deg)`;
-    }
-    requestAnimationFrame(animate);
+    requestAnimationFrame(update);
   }
 
-  animate();
+  update();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
