@@ -180,5 +180,5 @@ function initSpecialFeature() {
 document.addEventListener('DOMContentLoaded', () => {
   loadHeader();
   initContactFlip();
-  initSpecialRotate();
+  initSpecialFeature();
 });
