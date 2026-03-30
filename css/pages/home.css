@@ -52,10 +52,10 @@
   margin: var(--space-lg) auto;
   position: relative;
   background: var(--page-bg);
+  height: 100%;
   width: 100%;
   max-width: 100vw;
   overflow: hidden;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,18 +74,13 @@
 .special-image {
   width: clamp(300px, 35vw, 600px);
   aspect-ratio: 1;
-
   border-radius: 50%;
   border: 5px solid var(--border-gold);
-
   object-fit: cover;
   object-position: center;
-
   display: block;
-
   transform: scale(0.92) rotate(0deg);
   transform-origin: center;
-
   will-change: transform;
 }
 
@@ -96,18 +91,14 @@
   max-width: 900px;
   background: var(--page-bg);
   border: 1px solid var(--gray-bg);
-
   padding:
     clamp(6rem, 12vw, 9rem)
     clamp(1.5rem, 4vw, 3rem)
     clamp(2.5rem, 6vw, 4rem);
-
   text-align: center;
-
   box-shadow:
     0 0 60px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
   opacity: 0;
   transform: translateY(40px);
   transition:
