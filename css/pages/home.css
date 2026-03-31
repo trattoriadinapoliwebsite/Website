@@ -4,7 +4,7 @@
 
 .hero {
   max-width: 1600px;
-  margin: 8rem auto var(--space-lg);
+  margin: 22rem auto var(--space-lg);
   display: grid;
   grid-template-columns: 2fr 3fr;
   background: var(--gray-bg);
