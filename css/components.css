@@ -165,14 +165,8 @@
 
 
 .nav-bar a:hover {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;
-  height: 1px;
+  text-decoration: underline;
   background: var(--accent-red);
-  transition: width 0.3s ease;
 }
 
 .site-header.scrolled .nav-bar {
