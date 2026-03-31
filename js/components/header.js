@@ -1,10 +1,18 @@
 export async function loadHeader() {
   const el = document.getElementById('header');
-  const res = await fetch('/Website/partials/header.html');
+
+  // FIXED PATH (works locally + GitHub Pages)
+  const res = await fetch('./partials/header.html');
   el.innerHTML = await res.text();
 
   initSpecialBanner();
+  initMobileMenu();
+  initScrollBehavior();
 }
+
+/* =========================
+   SPECIALS
+========================= */
 
 function initSpecialBanner() {
   const specialsByDay = {
@@ -28,4 +36,35 @@ function initSpecialBanner() {
   if (track) {
     track.innerHTML += track.innerHTML;
   }
+}
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+function initMobileMenu() {
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".nav-bar");
+
+  if (!toggle || !nav) return;
+
+  toggle.addEventListener("click", () => {
+    nav.classList.toggle("open");
+  });
+}
+
+/* =========================
+   SCROLL BEHAVIOR
+========================= */
+
+function initScrollBehavior() {
+  const header = document.querySelector(".site-header");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+  });
 }
