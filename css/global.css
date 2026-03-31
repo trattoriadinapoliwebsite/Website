@@ -66,6 +66,7 @@ a {
 ========================= */
 
 body {
+  margin-top: 8rem;
   font-family: var(--font-body);
   font-size: var(--text-md);
   line-height: 1.7;
