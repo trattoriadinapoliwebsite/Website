@@ -2,7 +2,7 @@ export async function loadHeader() {
   const el = document.getElementById('header');
 
   // FIXED PATH (works locally + GitHub Pages)
-  const res = await fetch('./partials/header.html');
+  const res = await fetch('../../partials/header.html');
   el.innerHTML = await res.text();
 
   initSpecialBanner();
