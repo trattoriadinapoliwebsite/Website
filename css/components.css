@@ -1,13 +1,15 @@
 /* =========================
-   HEADER (Sticky + Shrink)
+   HEADER (Fixed + Shrink)
 ========================= */
 
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
   width: 100%;
-  background: var(--white);
+  z-index: 1000;
+
+  background: var(--gray-bg);
   transition: all 0.3s ease;
 }
 
@@ -26,7 +28,7 @@
   align-items: center;
   position: relative;
   padding: 1.25rem 2rem;
-  transition: padding 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .site-header.scrolled .nav-top {
@@ -48,16 +50,50 @@
   font-size: 1.4rem;
 }
 
-/* hamburger */
+/* =========================
+   HAMBURGER → X
+========================= */
 
 .menu-toggle {
   position: absolute;
   right: 2rem;
-  font-size: 1.5rem;
+  width: 30px;
+  height: 20px;
   background: none;
   border: none;
   cursor: pointer;
   display: none;
+}
+
+/* bars */
+
+.menu-toggle span {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: var(--dark-text);
+  left: 0;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle span:nth-child(1) { top: 0; }
+.menu-toggle span:nth-child(2) { top: 9px; }
+.menu-toggle span:nth-child(3) { top: 18px; }
+
+/* animated X */
+
+.menu-toggle.open span:nth-child(1) {
+  transform: rotate(45deg);
+  top: 9px;
+}
+
+.menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open span:nth-child(3) {
+  transform: rotate(-45deg);
+  top: 9px;
 }
 
 /* =========================
@@ -76,92 +112,8 @@
   padding: 0.5rem 1rem;
 }
 
-.nav-bar a {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--dark-text);
-  position: relative;
-}
-
-/* underline animation */
-
-.nav-bar a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;
-  height: 1px;
-  background: var(--accent-red);
-  transition: width 0.3s ease;
-}
-
-.nav-bar a:hover::after {
-  width: 100%;
-}
-
 /* =========================
-   SPECIALS BANNER (FIXED)
-========================= */
-
-#daily-special-banner {
-  display: flex;
-  align-items: center;
-  height: 50px;
-
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-
-  border-top: 2px solid var(--border-gold);
-  border-bottom: 2px solid var(--border-gold);
-
-  background: linear-gradient(
-    90deg,
-    var(--green) 0%,
-    var(--green) 33%,
-    var(--white) 33%,
-    var(--white) 66%,
-    var(--red) 66%,
-    var(--red) 100%
-  );
-
-  overflow: hidden;
-}
-
-/* FIX: prevent wrapping */
-#slide-track {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  flex-wrap: nowrap;
-  animation: slide-left 30s linear infinite;
-}
-
-#slide-track span {
-  padding: 0 2rem;
-  flex-shrink: 0;             
-}
-
-/* animation */
-
-@keyframes slide-left {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/* pause */
-
-#daily-special-banner:hover #slide-track {
-  animation-play-state: paused;
-}
-
-/* =========================
-   MOBILE
+   MOBILE MENU (SLIDE)
 ========================= */
 
 @media (max-width: 768px) {
@@ -181,12 +133,16 @@
     align-items: center;
     gap: 1.25rem;
 
-    padding: 1rem 0;
+    padding: 0;
 
-    display: none;
+    max-height: 0;
+    overflow: hidden;
+
+    transition: max-height 0.4s ease, padding 0.3s ease;
   }
 
   .nav-bar.open {
-    display: flex;
+    max-height: 300px;
+    padding: 1rem 0;
   }
 }
