@@ -95,6 +95,7 @@
   padding: 0.5rem 2rem;
   justify-content: flex-start;
   flex: 1;
+  float: left;
 }
 
 /* brand */
@@ -183,6 +184,7 @@
   justify-content: flex-end;
   padding: 0.25rem 1rem;
   flex: 1;
+  float: right;
 }
 
 /* =========================
