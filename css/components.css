@@ -164,7 +164,7 @@
 }
 
 
-.nav-bar a.hover {
+.nav-bar a:hover {
   content: "";
   position: absolute;
   left: 0;
