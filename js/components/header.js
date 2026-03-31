@@ -50,6 +50,7 @@ function initMobileMenu() {
 
   toggle.addEventListener("click", () => {
     nav.classList.toggle("open");
+    toggle.classList.toggle("open");
   });
 }
 
@@ -60,11 +61,18 @@ function initMobileMenu() {
 function initScrollBehavior() {
   const header = document.querySelector(".site-header");
 
+  let lastScroll = 0;
+
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
+    const current = window.scrollY;
+
+    if (current > 50) {
       header.classList.add("scrolled");
     } else {
       header.classList.remove("scrolled");
     }
+
+    lastScroll = current;
   });
+}
 }
