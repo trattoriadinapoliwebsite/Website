@@ -19,6 +19,64 @@
 }
 
 /* =========================
+   SPECIALS BANNER (FIXED)
+========================= */
+
+#daily-special-banner {
+  display: flex;
+  align-items: center;
+  height: 50px;
+
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  border-top: 2px solid var(--border-gold);
+  border-bottom: 2px solid var(--border-gold);
+
+  background: linear-gradient(
+    90deg,
+    var(--green) 0%,
+    var(--green) 33%,
+    var(--white) 33%,
+    var(--white) 66%,
+    var(--red) 66%,
+    var(--red) 100%
+  );
+
+  overflow: hidden;
+}
+
+/* FIX: prevent wrapping */
+#slide-track {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  animation: slide-left 30s linear infinite;
+}
+
+#slide-track span {
+  padding: 0 2rem;
+  flex-shrink: 0;             
+}
+
+/* animation */
+
+@keyframes slide-left {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* pause */
+
+#daily-special-banner:hover #slide-track {
+  animation-play-state: paused;
+}
+
+/* =========================
    TOP ROW
 ========================= */
 
