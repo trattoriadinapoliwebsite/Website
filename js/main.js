@@ -1,4 +1,6 @@
 import { loadHeader } from './components/header.js';
+import { loadFooter } from "./js/components/footer.js";
+
 
 function initContactFlip() {
   const card = document.getElementById('contact-card');
@@ -76,4 +78,5 @@ document.addEventListener('DOMContentLoaded', () => {
   loadHeader();
   initContactFlip();
   initSpecialFeature();
+  loadFooter();
 });
