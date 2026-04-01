@@ -1,5 +1,5 @@
 import { loadHeader } from './components/header.js';
-import { loadFooter } from "./js/components/footer.js";
+import { loadFooter } from "./components/footer.js";
 
 
 function initContactFlip() {
