@@ -204,15 +204,50 @@ function initChat() {
 // =========================
 // HOMEPAGE POPUP
 // =========================
-
 function initPopup() {
   const popup = document.getElementById("event-popup");
-  const closeBtn = document.getElementById("popup-close");
-
-  // only run if popup exists (homepage only)
   if (!popup) return;
 
-  closeBtn.addEventListener("click", () => {
-    popup.style.display = "none";
-  });
+  const img = popup.querySelector("img");
+  const closeBtn = document.getElementById("popup-close");
+
+  // =========================
+  // HARD EXIT CONDITIONS
+  // =========================
+
+  // No image element at all → remove popup entirely
+  if (!img) {
+    popup.remove();
+    return;
+  }
+
+  // Image exists but has no valid src → remove popup
+  if (!img.getAttribute("src") || img.getAttribute("src").trim() === "") {
+    popup.remove();
+    return;
+  }
+
+  // =========================
+  // WAIT FOR IMAGE VALIDATION
+  // =========================
+
+  img.onload = () => {
+    // Only show AFTER image successfully loads
+    popup.style.display = "flex";
+  };
+
+  img.onerror = () => {
+    // Broken image → remove popup
+    popup.remove();
+  };
+
+  // =========================
+  // CLOSE HANDLER
+  // =========================
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
+  }
 }
