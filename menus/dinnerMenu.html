@@ -7,12 +7,12 @@
   <title>Dinner Menu | Trattoria Di Napoli</title>
   <meta name="description" content="Authentic Italian dinner menu with pasta, steak, and weekly specials." />
 
-  <link rel="stylesheet" href="./css/global.css" />
-  <link rel="stylesheet" href="./css/components.css" />
-  <link rel="stylesheet" href="./css/pages/menu.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/pages/menu.css" />
 
-  <script type="module" src="./js/components/header.js"></script>
-  <script type="module" src="./js/components/footer.js"></script>
+  <script type="module" src="../js/components/header.js"></script>
+  <script type="module" src="../js/components/footer.js"></script>
 </head>
 
 <body>
@@ -32,32 +32,43 @@
   <nav class="menu-anchor-nav" id="menuAnchorNav"></nav>
 
   <!-- Specials -->
-  <section class="weeknight-specials">
-    <h2>Weeknight Specials</h2>
+<section class="weeknight-specials" aria-labelledby="weeknight-specials-title">
+  <h2 id="weeknight-specials-title">Weeknight Specials</h2>
 
-    <div class="specials-grid">
-      <div class="special">
-        <h3>Tuesday</h3>
-        <p>Veal Night</p>
-      </div>
-
-      <div class="special">
-        <h3>Wednesday</h3>
-        <p>Pizza & Wine — $25</p>
-      </div>
-
-      <div class="special">
-        <h3>Thursday</h3>
-        <p>Steak Night</p>
-      </div>
+  <div class="specials-grid">
+    <div class="special" data-day="2">
+      <h3>Tuesday Night</h3>
+      <p>
+        <strong>Veal Night.</strong>
+        Enjoy our Piccata, Marsala, or Parmesan entrées prepared with veal.
+      </p>
     </div>
-  </section>
+
+    <div class="special" data-day="3">
+      <h3>Wednesday Night</h3>
+      <p>
+        <strong>Pizza &amp; Bottle of Wine &mdash; $25</strong><br>
+        Your choice of Pepperoni or Cheese Pizza, paired with a bottle of Red,
+        White, or Sparkling Wine.
+      </p>
+    </div>
+
+    <div class="special" data-day="4">
+      <h3>Thursday Night</h3>
+      <p>
+        <strong>Steak Night!</strong>
+        Enjoy our Filet or Ribeye topped with seasonal confit and compound butter.
+        Served with your choice of Fettuccini Alfredo or Spaghetti Marinara.
+      </p>
+    </div>
+  </div>
+</section>
 
   <!-- Menu -->
   <div id="menu"></div>
 
   <div class="menu-policy">
-    <p>Happy Hour Tuesday–Saturday, 3–6 PM.</p>
+    <p>Pull up a seat at the bar and unwind. Happy hour is Tuesday through Saturday, 3–6 PM!</p>
   </div>
 
 </main>
@@ -71,7 +82,7 @@ import {
   renderSkeletonLoader,
   initMenuModal,
   buildMenuAnchors
-} from "./js/menuShared.js";
+} from "../js/menuShared.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("menu");
