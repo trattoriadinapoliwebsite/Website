@@ -195,9 +195,49 @@
 
 @media (max-width: 768px) {
 
+  /* =========================
+     TOP ROW RESET (CRITICAL)
+  ========================= */
+
+  .nav-top {
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .site-header.scrolled .nav-top {
+    position: relative;       /* kill desktop absolute */
+    top: auto;
+    left: auto;
+    width: 100%;
+    padding: 0.5rem 1.25rem;
+    justify-content: space-between;
+  }
+
+  /* =========================
+     BRAND (SMALLER)
+  ========================= */
+
+  .brand {
+    font-size: 1.25rem;       /* smaller default */
+  }
+
+  .site-header.scrolled .brand {
+    font-size: 1.05rem;       /* even smaller on scroll */
+  }
+
+  /* =========================
+     HAMBURGER (RIGHT LOCK)
+  ========================= */
+
   .menu-toggle {
     display: block;
+    position: relative;       /* no absolute overlap */
+    right: auto;
   }
+
+  /* =========================
+     NAV MENU (CLEAN DROPDOWN)
+  ========================= */
 
   .nav-bar {
     position: absolute;
@@ -216,6 +256,16 @@
     overflow: hidden;
 
     transition: max-height 0.4s ease, padding 0.3s ease;
+  }
+
+  /* remove desktop scrolled behavior */
+  .site-header.scrolled .nav-bar {
+    position: absolute;
+    top: 100%;
+    right: auto;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
   }
 
   .nav-bar.open {
