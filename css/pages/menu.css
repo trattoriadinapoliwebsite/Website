@@ -1,0 +1,200 @@
+/* =========================
+   LAYOUT
+========================= */
+
+.menu-page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 80px 16px 60px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.menu-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 6px;
+}
+
+.menu-subtitle {
+  color: #777;
+}
+
+/* =========================
+   CATEGORY
+========================= */
+
+.menu-category {
+  margin-bottom: 40px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.menu-category h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   ITEMS
+========================= */
+
+.menu-item {
+  margin-bottom: 18px;
+  transition: transform 0.2s ease;
+}
+
+.menu-item:hover {
+  transform: scale(1.01);
+}
+
+.menu-item-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-item-name {
+  font-size: 1.2rem;
+}
+
+.menu-item-price {
+  font-size: 1.1rem;
+  white-space: nowrap;
+}
+
+.menu-item-description {
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+/* =========================
+   ICON
+========================= */
+
+.menu-item-icon {
+  margin-left: 6px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.menu-item-icon:hover {
+  opacity: 1;
+}
+
+/* =========================
+   LOADER
+========================= */
+
+.menu-loader {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.menu-loader img {
+  width: 80px;
+  opacity: 0.7;
+}
+
+/* =========================
+   MODAL (FIXED FIX)
+========================= */
+
+.menu-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 9999;
+}
+
+.menu-modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+.menu-modal-content {
+  position: relative;
+  z-index: 2;
+  max-width: 90%;
+}
+
+.menu-modal img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.menu-modal p {
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* =========================
+   SPECIALS
+========================= */
+
+.specials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.special {
+  text-align: center;
+  font-size: 0.95rem;
+}
+/* =========================
+   STICKY ANCHOR NAV
+========================= */
+
+.menu-anchor-nav {
+  position: sticky;
+  top: 70px;
+  background: white;
+  z-index: 50;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.menu-anchor-nav a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: #444;
+  white-space: nowrap;
+}
+
+.menu-anchor-nav a:hover {
+  color: #000;
+}
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .specials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-header h1 {
+    font-size: 2rem;
+  }
+}
