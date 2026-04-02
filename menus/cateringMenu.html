@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+  <title>Catering Menu | Trattoria Di Napoli</title>
+  <meta name="description" content="Catering menu with half and full trays for events and gatherings." />
+
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/pages/menu.css" />
+
+  <script type="module" src="./js/components/header.js"></script>
+  <script type="module" src="./js/components/footer.js"></script>
+</head>
+
+<body>
+
+<div id="header"></div>
+
+<main class="menu-page">
+
+  <header class="menu-header">
+    <h1>Catering Menu</h1>
+    <p class="menu-subtitle">Perfect for events and large gatherings</p>
+  </header>
+
+  <nav class="menu-anchor-nav" id="menuAnchorNav"></nav>
+
+  <div id="menu"></div>
+
+</main>
+
+<div id="footer"></div>
+
+<script type="module">
+import {
+  fetchMenu,
+  renderMenu,
+  renderSkeletonLoader,
+  initMenuModal,
+  buildMenuAnchors
+} from "./js/menuShared.js";
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const container = document.getElementById("menu");
+  const page = document.querySelector(".menu-page");
+
+  container.innerHTML = renderSkeletonLoader();
+
+  try {
+    const menu = await fetchMenu("Catering_Menu");
+    container.innerHTML = "";
+    renderMenu(menu, container, { isCatering: true }); // 🔥
+    buildMenuAnchors(menu);
+    initMenuModal(page);
+  } catch {
+    container.innerHTML = "<p>Failed to load menu.</p>";
+  }
+});
+</script>
+
+</body>
+</html>
