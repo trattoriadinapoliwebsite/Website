@@ -29,7 +29,7 @@
     </p>
   </header>
 
-  <!-- ✅ ANCHOR NAV -->
+  <!-- ANCHOR NAV -->
   <nav class="menu-anchor-nav" id="menuAnchorNav"></nav>
 
   <!-- Specials -->
@@ -76,36 +76,7 @@
 
 <div id="footer-root"></div>
 
-<script type="module">
-import {
-  fetchMenu,
-  renderMenu,
-  renderSkeletonLoader,
-  initMenuModal,
-  buildMenuAnchors
-} from "../js/menuShared.js";
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const container = document.getElementById("menu");
-  const page = document.querySelector(".menu-page");
-
-  container.innerHTML = renderSkeletonLoader();
-
-  try {
-    const menu = await fetchMenu("Dinner_Menu");
-
-    container.innerHTML = "";
-
-    renderMenu(menu, container);
-    buildMenuAnchors(menu);
-    initMenuModal(page);
-
-  } catch (err) {
-    console.error(err);
-    container.innerHTML = "<p>Failed to load menu.</p>";
-  }
-});
-</script>
+<script type="module" src="js/menuShared.js"></script>
 
 </body>
 </html>
