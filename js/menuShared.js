@@ -96,7 +96,7 @@ function renderMenu(menu, container, options = {}) {
 }
 
 /* =========================
-   ANCHOR NAV
+   ANCHOR NAV + ACTIVE HIGHLIGHT
 ========================= */
 function buildMenuAnchors(menu) {
   const nav = document.getElementById("menuAnchorNav");
@@ -104,33 +104,60 @@ function buildMenuAnchors(menu) {
 
   nav.innerHTML = "";
 
+  const links = [];
+
   Object.keys(menu).forEach(category => {
     const id = slugify(category);
 
     const link = document.createElement("a");
-    link.href = "#"; // makes it clickable
+    link.href = "#"; // prevents <base> issues
     link.textContent = category;
 
-    // handle click manually to update hash & scroll
     link.addEventListener("click", (e) => {
-      e.preventDefault(); // prevent default <base> navigation
+      e.preventDefault();
+
       const target = document.getElementById(id);
-      if (target) {
-        // get the vertical offset of the element
-        const headerOffset = document.querySelector("#header").offsetHeight || 0;
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 10; // extra 10px padding
-    
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-    
-        history.replaceState(null, "", `#${id}`); // update URL hash
-      }
+      if (!target) return;
+
+      const navOffset = nav.offsetHeight || 0;
+      const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - navOffset - 10;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+
+      // include full path so refresh keeps you on the same page
+      history.replaceState(null, "", `${window.location.pathname}#${id}`);
     });
 
     nav.appendChild(link);
+    links.push({ id, link });
+  });
+
+  // Scroll-sync highlighting
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        const linkObj = links.find(l => l.id === entry.target.id);
+        if (!linkObj) return;
+
+        if (entry.isIntersecting) {
+          links.forEach(l => l.link.classList.remove("active"));
+          linkObj.link.classList.add("active");
+        }
+      });
+    },
+    {
+      root: null,
+      rootMargin: `-${nav.offsetHeight}px 0px 0px 0px`,
+      threshold: 0.1
+    }
+  );
+
+  Object.keys(menu).forEach(category => {
+    const catEl = document.getElementById(slugify(category));
+    if (catEl) observer.observe(catEl);
   });
 }
 
@@ -238,6 +265,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderMenu(menu, container);
     buildMenuAnchors(menu);
     initMenuModal(page);
+
+    // If URL has a hash, scroll to that category
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const target = document.getElementById(hash);
+      const nav = document.getElementById("menuAnchorNav");
+      if (target && nav) {
+        const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - nav.offsetHeight - 10;
+        window.scrollTo({ top: offsetPosition });
+      }
+    }
 
   } catch (err) {
     console.error(err);
