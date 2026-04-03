@@ -1,10 +1,11 @@
+// js/menuShared.js
 const MENU_ENDPOINT =
   "https://script.google.com/macros/s/AKfycbz9cPiTEWGhnLM-euQLMSek-TtVDsQzVzEQpH9-ni4vebaqPn0Z0SGEQI6UL0cJTH3F/exec";
 
 /* =========================
    FETCH
 ========================= */
-export async function fetchMenu(menuName) {
+async function fetchMenu(menuName) {
   const res = await fetch(`${MENU_ENDPOINT}?menu=${menuName}`);
   if (!res.ok) throw new Error("Menu fetch failed");
   return res.json();
@@ -13,7 +14,7 @@ export async function fetchMenu(menuName) {
 /* =========================
    LOADER
 ========================= */
-export function renderSkeletonLoader() {
+function renderSkeletonLoader() {
   return `
     <div class="menu-loader">
       <img src="assets/loadingImage.png" alt="Loading menu" />
@@ -34,13 +35,12 @@ function slugify(text) {
 function renderCategory(title, description) {
   const el = document.createElement("section");
   el.className = "menu-category";
-  el.id = slugify(title); // ✅ required for anchors
+  el.id = slugify(title);
 
   el.innerHTML = `
     <h2>${title}</h2>
     ${description ? `<p class="menu-category-description">${description}</p>` : ""}
   `;
-
   return el;
 }
 
@@ -76,14 +76,13 @@ function renderItem(item, isCatering = false) {
       </div>
     ` : ""}
   `;
-
   return el;
 }
 
 /* =========================
    RENDER MENU
 ========================= */
-export function renderMenu(menu, container, options = {}) {
+function renderMenu(menu, container, options = {}) {
   const isCatering = options.isCatering || false;
 
   Object.entries(menu).forEach(([category, data]) => {
@@ -99,7 +98,7 @@ export function renderMenu(menu, container, options = {}) {
 /* =========================
    ANCHOR NAV
 ========================= */
-export function buildMenuAnchors(menu) {
+function buildMenuAnchors(menu) {
   const nav = document.getElementById("menuAnchorNav");
   if (!nav) return;
 
@@ -117,9 +116,9 @@ export function buildMenuAnchors(menu) {
 }
 
 /* =========================
-   MODAL (FIXED + STABLE)
+   MODAL
 ========================= */
-export function initMenuModal(page) {
+function initMenuModal(page) {
   const modal = document.createElement("div");
   modal.className = "menu-modal";
 
@@ -177,3 +176,52 @@ function formatCateringServings({ a, b }) {
   if (a && b) return `Half serves ${a} · Full serves ${b}`;
   return "";
 }
+
+/* =========================
+   MENU DETECTION
+========================= */
+function detectMenuName() {
+  const h1 = document.querySelector(".menu-header h1");
+  if (!h1) return null;
+
+  const title = h1.textContent.trim();
+  const mapping = {
+    "Dinner Menu": "Dinner_Menu",
+    "Lunch Menu": "Lunch_Menu",
+    "Fast Bites": "Fast_Bites_Menu",
+    "Catering Menu": "Catering_Menu"
+  };
+
+  return mapping[title] || null;
+}
+
+/* =========================
+   AUTO INIT
+========================= */
+document.addEventListener("DOMContentLoaded", async () => {
+  const container = document.getElementById("menu");
+  if (!container) return;
+
+  const page = document.querySelector(".menu-page");
+  const menuName = detectMenuName();
+
+  if (!menuName) {
+    container.innerHTML = "<p>Menu not recognized.</p>";
+    return;
+  }
+
+  container.innerHTML = renderSkeletonLoader();
+
+  try {
+    const menu = await fetchMenu(menuName);
+
+    container.innerHTML = "";
+    renderMenu(menu, container);
+    buildMenuAnchors(menu);
+    initMenuModal(page);
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "<p>Failed to load menu.</p>";
+  }
+});
