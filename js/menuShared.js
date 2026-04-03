@@ -103,31 +103,25 @@ function buildMenuAnchors(menu) {
   if (!nav) return;
 
   nav.innerHTML = "";
-
   const links = [];
 
   Object.keys(menu).forEach(category => {
     const id = slugify(category);
-
     const link = document.createElement("a");
-    link.href = "#"; // prevents <base> issues
+    link.href = "#"; 
     link.textContent = category;
 
     link.addEventListener("click", (e) => {
       e.preventDefault();
-
       const target = document.getElementById(id);
       if (!target) return;
 
       const navOffset = nav.offsetHeight || 0;
-      const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - navOffset - 10;
+      const padding = 8; // snug scroll padding
+      const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - navOffset - padding;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
 
-      // include full path so refresh keeps you on the same page
       history.replaceState(null, "", `${window.location.pathname}#${id}`);
     });
 
@@ -135,7 +129,7 @@ function buildMenuAnchors(menu) {
     links.push({ id, link });
   });
 
-  // Scroll-sync highlighting
+  // IntersectionObserver to highlight current section
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -150,7 +144,7 @@ function buildMenuAnchors(menu) {
     },
     {
       root: null,
-      rootMargin: `-${nav.offsetHeight}px 0px 0px 0px`,
+      rootMargin: `-${nav.offsetHeight + 4}px 0px 0px 0px`, // snug top trigger
       threshold: 0.1
     }
   );
@@ -266,13 +260,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     buildMenuAnchors(menu);
     initMenuModal(page);
 
-    // If URL has a hash, scroll to that category
+    // Scroll to hash if present
     const hash = window.location.hash.slice(1);
     if (hash) {
       const target = document.getElementById(hash);
       const nav = document.getElementById("menuAnchorNav");
       if (target && nav) {
-        const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - nav.offsetHeight - 10;
+        const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - nav.offsetHeight - 8;
         window.scrollTo({ top: offsetPosition });
       }
     }
