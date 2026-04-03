@@ -116,7 +116,16 @@ function buildMenuAnchors(menu) {
       e.preventDefault(); // prevent default <base> navigation
       const target = document.getElementById(id);
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        // get the vertical offset of the element
+        const headerOffset = document.querySelector("#header").offsetHeight || 0;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 10; // extra 10px padding
+    
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+    
         history.replaceState(null, "", `#${id}`); // update URL hash
       }
     });
