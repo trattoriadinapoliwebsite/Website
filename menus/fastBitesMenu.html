@@ -33,34 +33,10 @@
 
 </main>
 
-<div id="footer"></div>
+<div id="footer-root"></div>
 
-<script type="module">
-import {
-  fetchMenu,
-  renderMenu,
-  renderSkeletonLoader,
-  initMenuModal,
-  buildMenuAnchors
-} from "js/menuShared.js";
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const container = document.getElementById("menu");
-  const page = document.querySelector(".menu-page");
-
-  container.innerHTML = renderSkeletonLoader();
-
-  try {
-    const menu = await fetchMenu("Fast_Bites_Menu");
-    container.innerHTML = "";
-    renderMenu(menu, container);
-    buildMenuAnchors(menu);
-    initMenuModal(page);
-  } catch {
-    container.innerHTML = "<p>Failed to load menu.</p>";
-  }
-});
-</script>
+<script type="module" src="js/menuShared.js"></script>
 
 </body>
 </html>
