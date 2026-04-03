@@ -77,7 +77,14 @@
 <div id="footer-root"></div>
 
 <script type="module"src="js/main.js"></script>
-<script>
+<script type="module">
+import {
+  fetchMenu,
+  renderMenu,
+  renderSkeletonLoader,
+  initMenuModal,
+  buildMenuAnchors};
+  
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("menu");
   const page = document.querySelector(".menu-page");
