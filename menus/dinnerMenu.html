@@ -76,13 +76,14 @@
 
 <div id="footer-root"></div>
 
-<script type="module" src="js/menuShared.js">
+<script type="module">
 import {
   fetchMenu,
   renderMenu,
   renderSkeletonLoader,
   initMenuModal,
-  buildMenuAnchors};
+  buildMenuAnchors
+} from "../js/menuShared.js"
 
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("menu");
