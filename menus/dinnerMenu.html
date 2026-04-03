@@ -6,14 +6,14 @@
 
   <title>Dinner Menu | Trattoria Di Napoli</title>
   <meta name="description" content="Authentic Italian dinner menu with pasta, steak, and weekly specials." />
+  <base href="/Website/">
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/menu.css" />
 
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/components.css" />
-  <link rel="stylesheet" href="../css/pages/menu.css" />
-
-  <script type="module" src="../js/components/header.js"></script>
-  <script type="module" src="../js/components/footer.js"></script>
-  <script type="module" src="../js/main.js"></script>
+  <script type="module" src="js/components/header.js"></script>
+  <script type="module" src="js/components/footer.js"></script>
+  <script type="module" src="js/main.js"></script>
 </head>
 
 <body>
@@ -83,7 +83,7 @@ import {
   renderSkeletonLoader,
   initMenuModal,
   buildMenuAnchors
-} from "../js/menuShared.js";
+} from "js/menuShared.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("menu");
