@@ -1,11 +1,12 @@
 /* =========================
-   LAYOUT
+   MENU PAGE (PREMIUM THEME)
 ========================= */
 
 .menu-page {
   max-width: 1100px;
-  margin: auto;
-  padding: 80px 16px 60px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+  color: var(--white);
 }
 
 /* =========================
@@ -14,63 +15,119 @@
 
 .menu-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-lg);
 }
 
 .menu-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 6px;
+  color: var(--white);
 }
 
 .menu-subtitle {
-  color: #777;
+  color: #ccc;
+  font-size: var(--text-md);
 }
 
 /* =========================
-   CATEGORY
+   ANCHOR NAV (LUXURY STRIP)
+========================= */
+
+.menu-anchor-nav {
+  position: sticky;
+  top: 6rem;
+  z-index: 50;
+
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background: var(--page-bg);
+}
+
+.menu-anchor-nav a {
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #bbb;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.menu-anchor-nav a:hover {
+  color: var(--white);
+}
+
+/* =========================
+   CATEGORY (CARD STYLE)
 ========================= */
 
 .menu-category {
-  margin-bottom: 40px;
-  border-top: 1px solid #eee;
-  padding-top: 20px;
+  margin-bottom: 3rem;
+  padding: 2rem;
+
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .menu-category h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.menu-category h2::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--border-gold);
+  margin-top: 0.75rem;
+}
+
+.menu-category-description {
+  color: #aaa;
+  font-size: var(--text-sm);
+  margin-bottom: 1.5rem;
 }
 
 /* =========================
-   ITEMS
+   MENU ITEMS
 ========================= */
 
 .menu-item {
-  margin-bottom: 18px;
-  transition: transform 0.2s ease;
-}
-
-.menu-item:hover {
-  transform: scale(1.01);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .menu-item-header {
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .menu-item-name {
-  font-size: 1.2rem;
+  font-size: var(--text-lg);
+  font-family: var(--font-display);
+  color: var(--white);
 }
 
 .menu-item-price {
-  font-size: 1.1rem;
+  font-size: var(--text-md);
+  color: var(--border-gold);
   white-space: nowrap;
 }
 
 .menu-item-description {
-  color: #666;
-  font-size: 0.95rem;
+  font-size: var(--text-sm);
+  color: #bbb;
   margin-top: 4px;
 }
 
@@ -81,11 +138,13 @@
 .menu-item-icon {
   margin-left: 6px;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.5;
+  transition: all 0.2s ease;
 }
 
 .menu-item-icon:hover {
   opacity: 1;
+  transform: scale(1.2);
 }
 
 /* =========================
@@ -95,7 +154,7 @@
 .menu-loader {
   display: flex;
   justify-content: center;
-  padding: 40px;
+  padding: 60px;
 }
 
 .menu-loader img {
@@ -104,7 +163,7 @@
 }
 
 /* =========================
-   MODAL (FIXED FIX)
+   MODAL (PREMIUM)
 ========================= */
 
 .menu-modal {
@@ -123,13 +182,14 @@
 .menu-modal-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.85);
 }
 
 .menu-modal-content {
   position: relative;
   z-index: 2;
   max-width: 90%;
+  text-align: center;
 }
 
 .menu-modal img {
@@ -138,53 +198,29 @@
 }
 
 .menu-modal p {
-  color: white;
-  text-align: center;
+  color: var(--white);
   margin-top: 10px;
 }
 
 /* =========================
-   SPECIALS
+   SPECIALS (MATCH STYLE)
 ========================= */
+
+.weeknight-specials {
+  margin-bottom: var(--space-lg);
+}
 
 .specials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  margin-bottom: 30px;
+  gap: 1.5rem;
 }
 
 .special {
   text-align: center;
-  font-size: 0.95rem;
-}
-/* =========================
-   STICKY ANCHOR NAV
-========================= */
-
-.menu-anchor-nav {
-  position: sticky;
-  top: 70px;
-  background: white;
-  z-index: 50;
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 20px;
+  color: var(--white);
 }
 
-.menu-anchor-nav a {
-  text-decoration: none;
-  font-size: 0.9rem;
-  color: #444;
-  white-space: nowrap;
-}
-
-.menu-anchor-nav a:hover {
-  color: #000;
-}
 /* =========================
    MOBILE
 ========================= */
@@ -194,7 +230,7 @@
     grid-template-columns: 1fr;
   }
 
-  .menu-header h1 {
-    font-size: 2rem;
+  .menu-category {
+    padding: 1.5rem;
   }
 }
