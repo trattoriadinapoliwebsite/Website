@@ -108,7 +108,7 @@ function buildMenuAnchors(menu) {
     const id = slugify(category);
 
     const link = document.createElement("a");
-    link.href = `#${id}`;
+    link.hash = id;
     link.textContent = category;
 
     nav.appendChild(link);
