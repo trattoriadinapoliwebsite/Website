@@ -108,8 +108,18 @@ function buildMenuAnchors(menu) {
     const id = slugify(category);
 
     const link = document.createElement("a");
-    link.hash = id;
+    link.href = "#"; // makes it clickable
     link.textContent = category;
+
+    // handle click manually to update hash & scroll
+    link.addEventListener("click", (e) => {
+      e.preventDefault(); // prevent default <base> navigation
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+        history.replaceState(null, "", `#${id}`); // update URL hash
+      }
+    });
 
     nav.appendChild(link);
   });
