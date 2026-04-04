@@ -200,7 +200,6 @@ function buildMenuAnchors(menu) {
     const catEl = document.getElementById(slugify(category));
     if (catEl) observer.observe(catEl);
   });
-}
 
 /* =========================
    MODAL
@@ -344,3 +343,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error(err);
     container.innerHTML = "<p>Failed to load menu.</p>";
   }
+});
