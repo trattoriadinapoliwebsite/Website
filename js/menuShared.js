@@ -253,13 +253,35 @@ document.addEventListener("DOMContentLoaded", async () => {
   container.innerHTML = renderSkeletonLoader();
 
   try {
-    const menu = await fetchMenu(menuName);
-
-    container.innerHTML = "";
-    renderMenu(menu, container);
-    buildMenuAnchors(menu);
-    initMenuModal(page);
-
+    const MIN_LOAD_TIME = 3500; // 3.5 seconds (tune 3000–4000)
+    const startTime = performance.now();
+  
+    const menuPromise = fetchMenu(menuName);
+  
+    const [menu] = await Promise.all([
+      menuPromise,
+      new Promise(resolve => setTimeout(resolve, MIN_LOAD_TIME))
+    ]);
+  
+    const elapsed = performance.now() - startTime;
+  
+    // (Optional safety: ensure we *at least* hit min time even if Promise.all resolves early)
+    if (elapsed < MIN_LOAD_TIME) {
+      await new Promise(res => setTimeout(res, MIN_LOAD_TIME - elapsed));
+    }
+  
+    // Smooth fade-out of loader
+    container.style.opacity = "0";
+    container.style.transition = "opacity 0.4s ease";
+  
+    setTimeout(() => {
+      container.innerHTML = "";
+      container.style.opacity = "1";
+  
+      renderMenu(menu, container);
+      buildMenuAnchors(menu);
+      initMenuModal(page);
+    }, 400);
     // Scroll to hash if present
     const hash = window.location.hash.slice(1);
     if (hash) {
