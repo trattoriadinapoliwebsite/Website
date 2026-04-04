@@ -344,4 +344,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error(err);
     container.innerHTML = "<p>Failed to load menu.</p>";
   }
-});
