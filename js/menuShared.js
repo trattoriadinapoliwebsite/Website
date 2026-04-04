@@ -103,31 +103,78 @@ function buildMenuAnchors(menu) {
   if (!nav) return;
 
   nav.innerHTML = "";
+
+  const underline = document.createElement("div");
+  underline.className = "menu-anchor-underline";
+  nav.appendChild(underline);
+
   const links = [];
 
-  Object.keys(menu).forEach(category => {
+  Object.keys(menu).forEach((category, index) => {
     const id = slugify(category);
+
     const link = document.createElement("a");
-    link.href = "#"; 
+    link.href = "#";
     link.textContent = category;
 
     link.addEventListener("click", (e) => {
       e.preventDefault();
+
       const target = document.getElementById(id);
       if (!target) return;
 
-      const navOffset = nav.offsetHeight || 0;
-      const padding = 8; // snug scroll padding
-      const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - navOffset - padding;
+      const headerOffset = document.querySelector("#header")?.offsetHeight || 0;
+      const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - 10;
 
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-
-      history.replaceState(null, "", `${window.location.pathname}#${id}`);
+      window.scrollTo({ top: y, behavior: "smooth" });
+      history.replaceState(null, "", `#${id}`);
     });
 
     nav.appendChild(link);
-    links.push({ id, link });
+    links.push(link);
   });
+
+  function moveUnderline(el) {
+    const rect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+
+    underline.style.width = `${rect.width}px`;
+    underline.style.transform = `translateX(${rect.left - navRect.left}px)`;
+  }
+
+  function setActive(link) {
+    links.forEach(l => l.classList.remove("active"));
+    link.classList.add("active");
+    moveUnderline(link);
+  }
+
+  // Intersection Observer for sync
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const activeLink = links.find(l => slugify(l.textContent) === id);
+          if (activeLink) setActive(activeLink);
+        }
+      });
+    },
+    {
+      rootMargin: "-40% 0px -55% 0px",
+      threshold: 0.1
+    }
+  );
+
+  links.forEach(link => {
+    const section = document.getElementById(slugify(link.textContent));
+    if (section) observer.observe(section);
+  });
+
+  // Initialize underline position
+  if (links[0]) {
+    requestAnimationFrame(() => setActive(links[0]));
+  }
+}
 
   // IntersectionObserver to highlight current section
   const observer = new IntersectionObserver(
