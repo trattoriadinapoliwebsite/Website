@@ -269,8 +269,8 @@
 .weeknight-specials {
   text-align: center;
   margin-bottom: var(--space-lg);
-  color: var(--dark-text);
-  border: 3px solid var(--accent-green);
+  color: var(--accent-red);
+  border: 3px solid var(--border-gold);
   padding: 10px;
   border-radius: 25px;
   box-shadow:
@@ -288,11 +288,12 @@
 .special {
   text-align: center;
   color: var(--dark-text);
-  border: 1px solid var(--accent-red);
+  border: 3px solid var(--page-bg);
   border-radius: 15px;
 }
 
-.menu-policy {
+.menu-policy p {
+  display: flex;
   text-align: center;
   color: var(--white);
   border: 1px solid var(--accent-gold);
