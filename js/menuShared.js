@@ -176,31 +176,6 @@ function buildMenuAnchors(menu) {
   }
 }
 
-  // IntersectionObserver to highlight current section
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        const linkObj = links.find(l => l.id === entry.target.id);
-        if (!linkObj) return;
-
-        if (entry.isIntersecting) {
-          links.forEach(l => l.link.classList.remove("active"));
-          linkObj.link.classList.add("active");
-        }
-      });
-    },
-    {
-      root: null,
-      rootMargin: `-${nav.offsetHeight + 4}px 0px 0px 0px`, // snug top trigger
-      threshold: 0.1
-    }
-  );
-
-  Object.keys(menu).forEach(category => {
-    const catEl = document.getElementById(slugify(category));
-    if (catEl) observer.observe(catEl);
-  });
-
 /* =========================
    MODAL
 ========================= */
