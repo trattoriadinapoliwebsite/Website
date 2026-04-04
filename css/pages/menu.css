@@ -4,7 +4,7 @@
 
 .menu-page {
   max-width: 1100px;
-  margin: 16rem auto var(--space-lg);
+  margin: 12rem auto var(--space-lg);
   padding: 2rem 1rem 4rem;
   color: var(--white);
 }
@@ -271,6 +271,8 @@
   margin-bottom: var(--space-lg);
   color: var(--dark-text);
   border: 3px solid var(--accent-green);
+  padding: 10px;
+  border-radius: 25px;
   box-shadow:
     0 10px 30px rgba(0,0,0,0.4),
     inset 0 1px 0 rgba(255,255,255,0.05);
@@ -287,6 +289,7 @@
   text-align: center;
   color: var(--dark-text);
   border: 1px solid var(--accent-red);
+  border-radius: 15px;
 }
 
 .menu-policy {
