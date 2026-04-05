@@ -96,7 +96,7 @@ function renderMenu(menu, container, options = {}) {
 }
 
 /* =========================
-   ANCHOR NAV + ACTIVE HIGHLIGHT
+   ANCHOR NAV + ACTIVE STATE (FINAL)
 ========================= */
 function buildMenuAnchors(menu) {
   const nav = document.getElementById("menuAnchorNav");
@@ -104,18 +104,23 @@ function buildMenuAnchors(menu) {
 
   nav.innerHTML = "";
 
+  // Create underline element
   const underline = document.createElement("div");
   underline.className = "menu-anchor-underline";
   nav.appendChild(underline);
 
   const links = [];
 
-  Object.keys(menu).forEach((category, index) => {
+  /* =========================
+     BUILD LINKS
+  ========================= */
+  Object.keys(menu).forEach((category) => {
     const id = slugify(category);
 
     const link = document.createElement("a");
     link.href = "#";
     link.textContent = category;
+    link.dataset.target = id; // 🔑 stable mapping
 
     link.addEventListener("click", (e) => {
       e.preventDefault();
@@ -123,17 +128,29 @@ function buildMenuAnchors(menu) {
       const target = document.getElementById(id);
       if (!target) return;
 
-      const headerOffset = document.querySelector("#header")?.offsetHeight || 0;
-      const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - 10;
+      const headerOffset =
+        document.querySelector("#header")?.offsetHeight || 0;
+
+      const y =
+        target.getBoundingClientRect().top +
+        window.pageYOffset -
+        headerOffset -
+        10;
 
       window.scrollTo({ top: y, behavior: "smooth" });
-      history.replaceState(null, "", `#${id}`);
+
+      // ✅ preserve full path (fixes /Website/ bug)
+      const basePath = window.location.pathname;
+      history.replaceState(null, "", `${basePath}#${id}`);
     });
 
     nav.appendChild(link);
     links.push(link);
   });
 
+  /* =========================
+     UNDERLINE POSITIONING
+  ========================= */
   function moveUnderline(el) {
     const rect = el.getBoundingClientRect();
     const navRect = nav.getBoundingClientRect();
@@ -143,37 +160,88 @@ function buildMenuAnchors(menu) {
   }
 
   function setActive(link) {
-    links.forEach(l => l.classList.remove("active"));
+    if (!link) return;
+
+    links.forEach((l) => l.classList.remove("active"));
     link.classList.add("active");
     moveUnderline(link);
   }
 
-  // Intersection Observer for sync
+  /* =========================
+     INTERSECTION OBSERVER
+  ========================= */
   const observer = new IntersectionObserver(
     (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          const activeLink = links.find(l => slugify(l.textContent) === id);
-          if (activeLink) setActive(activeLink);
-        }
-      });
+      // pick the MOST visible section instead of first match
+      const visible = entries
+        .filter((e) => e.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visible) return;
+
+      const id = visible.target.id;
+      const activeLink = links.find(
+        (l) => l.dataset.target === id
+      );
+
+      if (activeLink) setActive(activeLink);
     },
     {
-      rootMargin: "-40% 0px -55% 0px",
-      threshold: 0.1
+      rootMargin: "-30% 0px -60% 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
     }
   );
 
-  links.forEach(link => {
-    const section = document.getElementById(slugify(link.textContent));
+  /* =========================
+     OBSERVE SECTIONS
+  ========================= */
+  links.forEach((link) => {
+    const section = document.getElementById(link.dataset.target);
     if (section) observer.observe(section);
   });
 
-  // Initialize underline position
-  if (links[0]) {
-    requestAnimationFrame(() => setActive(links[0]));
+  /* =========================
+     INITIAL STATE
+  ========================= */
+
+  function initFromHash() {
+    const hash = window.location.hash.replace("#", "");
+    const match = links.find((l) => l.dataset.target === hash);
+
+    if (match) {
+      setActive(match);
+
+      // scroll to it correctly (with offset)
+      const target = document.getElementById(hash);
+      if (target) {
+        const headerOffset =
+          document.querySelector("#header")?.offsetHeight || 0;
+
+        const y =
+          target.getBoundingClientRect().top +
+          window.pageYOffset -
+          headerOffset -
+          10;
+
+        window.scrollTo({ top: y });
+      }
+    } else if (links[0]) {
+      setActive(links[0]);
+    }
   }
+
+  // Wait for layout to settle before positioning underline
+  requestAnimationFrame(() => {
+    initFromHash();
+  });
+
+  /* =========================
+     HANDLE RESIZE (underline stays aligned)
+  ========================= */
+  window.addEventListener("resize", () => {
+    const active = nav.querySelector("a.active");
+    if (active) moveUnderline(active);
+  });
 }
 
 /* =========================
