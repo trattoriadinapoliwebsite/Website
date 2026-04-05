@@ -165,72 +165,86 @@
 }
 
 /* =========================
-   LOADER (REFINED MOTION)
+   LOADER (DECOUPLED MOTION)
 ========================= */
 
 .menu-loader {
   position: relative;
   height: 600px;
-  overflow: visible;
+  overflow: visible; /* allow fall off screen */
 }
 
 .menu-loader img {
   position: absolute;
   width: 240px;
   opacity: 0;
-  animation: loaderMotion 4s cubic-bezier(0.3, 0.7, 0.2, 1) forwards;
+
+  animation:
+    loaderTranslate 4s linear forwards,
+    loaderRotate 4s linear forwards;
+
   will-change: transform, opacity;
 }
 
-@keyframes loaderMotion {
+/* =========================
+   TRANSLATION (PHYSICS)
+========================= */
 
-  /* =========================
-     [DROP] — FAST, FROM HIGH
-  ========================= */
+@keyframes loaderTranslate {
+
+  /* [DROP] */
   0% {
-    transform: translate(-140px, -500px) rotate(0deg) scale(1);
+    transform: translate(-130px, -500px) scale(1);
     opacity: 0;
   }
 
   12% {
-    transform: translate(-130px, 40px) rotate(86deg) scale(1);
+    transform: translate(-120px, 40px) scale(1);
     opacity: 1;
   }
 
-  /* =========================
-     [BOUNCE] — NATURAL (LESS GOOFY)
-  ========================= */
-  18% {
-    transform: translate(-120px, 70px) rotate(130deg) scale(1.04, 0.96);
+  /* [BOUNCE] */
+  20% {
+    transform: translate(-105px, 65px) scale(1.05, 0.95);
   }
 
-  26% {
-    transform: translate(-105px, 10px) rotate(187deg) scale(0.98, 1.02);
+  28% {
+    transform: translate(-90px, 10px) scale(0.97, 1.03);
   }
 
-  34% {
-    transform: translate(-95px, 45px) rotate(245deg) scale(1.02, 0.98);
+  36% {
+    transform: translate(-75px, 40px) scale(1.02, 0.98);
   }
 
-  42% {
-    transform: translate(-85px, 30px) rotate(302deg) scale(1);
+  44% {
+    transform: translate(-65px, 30px) scale(1);
   }
 
-  /* =========================
-     [ROLL] — SLOW + DOMINANT
-  ========================= */
+  /* [ROLL] */
   75% {
-    transform: translate(55vw, 30px) rotate(540deg) scale(1);
+    transform: translate(60vw, 30px) scale(1);
   }
 
-  /* =========================
-     [FALL] — OFF SCREEN + FADE
-  ========================= */
+  /* [FALL] */
   100% {
-    transform: translate(110vw, 100vh) rotate(720deg) scale(1);
+    transform: translate(75vw, 110vh) scale(1);
     opacity: 0;
   }
 }
+
+/* =========================
+   ROTATION (CONSTANT)
+========================= */
+
+@keyframes loaderRotate {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 720deg;
+  }
+}
+
 
 /* =========================
    MODAL (PREMIUM)
