@@ -70,12 +70,11 @@
   bottom: 0;
   height: 2px;
   background: var(--border-gold);
-
   transition:
-    transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-    width 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.35s ease;
 
-  will-change: transform, width;
+  will-change: transform;
 }
 
 /* =========================
@@ -166,70 +165,69 @@
 }
 
 /* =========================
-   LOADER (CINEMATIC)
+   LOADER (REFINED MOTION)
 ========================= */
 
 .menu-loader {
   position: relative;
   height: 600px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .menu-loader img {
   position: absolute;
   width: 240px;
-  opacity: 0.95;
-
-  animation: loaderMotion 4s linear forwards;
+  opacity: 0;
+  animation: loaderMotion 4s cubic-bezier(0.3, 0.7, 0.2, 1) forwards;
   will-change: transform, opacity;
 }
 
 @keyframes loaderMotion {
 
   /* =========================
-     [DROP] — FAST
+     [DROP] — FAST, FROM HIGH
   ========================= */
   0% {
-    transform: translate(-120px, -220px) rotate(0deg) scale(1);
+    transform: translate(-140px, -500px) rotate(0deg) scale(1);
     opacity: 0;
   }
 
-  15% {
-    transform: translate(-110px, 30px) rotate(108deg) scale(1);
+  12% {
+    transform: translate(-130px, 40px) rotate(86deg) scale(1);
     opacity: 1;
   }
 
   /* =========================
-     [BOUNCE] — STRONGER
+     [BOUNCE] — NATURAL (LESS GOOFY)
   ========================= */
-  22% {
-    transform: translate(-95px, 65px) rotate(158deg) scale(1.12, 0.88); /* impact squash */
+  18% {
+    transform: translate(-120px, 70px) rotate(130deg) scale(1.04, 0.96);
   }
 
-  30% {
-    transform: translate(-80px, 5px) rotate(216deg) scale(0.94, 1.06); /* rebound */
+  26% {
+    transform: translate(-105px, 10px) rotate(187deg) scale(0.98, 1.02);
   }
 
-  38% {
-    transform: translate(-65px, 40px) rotate(274deg) scale(1.05, 0.95); /* second smaller bounce */
+  34% {
+    transform: translate(-95px, 45px) rotate(245deg) scale(1.02, 0.98);
   }
 
-  45% {
-    transform: translate(-60px, 30px) rotate(324deg) scale(1); /* settle */
+  42% {
+    transform: translate(-85px, 30px) rotate(302deg) scale(1);
   }
 
   /* =========================
-     [ROLL] — SLOWER + SMOOTH
+     [ROLL] — SLOW + DOMINANT
   ========================= */
-  80% {
-    transform: translate(60vw, 30px) rotate(576deg) scale(1);
+  75% {
+    transform: translate(55vw, 30px) rotate(540deg) scale(1);
   }
 
   /* =========================
-     [FALL] — DROP DOWN + FADE
+     [FALL] — OFF SCREEN + FADE
   ========================= */
   100% {
-    transform: translate(110vw, 120vh) rotate(720deg) scale(1);
+    transform: translate(110vw, 100vh) rotate(720deg) scale(1);
     opacity: 0;
   }
 }
@@ -304,14 +302,17 @@
   border-radius: 15px;
 }
 
-.menu-policy p {
+.menu-policy {
   display: flex;
-  text-align: center;
-  color: var(--white);
-  border: 1px solid var(--accent-gold);
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--accent-gold);
 }
 
-
+.menu-policy p {
+  text-align: center;
+  color: var(--white);
+}
 /* =========================
    MOBILE
 ========================= */
