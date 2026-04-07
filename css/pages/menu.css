@@ -169,7 +169,8 @@
 ========================= */
 
 .menu-loader {
-  position: relative;
+  position: fixed;
+  top:40vh;
   width: 100vw;
   height: 600px;
   overflow: visible;
