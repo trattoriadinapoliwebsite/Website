@@ -188,12 +188,12 @@
      [DROP] — FAST, NO SLOWDOWN
   ========================= */
   0% {
-    transform: translate(-140px, -520px) rotate(0deg);
+    transform: translate(5vw, -520px) rotate(0deg);
     opacity: 0;
   }
 
   10% {
-    transform: translate(-130px, 10px) rotate(90deg);
+    transform: translate(5vw, 10px) rotate(90deg);
     opacity: 1;
   }
 
@@ -201,19 +201,19 @@
      [BOUNCE] — QUICK + BIG
   ========================= */
   12% {
-    transform: translate(-95px,-70px) rotate(108deg);
+    transform: translate(7vw,-70px) rotate(108deg);
   }
 
   14% {
-    transform: translate(-95px, 10px) rotate(116deg);
+    transform: translate(8vw, 10px) rotate(116deg);
   }
 
   18% {
-    transform: translate(-80px, -30px) rotate(152deg);
+    transform: translate(9vw, -30px) rotate(152deg);
   }
 
   22% {
-    transform: translate(-70px, 10px) rotate(188deg);
+    transform: translate(10vw, 10px) rotate(188deg);
   }
 
   /* =========================
@@ -222,7 +222,7 @@
 
   /* fast start */
   50% {
-    transform: translate(40vw, 10px) rotate(440deg);
+    transform: translate(40vw, 10px) rotate(500deg);
   }
 
   /* slowing */
