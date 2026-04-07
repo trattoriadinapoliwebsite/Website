@@ -185,49 +185,65 @@
 @keyframes loaderMotion {
 
   /* =========================
-     [DROP] — FAST, FROM HIGH
+     [DROP] — FAST, NO SLOWDOWN
   ========================= */
   0% {
-    transform: translate(-140px, -500px) rotate(0deg) scale(1);
+    transform: translate(-140px, -520px) rotate(0deg);
     opacity: 0;
   }
 
-  12% {
-    transform: translate(-130px, 40px) rotate(86deg) scale(1);
+  10% {
+    transform: translate(-130px, 60px) rotate(72deg);
     opacity: 1;
   }
 
   /* =========================
-     [BOUNCE] — NATURAL (LESS GOOFY)
+     [BOUNCE] — QUICK + BIG
   ========================= */
-  18% {
-    transform: translate(-120px, 70px) rotate(130deg) scale(1.04, 0.96);
+  16% {
+    transform: translate(-115px, 90px) rotate(115deg); /* impact (lower) */
   }
 
-  26% {
-    transform: translate(-105px, 10px) rotate(187deg) scale(0.98, 1.02);
+  22% {
+    transform: translate(-95px, 0px) rotate(158deg); /* strong rebound */
+  }
+
+  28% {
+    transform: translate(-80px, 55px) rotate(202deg); /* second bounce */
   }
 
   34% {
-    transform: translate(-95px, 45px) rotate(245deg) scale(1.02, 0.98);
-  }
-
-  42% {
-    transform: translate(-85px, 30px) rotate(302deg) scale(1);
+    transform: translate(-70px, 30px) rotate(245deg); /* settle */
   }
 
   /* =========================
-     [ROLL] — SLOW + DOMINANT
+     [ROLL] — DECELERATING
   ========================= */
-  75% {
-    transform: translate(55vw, 30px) rotate(540deg) scale(1);
+
+  /* fast start */
+  55% {
+    transform: translate(40vw, 30px) rotate(400deg);
+  }
+
+  /* slowing */
+  70% {
+    transform: translate(60vw, 30px) rotate(520deg);
+  }
+
+  /* "edge hesitation" */
+  82% {
+    transform: translate(68vw, 30px) rotate(590deg);
+  }
+
+  88% {
+    transform: translate(70vw, 30px) rotate(620deg);
   }
 
   /* =========================
-     [FALL] — OFF SCREEN + FADE
+     [FALL] — STRAIGHT DOWN
   ========================= */
   100% {
-    transform: translate(110vw, 100vh) rotate(720deg) scale(1);
+    transform: translate(70vw, 110vh) rotate(720deg);
     opacity: 0;
   }
 }
