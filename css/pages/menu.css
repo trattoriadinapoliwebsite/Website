@@ -193,7 +193,7 @@
   }
 
   10% {
-    transform: translate(-130px, 10px) rotate(72deg);
+    transform: translate(-130px, 10px) rotate(90deg);
     opacity: 1;
   }
 
@@ -201,19 +201,19 @@
      [BOUNCE] — QUICK + BIG
   ========================= */
   12% {
-    transform: translate(-95px, 80px) rotate(115deg);
+    transform: translate(-95px,-70px) rotate(108deg);
   }
 
   14% {
-    transform: translate(-95px, 10px) rotate(158deg);
+    transform: translate(-95px, 10px) rotate(116deg);
   }
 
   18% {
-    transform: translate(-80px, 40px) rotate(202deg);
+    transform: translate(-80px, -30px) rotate(152deg);
   }
 
   22% {
-    transform: translate(-70px, 10px) rotate(245deg);
+    transform: translate(-70px, 10px) rotate(188deg);
   }
 
   /* =========================
@@ -222,34 +222,34 @@
 
   /* fast start */
   50% {
-    transform: translate(40vw, 10px) rotate(400deg);
+    transform: translate(40vw, 10px) rotate(440deg);
   }
 
   /* slowing */
   70% {
-    transform: translate(55vw, 10px) rotate(520deg);
+    transform: translate(55vw, 10px) rotate(620deg);
   }
 
   /* "edge hesitation" */
   80% {
-    transform: translate(57vw, 10px) rotate(590deg);
+    transform: translate(57vw, 10px) rotate(629deg);
   }
 
-  82% {
-    transform: translate(57vw, 10px) rotate(590deg);
+  81% {
+    transform: translate(57vw, 10px) rotate(629deg);
   }
    
-  83% {
-    transform: translate(56vw, 10px) rotate(580deg);
+  84% {
+    transform: translate(56vw, 10px) rotate(611deg);
   }
   /* =========================
      [FALL] — STRAIGHT DOWN
   ========================= */
-  85% {
-    transform: translate(58vw, 10px) rotate(580deg);
+  86% {
+    transform: translate(58vw, 10px) rotate(629deg);
   }
 
-  90% {
+  95% {
     transform: translate(60vw, 60vh) rotate(720deg);
     opacity: 1;
   }
