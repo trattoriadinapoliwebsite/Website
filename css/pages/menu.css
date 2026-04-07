@@ -170,7 +170,7 @@
 
 .menu-loader {
   position: fixed;
-  top:40vh;
+  top:60vh;
   width: 100vw;
   height: 600px;
   overflow: visible;
@@ -178,6 +178,7 @@
 
 .menu-loader img {
   position: absolute;
+  left: 0;
   width: 240px;
   opacity: 0;
   animation: loaderMotion 4s linear forwards;
