@@ -170,6 +170,7 @@
 
 .menu-loader {
   position: relative;
+  width: 100vw;
   height: 600px;
   overflow: visible;
 }
@@ -255,7 +256,7 @@
   }
 
   100% {
-    transform: translate(62vw, 160vh) rotate(900deg);
+    transform: translate(65vw, 160vh) rotate(900deg);
     opacity: 0;
   }
 }
