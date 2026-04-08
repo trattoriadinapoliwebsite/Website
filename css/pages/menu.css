@@ -170,6 +170,7 @@
 
 .menu-loader {
   position: fixed;
+  margin: auto 0;
   top:60vh;
   width: 100vw;
   height: 600px;
@@ -203,20 +204,20 @@
   /* =========================
      [BOUNCE] — QUICK + BIG
   ========================= */
-  12% {
-    transform: translate(7vw,-70px) rotate(108deg);
+  13% {
+    transform: translate(7vw,-70px) rotate(117deg);
   }
 
-  14% {
-    transform: translate(8vw, 10px) rotate(116deg);
+  16% {
+    transform: translate(9vw, 10px) rotate(144deg);
   }
 
-  18% {
-    transform: translate(9vw, -30px) rotate(152deg);
+  20% {
+    transform: translate(10vw, -30px) rotate(178deg);
   }
 
-  22% {
-    transform: translate(10vw, 10px) rotate(188deg);
+  24% {
+    transform: translate(11vw, 10px) rotate(212deg);
   }
 
   /* =========================
@@ -224,7 +225,7 @@
   ========================= */
 
   /* fast start */
-  50% {
+  55% {
     transform: translate(40vw, 10px) rotate(500deg);
   }
 
