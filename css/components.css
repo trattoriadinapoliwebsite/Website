@@ -491,6 +491,20 @@
 #sendBtn:hover {
   transform: scale(1.1);
 }
+
+#chat-widget.handoff {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+#reamaze-widget,
+.reamaze-widget-button {
+  display: none !important;
+}
+
+
 /* =========================
    POPUP
 ========================= */
@@ -523,7 +537,7 @@
 
 @media (max-width: 768px) {
   #chat-window {
-    width: 90vw;
+    width: 60vw;
     height: 70vh;
   }
 }
