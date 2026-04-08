@@ -378,15 +378,15 @@
 /* MASCOT CONTAINER */
 #chatbot-mascot {
   position: absolute;
-  top: -50px;
-  right: -10px;
+  top: -25vh;
+  right: 30px;
   z-index: 10;
   pointer-events: none;
 }
 
 /* IMAGE */
 #chatbot-mascot img {
-  height: 90px;
+  height: 25vh;
   display: block;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 }
