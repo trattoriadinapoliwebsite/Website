@@ -23,6 +23,7 @@
 }
 
 .menu-subtitle {
+  display: flex;
   text-align: center;
   color: #ccc;
   font-size: var(--text-md);
@@ -36,17 +37,13 @@
   position: sticky;
   top: 6rem;
   z-index: 50;
-
   display: flex;
   gap: 1.5rem;
   overflow-x: auto;
-
   padding: 1rem 0;
   margin-bottom: 2rem;
-
   border-bottom: 1px solid rgba(255,255,255,0.1);
   background: var(--page-bg);
-
   position: sticky;
 }
 
@@ -84,10 +81,8 @@
 .menu-category {
   margin-bottom: 3rem;
   padding: 2rem;
-
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
-
   box-shadow:
     0 10px 30px rgba(0,0,0,0.4),
     inset 0 1px 0 rgba(255,255,255,0.05);
@@ -171,6 +166,7 @@
 .menu-loader {
   position: fixed;
   margin: auto 0;
+  left: 0;
   top:60vh;
   width: 100vw;
   height: 600px;
@@ -180,8 +176,7 @@
 
 .menu-loader img {
   position: absolute;
-  left: 0;
-  width: 300px;
+  width: 20vw;
   opacity: 0;
   animation: loaderMotion 4s linear forwards;
   will-change: transform, opacity;
@@ -240,11 +235,11 @@
     transform: translate(57vw, 10px) rotate(629deg);
   }
 
-  86% {
+  88% {
     transform: translate(57vw, 10px) rotate(629deg);
   }
    
-  89% {
+  90% {
     transform: translate(56vw, 10px) rotate(611deg);
   }
   /* =========================
