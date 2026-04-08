@@ -30,14 +30,19 @@ function initChat() {
   const userInput = document.getElementById("userInput");
   const chatBody = document.getElementById("chatbot-body");
   const liveBtn = document.getElementById("live-agent-btn");
-
+  const closeBtn = document.getElementById("chat-close");
+  
   if (!widget) return;
 
   // =========================
   // TOGGLE
   // =========================
   toggle.addEventListener("click", () => {
-    widget.classList.toggle("open");
+    widget.classList.add("open");
+  });
+  
+  closeBtn.addEventListener("click", () => {
+    widget.classList.remove("open");
   });
 
   // =========================
