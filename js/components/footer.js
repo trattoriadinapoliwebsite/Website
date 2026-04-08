@@ -26,31 +26,23 @@ function initFooter() {
 function initChat() {
   const widget = document.getElementById("chat-widget");
   const toggle = document.getElementById("chat-toggle");
+  const closeBtn = document.getElementById("chat-close");
   const sendBtn = document.getElementById("sendBtn");
   const userInput = document.getElementById("userInput");
   const chatBody = document.getElementById("chatbot-body");
   const liveBtn = document.getElementById("live-agent-btn");
-  const closeBtn = document.getElementById("chat-close");
-  
+  const returnBtn = document.getElementById("return-to-bot");
+
   if (!widget) return;
 
-  // =========================
   // TOGGLE
-  // =========================
-  toggle.addEventListener("click", () => {
-    widget.classList.add("open");
-  });
-  
-  closeBtn.addEventListener("click", () => {
-    widget.classList.remove("open");
-  });
+  toggle.onclick = () => widget.classList.add("open");
+  closeBtn.onclick = () => widget.classList.remove("open");
 
-  // =========================
-  // MESSAGE RENDER
-  // =========================
+  // ADD MESSAGE
   function addMessage(sender, text) {
     const msg = document.createElement("div");
-    msg.classList.add("message", sender);
+    msg.className = `message ${sender}`;
     msg.textContent = text;
     chatBody.appendChild(msg);
     chatBody.scrollTop = chatBody.scrollHeight;
@@ -167,134 +159,91 @@ function initChat() {
     userInput.value = "";
 
     const responses = getResponse(input);
-    let i = 0;
 
-    function sendNext() {
-      if (i < responses.length) {
-        setTimeout(() => {
-          addMessage("bot", responses[i]);
-          i++;
-          sendNext();
-        }, 700 + responses[i].length * 15);
-      }
-    }
-
-    sendNext();
+    setTimeout(() => {
+      addMessage("bot", responses[0]);
+    }, 600);
   }
 
-  sendBtn.addEventListener("click", handleSend);
-  userInput.addEventListener("keypress", (e) => {
+  sendBtn.onclick = handleSend;
+  userInput.addEventListener("keypress", e => {
     if (e.key === "Enter") handleSend();
   });
 
-  // =========================
-  // LIVE AGENT BUTTON
-  // =========================
-liveBtn.addEventListener("click", () => {
-  addMessage("bot", "Connecting you to a team member now...");
-
-  const transcript = getChatTranscript();
-  loadLiveChat(transcript);
-});
-
-  // =========================
-  // INITIAL GREETING
-  // =========================
-  setTimeout(() => {
-    addMessage(
-      "bot",
-      "Ciao! I'm Tratt-Bot — here to help with menus, hours, catering, and more. What would you like to know?"
-    );
-  }, 800);
-
+  // TRANSCRIPT
   function getChatTranscript() {
-    const messages = document.querySelectorAll(".message");
-  
-    return Array.from(messages)
-      .map(msg => {
-        const sender = msg.classList.contains("user") ? "User" : "Bot";
-        return `${sender}: ${msg.textContent}`;
-      })
+    return Array.from(document.querySelectorAll(".message"))
+      .map(m => `${m.classList.contains("user") ? "User" : "Bot"}: ${m.textContent}`)
       .join("\n");
   }
-  
+
+  // LOAD LIVE CHAT
   function loadLiveChat(transcript) {
-    // Prevent re-loading
     if (window.__liveChatLoaded) {
       openLiveChat();
       return;
     }
-  
-    // =========================
-    // CONFIG (from GoDaddy)
-    // =========================
+
     window._support = window._support || { ui: {}, user: {} };
-  
+
     _support.account = "18c313a9-b214-4bfa-a32f-c6ea361943d6";
-  
     _support.ui.contactMode = "mixed";
-    _support.ui.enableKb = "true";
     _support.ui.mailbox = "65081234";
-  
-    _support.ui.styles = {
-      widgetColor: "#ce2b2e",
-      gradient: true
-    };
-  
-    _support.ui.widget = {
-      allowBotProcessing: "false",
-      slug: "testersite",
-      position: "bottom-right"
-    };
-  
-    _support.apps = {
-      recentConversations: {},
-      faq: { enabled: true }
-    };
-  
-    // =========================
-    // PASS CONTEXT TO AGENT
-    // =========================
-    _support.user = {
-      name: "Website Visitor"
-    };
-  
+
     _support.ticket = {
-      subject: "Website Chat Escalation",
+      subject: "Chat Escalation",
       message: transcript
     };
-  
-    // =========================
-    // LOAD SCRIPT
-    // =========================
+
     const script = document.createElement("script");
     script.src = "https://cdn.reamaze.com/assets/reamaze-loader.js";
     script.async = true;
-  
+
     script.onload = () => {
       window.__liveChatLoaded = true;
-  
-      // Smoothly hide your chatbot
-      widget.classList.add("handoff");
-  
-      setTimeout(() => {
-        widget.style.display = "none";
-      }, 300);
-  
-      // Open live chat
+
+      widget.classList.add("minimized");
+      returnBtn.style.display = "block";
+
       setTimeout(openLiveChat, 500);
     };
-  
+
     document.body.appendChild(script);
   }
-  
-  function openLiveChat() {
-    if (window.Reamaze) {
-      window.Reamaze("open");
-    }
-  }
-}
 
+  function openLiveChat() {
+    let attempts = 0;
+
+    const interval = setInterval(() => {
+      if (window.Reamaze) {
+        window.Reamaze("open");
+        clearInterval(interval);
+      }
+      if (++attempts > 10) clearInterval(interval);
+    }, 200);
+  }
+
+  // LIVE BUTTON
+  liveBtn.onclick = () => {
+    addMessage("bot", "Connecting you to a team member...");
+    loadLiveChat(getChatTranscript());
+  };
+
+  // RETURN BUTTON
+  returnBtn.onclick = () => {
+    widget.classList.remove("minimized");
+    returnBtn.style.display = "none";
+
+    if (window.Reamaze) {
+      window.Reamaze("close");
+    }
+  };
+
+  // GREETING
+  setTimeout(() => {
+    addMessage("bot", "Ciao! How can I help?");
+  }, 800);
+}
 // =========================
 // HOMEPAGE POPUP
 // =========================
