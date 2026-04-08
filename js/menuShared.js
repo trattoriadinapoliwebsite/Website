@@ -329,6 +329,7 @@ function detectMenuName() {
 ========================= */
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("menu");
+  const load = document.getElementById("loader");
   if (!container) return;
 
   const page = document.querySelector(".menu-page");
@@ -339,7 +340,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  container.innerHTML = renderSkeletonLoader();
+  load.innerHTML = renderSkeletonLoader();
 
   try {
     const MIN_LOAD_TIME = 3500; // 3.5 seconds (tune 3000–4000)
@@ -360,8 +361,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   
     // Smooth fade-out of loader
-    container.style.opacity = "0";
-    container.style.transition = "opacity 0.4s ease";
+    load.style.opacity = "0";
+    load.style.transition = "opacity 0.4s ease";
   
     setTimeout(() => {
       container.innerHTML = "";
