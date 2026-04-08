@@ -23,7 +23,7 @@
 }
 
 .menu-subtitle {
-  display: flex;
+  margin: auto;
   text-align: center;
   color: #ccc;
   font-size: var(--text-md);
@@ -222,40 +222,40 @@
 
   /* fast start */
   60% {
-    transform: translate(40vw, 10px) rotate(500deg);
+    transform: translate(50vw, 10px) rotate(500deg);
   }
 
   /* slowing */
   80% {
-    transform: translate(55vw, 10px) rotate(620deg);
+    transform: translate(65vw, 10px) rotate(620deg);
   }
 
   /* "edge hesitation" */
   83% {
-    transform: translate(57vw, 10px) rotate(629deg);
+    transform: translate(67vw, 10px) rotate(629deg);
   }
 
   88% {
-    transform: translate(57vw, 10px) rotate(629deg);
+    transform: translate(67vw, 10px) rotate(629deg);
   }
    
   90% {
-    transform: translate(56vw, 10px) rotate(611deg);
+    transform: translate(66vw, 10px) rotate(611deg);
   }
   /* =========================
      [FALL] — STRAIGHT DOWN
   ========================= */
   90% {
-    transform: translate(58vw, 10px) rotate(629deg);
+    transform: translate(68vw, 10px) rotate(629deg);
   }
 
   95% {
-    transform: translate(60vw, 60vh) rotate(720deg);
+    transform: translate(70vw, 60vh) rotate(720deg);
     opacity: 1;
   }
 
   100% {
-    transform: translate(65vw, 160vh) rotate(900deg);
+    transform: translate(75vw, 160vh) rotate(900deg);
     opacity: 0;
   }
 }
