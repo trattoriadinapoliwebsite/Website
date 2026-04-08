@@ -360,6 +360,8 @@
 
 /* WINDOW */
 #chat-window {
+  position: relative; /* REQUIRED */
+  overflow: visible;
   display: none;
   width: 340px;
   height: 480px;
@@ -367,25 +369,26 @@
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   flex-direction: column;
-  overflow: hidden;
 }
 
 #chat-widget.open #chat-window {
   display: flex;
 }
 
-/* MASCOT */
+/* MASCOT CONTAINER */
 #chatbot-mascot {
-  position: relative;
-  height: 60px;
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  top: -50px;
+  right: -10px;
+  z-index: 10;
+  pointer-events: none;
 }
 
+/* IMAGE */
 #chatbot-mascot img {
-  position: absolute;
-  top: -40px;
-  height: 80px;
+  height: 90px;
+  display: block;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
 }
 
 /* HEADER */
