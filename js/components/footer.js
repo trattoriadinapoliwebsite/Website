@@ -216,8 +216,6 @@ liveBtn.addEventListener("click", () => {
 // LOAD LIVE CHAT
 // =========================
 function loadLiveChat() {
-  const widget = document.getElementById("chat-widget");
-  const returnBtn = document.getElementById("return-to-bot");
   // Hide chatbot
   widget.classList.add("handoff");
 
