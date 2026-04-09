@@ -31,6 +31,9 @@ function initChat() {
   const chatBody = document.getElementById("chatbot-body");
   const liveBtn = document.getElementById("live-agent-btn");
   const closeBtn = document.getElementById("chat-close");
+  const widget = document.getElementById("chat-widget");
+  const liveBtn = document.getElementById("live-agent-btn");
+  const returnBtn = document.getElementById("return-to-bot");
   
   if (!widget) return;
 
@@ -262,24 +265,17 @@ function waitForReamaze(callback) {
 // =========================
 // RETURN TO CHATBOT
 // =========================
-const returnBtn = document.getElementById("return-to-bot");
-
 returnBtn.addEventListener("click", () => {
-  const widget = document.getElementById("chat-widget");
-
-  // Show chatbot again
   widget.classList.remove("handoff");
-
-  // Hide Reamaze
   document.body.classList.remove("live-chat-active");
-
-  // Hide return button
   returnBtn.classList.remove("visible");
+
+  liveChatActive = false;
 });
   
-  // =========================
-    // CONFIG (from GoDaddy)
-    // =========================
+// =========================
+// CONFIG (from GoDaddy)
+// =========================
     window._support = window._support || { ui: {}, user: {} };
   
     _support.account = "18c313a9-b214-4bfa-a32f-c6ea361943d6";
