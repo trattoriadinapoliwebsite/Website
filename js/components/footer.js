@@ -216,6 +216,8 @@ liveBtn.addEventListener("click", () => {
 // LOAD LIVE CHAT
 // =========================
 function loadLiveChat() {
+  const widget = document.getElementById("chat-widget");
+  const returnBtn = document.getElementById("return-to-bot");
   // Hide chatbot
   widget.classList.add("handoff");
 
@@ -262,12 +264,19 @@ function waitForReamaze(callback) {
 // =========================
 // RETURN TO CHATBOT
 // =========================
-returnBtn.addEventListener("click", () => {
-  widget.classList.remove("handoff");
-  document.body.classList.remove("live-chat-active");
-  returnBtn.classList.remove("visible");
+const returnBtn = document.getElementById("return-to-bot");
 
-  liveChatActive = false;
+returnBtn.addEventListener("click", () => {
+  const widget = document.getElementById("chat-widget");
+
+  // Show chatbot again
+  widget.classList.remove("handoff");
+
+  // Hide Reamaze
+  document.body.classList.remove("live-chat-active");
+
+  // Hide return button
+  returnBtn.classList.remove("visible");
 });
   
   // =========================
