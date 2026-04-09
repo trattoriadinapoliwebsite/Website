@@ -186,17 +186,7 @@ function initChat() {
   userInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") handleSend();
   });
-
-  // =========================
-  // LIVE AGENT BUTTON
-  // =========================
-liveBtn.addEventListener("click", () => {
-  addMessage("bot", "Connecting you to a team member now...");
-
-  const transcript = getChatTranscript();
-  loadLiveChat(transcript);
-});
-
+  
   // =========================
   // INITIAL GREETING
   // =========================
@@ -206,26 +196,92 @@ liveBtn.addEventListener("click", () => {
       "Ciao! I'm Tratt-Bot — here to help with menus, hours, catering, and more. What would you like to know?"
     );
   }, 800);
+  
+// =========================
+// LIVE AGENT BUTTON
+// =========================
+let liveChatActive = false;
 
-  function getChatTranscript() {
-    const messages = document.querySelectorAll(".message");
+liveBtn.addEventListener("click", () => {
+  if (liveChatActive) return;
+  liveChatActive = true;
+
+  addMessage("bot", "Sorry I couldn't help with that. Please let our staff know your question.");
+
+  loadLiveChat();
+});
   
-    return Array.from(messages)
-      .map(msg => {
-        const sender = msg.classList.contains("user") ? "User" : "Bot";
-        return `${sender}: ${msg.textContent}`;
-      })
-      .join("\n");
-  }
-  
-  function loadLiveChat(transcript) {
-    // Prevent re-loading
-    if (window.__liveChatLoaded) {
-      openLiveChat();
-      return;
+// =========================
+// LOAD LIVE CHAT
+// =========================
+function loadLiveChat() {
+  const widget = document.getElementById("chat-widget");
+  const returnBtn = document.getElementById("return-to-bot");
+
+  // Hide chatbot
+  widget.classList.add("handoff");
+
+  // Enable Reamaze visibility
+  document.body.classList.add("live-chat-active");
+
+  // Show return button
+  returnBtn.classList.add("visible");
+
+  // Wait for widget to exist, then open it
+  waitForReamaze(openLiveChat);
+}
+
+// =========================
+// FORCE OPEN REAMAZE
+// =========================
+function openLiveChat() {
+  try {
+    if (window.Reamaze && typeof window.Reamaze === "function") {
+      window.Reamaze("open");
+      window.Reamaze("view", "conversation");
     }
+  } catch (e) {
+    console.warn("Reamaze open failed", e);
+  }
+
+  // Fallback click trigger
+  const btn = document.querySelector(".reamaze-widget-button");
+  if (btn) btn.click();
+}
+
+// =========================
+// WAIT FOR WIDGET LOAD
+// =========================
+function waitForReamaze(callback) {
+  const interval = setInterval(() => {
+    const widget = document.querySelector("#reamaze-widget, .reamaze-widget-button");
+
+    if (widget) {
+      clearInterval(interval);
+      callback();
+    }
+  }, 300);
+}
+
+// =========================
+// RETURN TO CHATBOT
+// =========================
+const returnBtn = document.getElementById("return-to-bot");
+
+returnBtn.addEventListener("click", () => {
+  const widget = document.getElementById("chat-widget");
+
+  // Show chatbot again
+  widget.classList.remove("handoff");
+
+  // Hide Reamaze
+  document.body.classList.remove("live-chat-active");
+
+  // Hide return button
+  returnBtn.classList.remove("visible");
+});
   
-    // =========================
+  // =========================
     // CONFIG (from GoDaddy)
     // =========================
     window._support = window._support || { ui: {}, user: {} };
