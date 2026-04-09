@@ -492,6 +492,36 @@
   transform: scale(1.1);
 }
 
+/* =========================
+   HANDOFF STATES
+========================= */
+
+/* Hide chatbot when handing off */
+#chat-widget.handoff {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+/* DEFAULT: hide Reamaze HARD */
+#reamaze-widget,
+.reamaze-widget-button {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* WHEN ACTIVE: override the inline hide */
+body.live-chat-active #reamaze-widget,
+body.live-chat-active .reamaze-widget-button {
+  display: block !important;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 3000;
+}
+
+/* RETURN BUTTON */
 #return-to-bot {
   position: fixed;
   bottom: 20px;
@@ -505,18 +535,9 @@
   z-index: 3001;
 }
 
-#chat-widget.handoff {
-  opacity: 0;
-  transform: scale(0.95);
-  transition: all 0.3s ease;
-  pointer-events: none;
+#return-to-bot.visible {
+  display: block;
 }
-
-#reamaze-widget,
-.reamaze-widget-button {
-  display: none !important;
-}
-
 
 /* =========================
    POPUP
