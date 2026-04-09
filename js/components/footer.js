@@ -26,27 +26,31 @@ function initFooter() {
 function initChat() {
   const widget = document.getElementById("chat-widget");
   const toggle = document.getElementById("chat-toggle");
-  const closeBtn = document.getElementById("chat-close");
   const sendBtn = document.getElementById("sendBtn");
   const userInput = document.getElementById("userInput");
   const chatBody = document.getElementById("chatbot-body");
   const liveBtn = document.getElementById("live-agent-btn");
-  const returnBtn = document.getElementById("return-to-bot");
-
+  const closeBtn = document.getElementById("chat-close");
+  
   if (!widget) return;
 
   // =========================
   // TOGGLE
   // =========================
-  toggle.onclick = () => widget.classList.add("open");
-  closeBtn.onclick = () => widget.classList.remove("open");
+  toggle.addEventListener("click", () => {
+    widget.classList.add("open");
+  });
+  
+  closeBtn.addEventListener("click", () => {
+    widget.classList.remove("open");
+  });
 
   // =========================
   // MESSAGE RENDER
   // =========================
   function addMessage(sender, text) {
     const msg = document.createElement("div");
-    msg.className = `message ${sender}`;
+    msg.classList.add("message", sender);
     msg.textContent = text;
     chatBody.appendChild(msg);
     chatBody.scrollTop = chatBody.scrollHeight;
@@ -153,7 +157,7 @@ function initChat() {
   }
 
   // =========================
-  // SEND FLOW (MULTI MESSAGE)
+  // SEND FLOW (NATURAL TIMING)
   // =========================
   function handleSend() {
     const input = userInput.value.trim();
@@ -162,109 +166,30 @@ function initChat() {
     addMessage("user", input);
     userInput.value = "";
 
-    const responses = getResponse(input);
-
-    let i = 0;
-
-    function sendNext() {
-      if (i >= responses.length) return;
-
-      setTimeout(() => {
-        addMessage("bot", responses[i]);
-        i++;
-        sendNext();
-      }, 500 + responses[i].length * 15);
-    }
-
-    sendNext();
-  }
-
-  sendBtn.onclick = handleSend;
-  userInput.addEventListener("keypress", e => {
-    if (e.key === "Enter") handleSend();
-  });
-
-  // =========================
-  // TRANSCRIPT
-  // =========================
-  function getChatTranscript() {
-    return Array.from(document.querySelectorAll(".message"))
-      .map(m => `${m.classList.contains("user") ? "User" : "Bot"}: ${m.textContent}`)
-      .join("\n");
-  }
-
-  // =========================
-  // LIVE CHAT
-  // =========================
-  function loadLiveChat(transcript) {
-    if (window.__liveChatLoaded) {
-      openLiveChat();
-      return;
-    }
-
-    window._support = window._support || { ui: {}, user: {} };
-
-    _support.account = "18c313a9-b214-4bfa-a32f-c6ea361943d6";
-    _support.ui.contactMode = "mixed";
-    _support.ui.mailbox = "65081234";
-
-    _support.ticket = {
-      subject: "Chat Escalation",
-      message: transcript
-    };
-
-    const script = document.createElement("script");
-    script.src = "https://cdn.reamaze.com/assets/reamaze-loader.js";
-    script.async = true;
-
     script.onload = () => {
       window.__liveChatLoaded = true;
-
-      widget.classList.add("minimized");
-      returnBtn.style.display = "block";
-
+  
+      // Smoothly hide your chatbot
+      widget.classList.add("handoff");
+  
+      setTimeout(() => {
+        widget.style.display = "none";
+      }, 300);
+  
+      // Open live chat
       setTimeout(openLiveChat, 500);
     };
-
+  
     document.body.appendChild(script);
   }
-
+  
   function openLiveChat() {
-    let attempts = 0;
-
-    const interval = setInterval(() => {
-      if (window.Reamaze) {
-        window.Reamaze("open");
-        clearInterval(interval);
-      }
-      if (++attempts > 10) clearInterval(interval);
-    }, 200);
-  }
-
-  // =========================
-  // BUTTONS
-  // =========================
-  liveBtn.onclick = () => {
-    addMessage("bot", "Connecting you to a team member...");
-    loadLiveChat(getChatTranscript());
-  };
-
-  returnBtn.onclick = () => {
-    widget.classList.remove("minimized");
-    returnBtn.style.display = "none";
-
     if (window.Reamaze) {
-      window.Reamaze("close");
+      window.Reamaze("open");
     }
-  };
-
-  // =========================
-  // GREETING
-  // =========================
-  setTimeout(() => {
-    addMessage("bot", "Ciao! How can I help?");
-  }, 800);
+  }
 }
+
 // =========================
 // HOMEPAGE POPUP
 // =========================
