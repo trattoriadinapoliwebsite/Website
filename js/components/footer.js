@@ -154,18 +154,6 @@ function initChat() {
       "I'm not sure about that one.",
       "But I can connect you with our team if you'd like!"
     ];
-  }
-
-  // =========================
-  // SEND FLOW (NATURAL TIMING)
-  // =========================
-  function handleSend() {
-    const input = userInput.value.trim();
-    if (!input) return;
-
-    addMessage("user", input);
-    userInput.value = "";
-
     script.onload = () => {
       window.__liveChatLoaded = true;
   
@@ -189,6 +177,7 @@ function initChat() {
     }
   }
 }
+
 
 // =========================
 // HOMEPAGE POPUP
