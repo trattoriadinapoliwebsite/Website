@@ -204,20 +204,18 @@ let liveChatActive = false;
 
 liveBtn.addEventListener("click", () => {
   if (liveChatActive) return;
+
   liveChatActive = true;
 
   addMessage("bot", "Sorry I couldn't help with that. Please let our staff know your question.");
 
   loadLiveChat();
 });
-  
+
 // =========================
 // LOAD LIVE CHAT
 // =========================
 function loadLiveChat() {
-  const widget = document.getElementById("chat-widget");
-  const returnBtn = document.getElementById("return-to-bot");
-
   // Hide chatbot
   widget.classList.add("handoff");
 
@@ -227,7 +225,6 @@ function loadLiveChat() {
   // Show return button
   returnBtn.classList.add("visible");
 
-  // Wait for widget to exist, then open it
   waitForReamaze(openLiveChat);
 }
 
@@ -244,7 +241,6 @@ function openLiveChat() {
     console.warn("Reamaze open failed", e);
   }
 
-  // Fallback click trigger
   const btn = document.querySelector(".reamaze-widget-button");
   if (btn) btn.click();
 }
@@ -254,9 +250,9 @@ function openLiveChat() {
 // =========================
 function waitForReamaze(callback) {
   const interval = setInterval(() => {
-    const widget = document.querySelector("#reamaze-widget, .reamaze-widget-button");
+    const el = document.querySelector("#reamaze-widget, .reamaze-widget-button");
 
-    if (widget) {
+    if (el) {
       clearInterval(interval);
       callback();
     }
@@ -266,19 +262,12 @@ function waitForReamaze(callback) {
 // =========================
 // RETURN TO CHATBOT
 // =========================
-const returnBtn = document.getElementById("return-to-bot");
-
 returnBtn.addEventListener("click", () => {
-  const widget = document.getElementById("chat-widget");
-
-  // Show chatbot again
   widget.classList.remove("handoff");
-
-  // Hide Reamaze
   document.body.classList.remove("live-chat-active");
-
-  // Hide return button
   returnBtn.classList.remove("visible");
+
+  liveChatActive = false;
 });
   
   // =========================
