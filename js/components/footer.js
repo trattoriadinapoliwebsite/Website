@@ -35,11 +35,15 @@ function initChat() {
 
   if (!widget) return;
 
+  // =========================
   // TOGGLE
+  // =========================
   toggle.onclick = () => widget.classList.add("open");
   closeBtn.onclick = () => widget.classList.remove("open");
 
-  // ADD MESSAGE
+  // =========================
+  // MESSAGE RENDER
+  // =========================
   function addMessage(sender, text) {
     const msg = document.createElement("div");
     msg.className = `message ${sender}`;
@@ -149,7 +153,7 @@ function initChat() {
   }
 
   // =========================
-  // SEND FLOW (NATURAL TIMING)
+  // SEND FLOW (MULTI MESSAGE)
   // =========================
   function handleSend() {
     const input = userInput.value.trim();
@@ -160,9 +164,19 @@ function initChat() {
 
     const responses = getResponse(input);
 
-    setTimeout(() => {
-      addMessage("bot", responses[0]);
-    }, 600);
+    let i = 0;
+
+    function sendNext() {
+      if (i >= responses.length) return;
+
+      setTimeout(() => {
+        addMessage("bot", responses[i]);
+        i++;
+        sendNext();
+      }, 500 + responses[i].length * 15);
+    }
+
+    sendNext();
   }
 
   sendBtn.onclick = handleSend;
@@ -170,14 +184,18 @@ function initChat() {
     if (e.key === "Enter") handleSend();
   });
 
+  // =========================
   // TRANSCRIPT
+  // =========================
   function getChatTranscript() {
     return Array.from(document.querySelectorAll(".message"))
       .map(m => `${m.classList.contains("user") ? "User" : "Bot"}: ${m.textContent}`)
       .join("\n");
   }
 
-  // LOAD LIVE CHAT
+  // =========================
+  // LIVE CHAT
+  // =========================
   function loadLiveChat(transcript) {
     if (window.__liveChatLoaded) {
       openLiveChat();
@@ -223,13 +241,14 @@ function initChat() {
     }, 200);
   }
 
-  // LIVE BUTTON
+  // =========================
+  // BUTTONS
+  // =========================
   liveBtn.onclick = () => {
     addMessage("bot", "Connecting you to a team member...");
     loadLiveChat(getChatTranscript());
   };
 
-  // RETURN BUTTON
   returnBtn.onclick = () => {
     widget.classList.remove("minimized");
     returnBtn.style.display = "none";
@@ -239,7 +258,9 @@ function initChat() {
     }
   };
 
+  // =========================
   // GREETING
+  // =========================
   setTimeout(() => {
     addMessage("bot", "Ciao! How can I help?");
   }, 800);
