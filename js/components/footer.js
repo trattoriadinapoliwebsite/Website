@@ -154,6 +154,123 @@ function initChat() {
       "I'm not sure about that one.",
       "But I can connect you with our team if you'd like!"
     ];
+  }
+
+  // =========================
+  // SEND FLOW (NATURAL TIMING)
+  // =========================
+  function handleSend() {
+    const input = userInput.value.trim();
+    if (!input) return;
+
+    addMessage("user", input);
+    userInput.value = "";
+
+    const responses = getResponse(input);
+    let i = 0;
+
+    function sendNext() {
+      if (i < responses.length) {
+        setTimeout(() => {
+          addMessage("bot", responses[i]);
+          i++;
+          sendNext();
+        }, 700 + responses[i].length * 15);
+      }
+    }
+
+    sendNext();
+  }
+
+  sendBtn.addEventListener("click", handleSend);
+  userInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") handleSend();
+  });
+
+  // =========================
+  // LIVE AGENT BUTTON
+  // =========================
+liveBtn.addEventListener("click", () => {
+  addMessage("bot", "Connecting you to a team member now...");
+
+  const transcript = getChatTranscript();
+  loadLiveChat(transcript);
+});
+
+  // =========================
+  // INITIAL GREETING
+  // =========================
+  setTimeout(() => {
+    addMessage(
+      "bot",
+      "Ciao! I'm Tratt-Bot — here to help with menus, hours, catering, and more. What would you like to know?"
+    );
+  }, 800);
+
+  function getChatTranscript() {
+    const messages = document.querySelectorAll(".message");
+  
+    return Array.from(messages)
+      .map(msg => {
+        const sender = msg.classList.contains("user") ? "User" : "Bot";
+        return `${sender}: ${msg.textContent}`;
+      })
+      .join("\n");
+  }
+  
+  function loadLiveChat(transcript) {
+    // Prevent re-loading
+    if (window.__liveChatLoaded) {
+      openLiveChat();
+      return;
+    }
+  
+    // =========================
+    // CONFIG (from GoDaddy)
+    // =========================
+    window._support = window._support || { ui: {}, user: {} };
+  
+    _support.account = "18c313a9-b214-4bfa-a32f-c6ea361943d6";
+  
+    _support.ui.contactMode = "mixed";
+    _support.ui.enableKb = "true";
+    _support.ui.mailbox = "65081234";
+  
+    _support.ui.styles = {
+      widgetColor: "#ce2b2e",
+      gradient: true
+    };
+  
+    _support.ui.widget = {
+      allowBotProcessing: "false",
+      slug: "testersite",
+      position: "bottom-right"
+    };
+  
+    _support.apps = {
+      recentConversations: {},
+      faq: { enabled: true }
+    };
+  
+    // =========================
+    // PASS CONTEXT TO AGENT
+    // =========================
+    _support.user = {
+      name: "Website Visitor"
+    };
+  
+    _support.ticket = {
+      subject: "Website Chat Escalation",
+      message: transcript
+    };
+  
+    // =========================
+    // LOAD SCRIPT
+    // =========================
+    const script = document.createElement("script");
+    script.src = "https://cdn.reamaze.com/assets/reamaze-loader.js";
+    script.async = true;
+  
     script.onload = () => {
       window.__liveChatLoaded = true;
   
@@ -177,7 +294,6 @@ function initChat() {
     }
   }
 }
-
 
 // =========================
 // HOMEPAGE POPUP
