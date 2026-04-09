@@ -315,10 +315,6 @@ returnBtn.addEventListener("click", () => {
       name: "Website Visitor"
     };
   
-    _support.ticket = {
-      subject: "Website Chat Escalation",
-      message: transcript
-    };
   
     // =========================
     // LOAD SCRIPT
