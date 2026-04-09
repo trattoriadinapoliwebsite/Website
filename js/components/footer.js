@@ -349,7 +349,6 @@ returnBtn.addEventListener("click", () => {
       window.Reamaze("open");
     }
   }
-}
 
 // =========================
 // HOMEPAGE POPUP
