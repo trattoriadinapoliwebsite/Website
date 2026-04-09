@@ -32,7 +32,6 @@ function initChat() {
   const liveBtn = document.getElementById("live-agent-btn");
   const closeBtn = document.getElementById("chat-close");
   const widget = document.getElementById("chat-widget");
-  const liveBtn = document.getElementById("live-agent-btn");
   const returnBtn = document.getElementById("return-to-bot");
   
   if (!widget) return;
