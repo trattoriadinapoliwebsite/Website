@@ -315,25 +315,9 @@ returnBtn.addEventListener("click", () => {
   
     script.onload = () => {
       window.__liveChatLoaded = true;
-  
-      // Smoothly hide your chatbot
-      widget.classList.add("handoff");
-  
-      setTimeout(() => {
-        widget.style.display = "none";
-      }, 300);
-  
-      // Open live chat
-      setTimeout(openLiveChat, 500);
     };
   
     document.body.appendChild(script);
-  }
-  
-  function openLiveChat() {
-    if (window.Reamaze) {
-      window.Reamaze("open");
-    }
   }
 
 // =========================
