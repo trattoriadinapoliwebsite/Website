@@ -1,4 +1,4 @@
-const GAS_URL = "YOUR_GAS_WEB_APP_URL";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxxrg_jX3ElYktnIxU_cUgYEBTw2o-wTSmI471aFe1hIwpoTCGPuvRVXIAf4YvV4t60/exec";
 const IMAGE_BASE_PATH = "gallery/images/";
 
 let images = [];
