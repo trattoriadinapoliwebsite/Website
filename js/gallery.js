@@ -17,11 +17,20 @@ async function fetchGallery() {
     const res = await fetch(GAS_URL);
     const data = await res.json();
 
-    // Resolve image paths
-    images = data.map(item => ({
-      ...item,
-      image: IMAGE_BASE_PATH + item.image
-    }));
+    images = data
+      .map(item => {
+        if (!item.Image) {
+          console.warn("Missing image field:", item);
+          return null;
+        }
+    
+        return {
+          image: IMAGE_BASE_PATH + item.Image.trim(),
+          caption: item.Caption || "",
+          alt: item.Alt || ""
+        };
+      })
+      .filter(Boolean);
 
     initGallery();
 
