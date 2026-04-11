@@ -45,8 +45,7 @@ async function fetchGallery() {
 function initGallery() {
   renderThumbs();
   showImage(0);
-
-  window.addEventListener("wheel", handleScroll, { passive: false });
+  initScrollZone();
   initSwipe();
 }
 
@@ -130,11 +129,31 @@ function updateThumbs() {
 }
 
 // =========================
-// SCROLL CONTROL
+// SCROLL CONTROL (HOVER ONLY)
 // =========================
 let scrollLock = false;
+let isHoveringHero = false;
+
+function initScrollZone() {
+  const heroContainer = document.querySelector(".gallery-hero");
+
+  // Track hover state
+  heroContainer.addEventListener("mouseenter", () => {
+    isHoveringHero = true;
+  });
+
+  heroContainer.addEventListener("mouseleave", () => {
+    isHoveringHero = false;
+  });
+
+  // Attach scroll ONLY to hero container
+  heroContainer.addEventListener("wheel", handleScroll, { passive: false });
+}
 
 function handleScroll(e) {
+  // Only hijack scroll when hovering
+  if (!isHoveringHero) return;
+
   e.preventDefault();
 
   if (scrollLock) return;
@@ -143,7 +162,7 @@ function handleScroll(e) {
   if (e.deltaY > 0) nextImage();
   else prevImage();
 
-  setTimeout(() => scrollLock = false, 500);
+  setTimeout(() => (scrollLock = false), 400);
 }
 
 function nextImage() {
@@ -153,7 +172,6 @@ function nextImage() {
 function prevImage() {
   showImage((currentIndex - 1 + images.length) % images.length);
 }
-
 // =========================
 // SWIPE SUPPORT (MOBILE)
 // =========================
