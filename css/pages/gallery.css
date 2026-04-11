@@ -17,14 +17,16 @@
 /* HERO */
 #gallery {
   max-width: 1200px;
+  background: var(--page-bg);
   margin: 0 auto;
   padding: 0 var(--space-sm);
 }
 
 #gallery-hero {
   position: relative;
-  height: 60vh;
-  max-height: 650px;
+  height: 65vh;
+  touch-action: pan-y;
+  max-height: 800px;
   border-radius: 16px;
   overflow: hidden;
   background: #000;
@@ -69,6 +71,7 @@
   gap: 12px;
   overflow-x: auto;
   padding-bottom: 10px;
+  border-top: 2px groove var(--border-gold);
 }
 
 .thumb {
@@ -91,5 +94,5 @@
 .thumb.active {
   opacity: 1;
   transform: scale(1);
-  outline: 2px solid var(--border-gold);
+  border: 2px groove var(--border-gold);
 }
