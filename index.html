@@ -176,28 +176,43 @@
 
       <!-- BACK -->
       <div class="contact-back">
-        <form class="contact-form">
-        
-          <div class="input-group">
-            <input type="text" required />
-            <label>Name</label>
+        <form class="contact-form" id="contact-form">
+
+          <!-- SUCCESS STATE -->
+          <div class="form-success-state hidden" id="form-success">
+            <h2>Grazie! 🇮🇹</h2>
+            <p>Your message has been sent. We'll get back to you shortly.</p>
+            <button type="button" id="form-success-close" class="btn">Done</button>
           </div>
         
-          <div class="input-group">
-            <input type="email" required />
-            <label>Email</label>
+          <!-- FORM FIELDS -->
+          <div class="form-fields">
+        
+            <!-- HONEYPOT (SPAM TRAP) -->
+            <input type="text" name="company" class="honeypot" autocomplete="off" tabindex="-1">
+        
+            <div class="input-group">
+              <input type="text" name="name" required />
+              <label>Name</label>
+            </div>
+        
+            <div class="input-group">
+              <input type="email" name="email" required />
+              <label>Email</label>
+            </div>
+        
+            <div class="input-group">
+              <textarea name="message" required></textarea>
+              <label>Message</label>
+            </div>
+        
+            <button type="submit" class="submit-btn">Send</button>
+        
+            <button type="button" id="contact-close" class="btn secondary">
+              Back
+            </button>
+        
           </div>
-        
-          <div class="input-group">
-            <textarea required></textarea>
-            <label>Message</label>
-          </div>
-        
-          <button type="submit" class="submit-btn">Send</button>
-        
-          <button type="button" id="contact-close" class="btn secondary">
-            Back
-          </button>
         
         </form>
       </div>
