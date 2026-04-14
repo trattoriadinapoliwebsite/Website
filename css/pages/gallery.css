@@ -1,10 +1,10 @@
 .gallery-page {
   background: var(--page-bg);
+  height: 100vh;
 }
 
 /* FULL VIEWPORT GALLERY */
 #gallery {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
