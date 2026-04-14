@@ -547,6 +547,17 @@
 .form-success-state p {
   max-width: 40ch;
 }
+
+.input-error {
+  border-color: var(--accent-red);
+}
+
+.error-text {
+  font-size: 0.8rem;
+  color: var(--accent-red);
+  margin-top: 4px;
+}
+
 /* =========================
    RESPONSIVE
 ========================= */
