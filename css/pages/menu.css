@@ -201,19 +201,19 @@
   /* =========================
      [BOUNCE] — QUICK + BIG
   ========================= */
-  14% {
+  15% {
     transform: translate(7vw,-70px) rotate(117deg);
   }
 
-  19% {
+  21% {
     transform: translate(9vw, 10px) rotate(144deg);
   }
 
-  25% {
+  28% {
     transform: translate(10vw, -30px) rotate(178deg);
   }
 
-  32% {
+  36% {
     transform: translate(11vw, 10px) rotate(212deg);
   }
 
@@ -236,17 +236,17 @@
     transform: translate(67vw, 10px) rotate(629deg);
   }
 
-  88% {
+  87% {
     transform: translate(67vw, 10px) rotate(629deg);
   }
    
-  90% {
+  91% {
     transform: translate(66vw, 10px) rotate(611deg);
   }
   /* =========================
      [FALL] — STRAIGHT DOWN
   ========================= */
-  90% {
+  93% {
     transform: translate(68vw, 10px) rotate(629deg);
   }
 
