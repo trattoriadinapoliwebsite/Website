@@ -1,7 +1,9 @@
 import { loadHeader } from './components/header.js';
 import { loadFooter } from "./components/footer.js";
 
-
+// =========================
+// CONTACT FLIP (UI ONLY)
+// =========================
 function initContactFlip() {
   const card = document.getElementById('contact-card');
   const openBtn = document.getElementById('contact-toggle');
@@ -20,6 +22,82 @@ function initContactFlip() {
   }
 }
 
+// =========================
+// CONTACT FORM (SUBMIT + UX)
+// =========================
+function initContactForm() {
+  const form = document.getElementById('contact-form');
+  const successState = document.getElementById('form-success');
+  const successClose = document.getElementById('form-success-close');
+  const card = document.getElementById('contact-card');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    // =========================
+    // HONEYPOT (SPAM BLOCK)
+    // =========================
+    if (formData.get('company')) {
+      console.warn("Spam blocked (honeypot)");
+      return;
+    }
+
+    const payload = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message')
+    };
+
+    try {
+      const res = await fetch("https://script.google.com/macros/s/AKfycbxlbpcjJvFnA_wbT1kOgatxVcurUct0o43vV8dn0u29RQN9Cb17h2UEShj0TEyNYCezSg/exec", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      const result = await res.json();
+
+      if (result.status === "success") {
+        // =========================
+        // SUCCESS UI STATE
+        // =========================
+        form.classList.add("success");
+        successState.classList.add("active");
+
+      } else {
+        throw new Error("Submission failed");
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Please try again.");
+    }
+  });
+
+  // =========================
+  // SUCCESS CLOSE → RESET
+  // =========================
+  if (successClose) {
+    successClose.addEventListener('click', () => {
+      form.reset();
+      form.classList.remove("success");
+      successState.classList.remove("active");
+
+      // return to front of card
+      card.classList.remove('flipped');
+    });
+  }
+}
+
+// =========================
+// SPECIAL FEATURE ANIMATION
+// =========================
 function initSpecialFeature() {
   const section = document.querySelector(".special-feature");
   const img = document.querySelector(".special-image");
@@ -49,17 +127,12 @@ function initSpecialFeature() {
     const rect = section.getBoundingClientRect();
     const vh = window.innerHeight;
 
-    // progress through viewport
     let progress = 1 - rect.top / vh;
     progress = Math.max(0, Math.min(1, progress));
 
-    // rotation: full spin across scroll
     targetRotation = progress * 360;
-
-    // subtle scale-in
     targetScale = 0.92 + (progress * 0.08);
 
-    // smooth interpolation
     currentRotation += (targetRotation - currentRotation) * ease;
     currentScale += (targetScale - currentScale) * ease;
 
@@ -74,9 +147,13 @@ function initSpecialFeature() {
   animate();
 }
 
+// =========================
+// INIT
+// =========================
 document.addEventListener('DOMContentLoaded', () => {
   loadHeader();
   initContactFlip();
+  initContactForm();
   initSpecialFeature();
   loadFooter();
 });
