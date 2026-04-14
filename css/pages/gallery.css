@@ -4,13 +4,14 @@
 }
 
 .gallery-header {
+  color: var(--white);
   text-align: center;
   padding: var(--space-lg) var(--space-sm);
 }
 
 .gallery-header p {
   text-align: center;
-  margin-top: 0.5rem;
+  margin: 0.5rem auto 0 auto;
   color: var(--white);
 }
 
