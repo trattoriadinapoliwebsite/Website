@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>Gallery | Trattoria Di Napoli</title>
-  <meta name="description" content="Explore our dishes, atmosphere, and dining experience at Trattoria Di Napoli in Perry, GA." />
+  <meta name="description" content="Explore our dishes and atmosphere." />
 
   <base href="/Website/">
 
@@ -25,19 +25,22 @@
 
 <main class="gallery-page">
 
-  <header class="gallery-header">
-    <h1>Gallery</h1>
-    <p>Take a look inside Trattoria Di Napoli</p>
-  </header>
-
   <section id="gallery">
 
-    <div id="gallery-hero" class="gallery-hero">
-      <img id="hero-image" src="" alt="">
+    <!-- HERO -->
+    <div id="gallery-hero">
+
+      <button class="nav-arrow left" id="prevBtn">‹</button>
+
+      <img id="hero-image" />
       <div id="hero-caption"></div>
+
+      <button class="nav-arrow right" id="nextBtn">›</button>
+
     </div>
 
-    <div id="gallery-thumbs"></div>
+    <!-- THUMB WHEEL -->
+    <div id="thumb-wheel"></div>
 
   </section>
 
@@ -46,7 +49,6 @@
 <div id="footer-root"></div>
 
 <script type="module" src="js/main.js"></script>
-  
 <script type="module" src="js/gallery.js"></script>
 
 </body>
