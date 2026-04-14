@@ -151,7 +151,10 @@ function initScrollZone() {
 }
 
 function handleScroll(e) {
-  // Only hijack scroll when hovering
+  // HARD stop propagation first
+  e.stopPropagation();
+
+  // Only act if inside hero
   if (!isHoveringHero) return;
 
   e.preventDefault();
