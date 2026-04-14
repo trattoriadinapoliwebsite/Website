@@ -29,6 +29,7 @@
   touch-action: pan-y;
   max-height: 800px;
   border-radius: 16px;
+  overscroll-behavior: contain;
   overflow: hidden;
   background: #000;
 }
