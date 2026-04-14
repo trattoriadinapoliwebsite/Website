@@ -33,45 +33,82 @@ function initContactForm() {
 
   if (!form) return;
 
+  const nameInput = form.querySelector('[name="name"]');
+  const emailInput = form.querySelector('[name="email"]');
+  const messageInput = form.querySelector('[name="message"]');
+
+  function showError(input, message) {
+    input.classList.add("input-error");
+
+    let error = input.parentElement.querySelector(".error-text");
+    if (!error) {
+      error = document.createElement("div");
+      error.className = "error-text";
+      input.parentElement.appendChild(error);
+    }
+
+    error.textContent = message;
+  }
+
+  function clearErrors() {
+    form.querySelectorAll(".input-error").forEach(el => el.classList.remove("input-error"));
+    form.querySelectorAll(".error-text").forEach(el => el.remove());
+  }
+
+  function validate() {
+    clearErrors();
+    let valid = true;
+
+    if (!nameInput.value.trim()) {
+      showError(nameInput, "Name is required");
+      valid = false;
+    }
+
+    const emailVal = emailInput.value.trim();
+    if (!emailVal) {
+      showError(emailInput, "Email is required");
+      valid = false;
+    } else if (!/^\S+@\S+\.\S+$/.test(emailVal)) {
+      showError(emailInput, "Enter a valid email");
+      valid = false;
+    }
+
+    if (!messageInput.value.trim()) {
+      showError(messageInput, "Message cannot be empty");
+      valid = false;
+    }
+
+    return valid;
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(form);
+    const formDataRaw = new FormData(form);
 
-    // =========================
-    // HONEYPOT (SPAM BLOCK)
-    // =========================
-    if (formData.get('company')) {
-      console.warn("Spam blocked (honeypot)");
-      return;
-    }
+    // Honeypot
+    if (formDataRaw.get('company')) return;
 
-    const payload = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message')
-    };
+    if (!validate()) return;
 
     try {
-      const res = await fetch("https://script.google.com/macros/s/AKfycbxlbpcjJvFnA_wbT1kOgatxVcurUct0o43vV8dn0u29RQN9Cb17h2UEShj0TEyNYCezSg/exec", {
+      const formData = new FormData();
+      formData.append("name", formDataRaw.get("name"));
+      formData.append("email", formDataRaw.get("email"));
+      formData.append("message", formDataRaw.get("message"));
+
+      const res = await fetch("https://script.google.com/macros/s/AKfycbx7WxxYkfJ3z1zHBII5UYfCVX1bHL-iNaoRZ8xBp2BPVRU56YtYhmxGHYLBLlb9jAKiBQ/exec", {
         method: "POST",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json"
-        }
+        body: formData
       });
 
       const result = await res.json();
 
       if (result.status === "success") {
-        // =========================
-        // SUCCESS UI STATE
-        // =========================
         form.classList.add("success");
         successState.classList.add("active");
-
       } else {
-        throw new Error("Submission failed");
+        throw new Error();
       }
 
     } catch (err) {
@@ -80,20 +117,17 @@ function initContactForm() {
     }
   });
 
-  // =========================
-  // SUCCESS CLOSE → RESET
-  // =========================
-  if (successClose) {
-    successClose.addEventListener('click', () => {
-      form.reset();
-      form.classList.remove("success");
-      successState.classList.remove("active");
+  successClose.addEventListener('click', () => {
+    form.reset();
+    clearErrors();
 
-      // return to front of card
-      card.classList.remove('flipped');
-    });
-  }
+    form.classList.remove("success");
+    successState.classList.remove("active");
+
+    card.classList.remove('flipped');
+  });
 }
+
 
 // =========================
 // SPECIAL FEATURE ANIMATION
