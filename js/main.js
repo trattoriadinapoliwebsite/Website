@@ -53,7 +53,9 @@ function initContactForm() {
   const nameInput = form.querySelector('[name="name"]');
   const emailInput = form.querySelector('[name="email"]');
   const messageInput = form.querySelector('[name="message"]');
+  const submitBtn = form.querySelector(".submit-btn");
 
+  
   function showError(input, message) {
     input.classList.add("input-error");
 
