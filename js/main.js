@@ -33,6 +33,23 @@ function initContactForm() {
 
   if (!form) return;
 
+  // =========================
+  // WAVE LABEL SETUP
+  // =========================
+  const labels = form.querySelectorAll(".input-group label");
+  
+  labels.forEach(label => {
+    const text = label.textContent;
+    label.innerHTML = "";
+  
+    text.split("").forEach((letter, i) => {
+      const span = document.createElement("span");
+      span.textContent = letter;
+      span.style.setProperty("--i", i);
+      label.appendChild(span);
+    });
+  });
+
   const nameInput = form.querySelector('[name="name"]');
   const emailInput = form.querySelector('[name="email"]');
   const messageInput = form.querySelector('[name="message"]');
@@ -82,51 +99,60 @@ function initContactForm() {
   }
 
   form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formDataRaw = new FormData(form);
+  const formDataRaw = new FormData(form);
 
-    // Honeypot
-    if (formDataRaw.get('company')) return;
+  // Honeypot
+  if (formDataRaw.get('company')) return;
 
-    if (!validate()) return;
+  if (!validate()) return;
 
-    try {
-      const formData = new FormData();
-      formData.append("name", formDataRaw.get("name"));
-      formData.append("email", formDataRaw.get("email"));
-      formData.append("message", formDataRaw.get("message"));
+  submitBtn.classList.add("loading");
+  submitBtn.disabled = true;
 
-      const res = await fetch("https://script.google.com/macros/s/AKfycbx7WxxYkfJ3z1zHBII5UYfCVX1bHL-iNaoRZ8xBp2BPVRU56YtYhmxGHYLBLlb9jAKiBQ/exec", {
-        method: "POST",
-        body: formData
-      });
+  try {
+    const formData = new FormData();
+    formData.append("name", formDataRaw.get("name"));
+    formData.append("email", formDataRaw.get("email"));
+    formData.append("message", formDataRaw.get("message"));
 
-      const result = await res.json();
+    const res = await fetch("https://script.google.com/macros/s/AKfycbx7WxxYkfJ3z1zHBII5UYfCVX1bHL-iNaoRZ8xBp2BPVRU56YtYhmxGHYLBLlb9jAKiBQ/exec", {
+      method: "POST",
+      body: formData
+    });
 
-      if (result.status === "success") {
-        form.classList.add("success");
-        successState.classList.add("active");
-      } else {
-        throw new Error();
-      }
+    const result = await res.json();
+
+    if (result.status === "success") {
+      form.classList.add("success");
+      successState.classList.add("active");
+    } else {
+      throw new Error();
+    }
 
     } catch (err) {
       console.error(err);
       alert("Something went wrong. Please try again.");
+    
+      submitBtn.classList.remove("loading");
+      submitBtn.disabled = false;
     }
   });
 
   successClose.addEventListener('click', () => {
     form.reset();
     clearErrors();
-
+  
     form.classList.remove("success");
     successState.classList.remove("active");
-
+  
+    // ✅ RESET BUTTON STATE
+    submitBtn.classList.remove("loading");
+    submitBtn.disabled = false;
+  
     card.classList.remove('flipped');
   });
-}
 
 
 // =========================
