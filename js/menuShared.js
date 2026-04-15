@@ -333,7 +333,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!container) return;
 
   const page = document.querySelector(".menu-page");
-  page.classList.add("is-loading");
   
   const menuName = detectMenuName();
 
