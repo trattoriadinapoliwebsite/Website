@@ -320,6 +320,41 @@
   height: 100%;
 }
 
+.social-label {
+  margin-top: var(--space-md);
+  font-weight: 500;
+}
+
+.socials {
+  display: flex;
+  gap: 1rem;
+  margin: var(--space-sm) 0;
+}
+
+.socials a {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: transform 0.2s ease, background 0.2s;
+}
+
+.socials a:hover {
+  transform: translateY(-3px);
+  background: var(--accent-red);
+}
+
+.socials svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--dark-text);
+}
+
+.socials a:hover svg {
+  fill: var(--white);
+}
 /* =========================
    FRONT / BACK
 ========================= */
@@ -377,6 +412,11 @@
 
 .contact-form {
   width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.form-fields {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -551,6 +591,14 @@
   pointer-events: none;
 }
 
+/* =========================
+   HONEYPOT (HIDDEN FIELD)
+========================= */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
 
 /* =========================
    RESPONSIVE
@@ -562,8 +610,22 @@
     grid-template-columns: 1fr;
   }
 
+  .hero-right img {
+     margin: 0 0;
+     width: 60%;
+     height: 60%;
+     object-fit: cover;
+  }
+
   .resy-cta {
     grid-template-columns: 1fr;
+  }
+
+  .resy-image img {
+     margin: 0 0;
+     width: 60%;
+     height: 60%;
+     object-fit: cover;
   }
 
   .contact {
