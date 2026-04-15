@@ -378,16 +378,19 @@
 
 .menu-page.is-loading #menu,
 .menu-page.is-loading .menu-anchor-nav,
-.menu-page.is-loading .weeknight-specials {
+.menu-page.is-loading .weeknight-specials,
+.menu-page.is-loading .menu-policy,
+.menu-page.is-loading .catering-banner {
   opacity: 0;
   pointer-events: none;
   transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .menu-page #menu,
 .menu-page .menu-anchor-nav,
-.menu-page .weeknight-specials {
+.menu-page .weeknight-specials,
+.menu-page .menu-policy,
+.menu-page .catering-banner {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
