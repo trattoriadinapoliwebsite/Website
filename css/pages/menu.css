@@ -247,11 +247,7 @@
      [FALL] — STRAIGHT DOWN
   ========================= */
   93% {
-    transform: translate(68vw, 10px) rotate(629deg);
-  }
-
-  95% {
-    transform: translate(70vw, 60vh) rotate(720deg);
+    transform: translate(68vw, 60vh) rotate(680deg);
     opacity: 1;
   }
 
@@ -337,11 +333,65 @@
   justify-content: center;
   border: 3px solid var(--accent-gold);
 }
+.catering-banner {
+  margin-top: 3rem;
+  padding: 2rem 1.5rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.03);
+  text-align: center;
+  border-radius: 12px;
+}
+
+.catering-banner-inner h2 {
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.catering-banner-inner p {
+  color: #bbb;
+  margin-bottom: 1rem;
+}
+
+.catering-link {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--border-gold);
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: 0.25s ease;
+}
+
+.catering-link:hover {
+  background: var(--border-gold);
+  color: #000;
+}
 
 .menu-policy p {
   text-align: center;
   color: var(--white);
 }
+
+/* =========================
+       Loading State
+========================= */
+
+.menu-page.is-loading #menu,
+.menu-page.is-loading .menu-anchor-nav,
+.menu-page.is-loading .weeknight-specials {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.menu-page #menu,
+.menu-page .menu-anchor-nav,
+.menu-page .weeknight-specials {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+
 /* =========================
    MOBILE
 ========================= */
