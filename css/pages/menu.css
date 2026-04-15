@@ -1,3 +1,11 @@
+.menu-page {
+  opacity: 0;
+}
+
+.menu-page.is-loading {
+  opacity: 1;
+}
+
 /* =========================
    MENU PAGE (PREMIUM THEME)
 ========================= */
