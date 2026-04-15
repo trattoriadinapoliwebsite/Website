@@ -153,7 +153,7 @@ function initContactForm() {
   
     card.classList.remove('flipped');
   });
-
+}
 
 // =========================
 // SPECIAL FEATURE ANIMATION
