@@ -333,6 +333,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!container) return;
 
   const page = document.querySelector(".menu-page");
+  page.classList.add("is-loading");
+  
   const menuName = detectMenuName();
 
   if (!menuName) {
@@ -371,6 +373,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderMenu(menu, container);
       buildMenuAnchors(menu);
       initMenuModal(page);
+      page.classList.remove("is-loading");
     }, 400);
     // Scroll to hash if present
     const hash = window.location.hash.slice(1);
