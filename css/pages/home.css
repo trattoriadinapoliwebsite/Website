@@ -279,23 +279,25 @@
 }
 
 /* =========================
-   CONTACT SECTION (STABLE)
+   CONTACT SECTION (FIXED)
 ========================= */
 
 .contact {
   position: relative;
   width: 100%;
+  min-height: 100vh; /* CRITICAL FIX */
   background: url('../../assets/contactbg.webp') center/cover no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8rem 1rem;
+  padding: clamp(4rem, 10vh, 8rem) 1rem;
   gap: 2rem;
+  overflow: hidden; /* prevents bleed */
 }
 
 .contact h1 {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   color: var(--white);
   text-align: center;
 }
@@ -307,7 +309,7 @@
 .contact-card {
   width: 100%;
   max-width: 800px;
-  height: 600px;
+  height: clamp(500px, 70vh, 650px);
   perspective: 2000px;
   position: relative;
 }
@@ -316,192 +318,204 @@
   position: relative;
   width: 100%;
   height: 100%;
-  z-index: 1;
 }
 
 /* =========================
-   FRONT / BACK LAYERS
+   FRONT / BACK
 ========================= */
 
 .contact-front,
 .contact-back {
   position: absolute;
   inset: 0;
-  padding: var(--space-lg);
-  border-radius: 8px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
   text-align: center;
   background: var(--gray-bg);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  overflow: hidden; 
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  backface-visibility: hidden;
 }
 
 /* FRONT */
 .contact-front {
   z-index: 2;
   transform-origin: left center;
-  transition:
-    transform 1s cubic-bezier(.55,.02,.2,1),
-    opacity 0.4s ease 0.6s;
-  pointer-events: auto;
+  transition: transform 0.9s cubic-bezier(.55,.02,.2,1), opacity 0.4s ease 0.5s;
 }
 
 /* BACK */
 .contact-back {
   z-index: 1;
-  pointer-events: none; /* disabled until open */
-}
-
-/* =========================
-   FLIP STATE
-========================= */
-
-.contact-card.flipped .contact-front {
-  transform: rotateY(-140deg) translateX(-30px) scaleX(0.96);
-  opacity: 0;
-  pointer-events: none; /* CRITICAL FIX */
-}
-
-.contact-card.flipped .contact-back {
-  pointer-events: auto; /* enable interaction */
-}
-
-/* =========================
-   SHADOW (curl illusion)
-========================= */
-
-.contact-front::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(0,0,0,0.35),
-    rgba(0,0,0,0.1),
-    transparent
-  );
-  opacity: 0;
-  transition: opacity 0.4s;
+  transform: rotateY(180deg);
   pointer-events: none;
 }
 
-.contact-card.flipped .contact-front::after {
-  opacity: 1;
-}
-.social-label {
-  margin-top: var(--space-md);
-  font-weight: 500;
+/* =========================
+   FLIP
+========================= */
+
+.contact-card.flipped .contact-front {
+  transform: rotateY(-180deg);
+  opacity: 0;
+  pointer-events: none;
 }
 
-.socials {
-  display: flex;
-  gap: 1rem;
-  margin: var(--space-sm) 0;
-}
-
-.socials a {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: transform 0.2s ease, background 0.2s;
-}
-
-.socials a:hover {
-  transform: translateY(-3px);
-  background: var(--accent-red);
-}
-
-.socials svg {
-  width: 20px;
-  height: 20px;
-  fill: var(--dark-text);
-}
-
-.socials a:hover svg {
-  fill: var(--white);
+.contact-card.flipped .contact-back {
+  transform: rotateY(0deg);
+  pointer-events: auto;
+  z-index: 3;
 }
 
 /* =========================
-   FORM STYLING
+   FORM
 ========================= */
 
 .contact-form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
 
-/* wrapper */
+/* INPUT GROUP */
+
 .input-group {
   position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-/* inputs */
 .input-group input,
 .input-group textarea {
   width: 100%;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  outline: none;
   background: var(--white);
   font-size: 1rem;
+  outline: none;
 }
 
-/* textarea sizing */
-.input-group textarea {
-  min-height: 120px;
-  resize: none;
+/* spacing between input + error */
+.input-group .error-text {
+  margin-top: 6px;
 }
 
-/* labels */
+/* =========================
+   WAVE LABEL
+========================= */
+
 .input-group label {
   position: absolute;
   left: 1rem;
   top: 1rem;
-  color: #777;
   pointer-events: none;
-  transition: all 0.3s ease;
+  display: flex;
+  gap: 1px;
 }
 
-/* ACTIVE STATE */
-.input-group input:focus + label,
-.input-group input:valid + label,
-.input-group textarea:focus + label,
-.input-group textarea:valid + label {
-  top: -10px;
-  left: 0.8rem;
+.input-group label span {
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease;
+  color: #777;
+}
 
-  font-size: 0.75rem;
+/* stagger animation */
+.input-group input:focus + label span,
+.input-group input:valid + label span,
+.input-group textarea:focus + label span,
+.input-group textarea:valid + label span {
+  transform: translateY(-22px);
   color: var(--accent-red);
-
-  background: var(--gray-bg);
-  padding: 0 5px;
-
-  transform: translateY(-2px);
 }
 
-/* subtle wave effect */
-.input-group input:focus,
-.input-group textarea:focus {
-  border-color: var(--accent-red);
-  box-shadow: 0 0 0 2px rgba(127,29,29,0.15);
+/* stagger delay */
+.input-group label span:nth-child(n) {
+  transition-delay: calc(0.02s * var(--i));
 }
+
 /* =========================
-   HONEYPOT (HIDDEN FIELD)
+   INPUT STATES
 ========================= */
-.honeypot {
+
+.input-error {
+  border-color: var(--accent-red);
+}
+
+.error-text {
+  font-size: 0.8rem;
+  color: var(--accent-red);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.submit-btn {
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent-red);
+  color: var(--white);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(127,29,29,0.4);
+}
+
+/* =========================
+   BUTTON LOADING STATE
+========================= */
+.btn-text {
+  display: inline-block;
+  transition: opacity 0.2s ease;
+}
+
+.btn-spinner {
   position: absolute;
-  left: -9999px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--white);
+  border-radius: 50%;
   opacity: 0;
+  transform: scale(0.8);
+  animation: spin 0.8s linear infinite;
+}
+
+.submit-btn.loading .btn-text {
+  opacity: 0;
+}
+
+.submit-btn.loading .btn-spinner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* prevent interaction */
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* =========================
@@ -514,49 +528,29 @@
   background: var(--gray-bg);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
   text-align: center;
 
   opacity: 0;
+  transform: scale(0.95);
   pointer-events: none;
-  transform: translateY(10px);
   transition: all 0.4s ease;
 }
 
 .form-success-state.active {
   opacity: 1;
+  transform: scale(1);
   pointer-events: auto;
-  transform: translateY(0);
 }
 
-/* hide form when success is active */
 .contact-form.success .form-fields {
   opacity: 0;
+  transform: scale(0.95);
   pointer-events: none;
-  transform: scale(0.98);
-  transition: all 0.3s ease;
 }
 
-/* subtle success text styling */
-.form-success-state h2 {
-  color: var(--accent-green);
-}
-
-.form-success-state p {
-  max-width: 40ch;
-}
-
-.input-error {
-  border-color: var(--accent-red);
-}
-
-.error-text {
-  font-size: 0.8rem;
-  color: var(--accent-red);
-  margin-top: 4px;
-}
 
 /* =========================
    RESPONSIVE
@@ -572,8 +566,13 @@
     grid-template-columns: 1fr;
   }
 
+  .contact {
+    min-height: 100vh;
+    padding: 4rem 1rem;
+  }
+   
   .contact-card {
-    height: auto;
+    height: 520px;
   }
 
   .contact-inner {
@@ -585,7 +584,6 @@
     position: absolute; /* KEEP stacking */
     inset: 0;
     height: auto;
-    min-height: 500px;
     padding: var(--space-md);
     transition: opacity 0.4s ease;
   }
