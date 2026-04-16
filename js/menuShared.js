@@ -325,6 +325,91 @@ function detectMenuName() {
 }
 
 /* =========================
+   PHYSICS LOADER (rAF)
+========================= */
+function runLoaderPhysics(img) {
+  let x = window.innerWidth * 0.05;
+  let y = -200;
+
+  let vx = 0;
+  let vy = 0;
+
+  let rotation = 0;
+
+  const gravity = 2200;     // px/s²
+  const bounce = 0.55;      // energy retention
+  const friction = 0.98;
+
+  const ground = window.innerHeight * 0.6;
+
+  let lastTime = performance.now();
+  let startTime = performance.now();
+
+  const MAX_TIME = 3200; // force fall timing
+
+  function frame(now) {
+    const dt = (now - lastTime) / 1000;
+    lastTime = now;
+
+    const elapsed = now - startTime;
+
+    // =========================
+    // FORCED FALL (timing control)
+    // =========================
+    if (elapsed > MAX_TIME) {
+      vy += gravity * dt * 1.8; // heavier drop
+    } else {
+      vy += gravity * dt;
+    }
+
+    // =========================
+    // MOTION
+    // =========================
+    x += vx * dt;
+    y += vy * dt;
+
+    // =========================
+    // GROUND COLLISION
+    // =========================
+    if (y >= ground) {
+      y = ground;
+
+      if (elapsed < MAX_TIME) {
+        vy *= -bounce;
+        vx *= friction;
+
+        // small forward push so it rolls
+        vx += 40;
+      }
+    }
+
+    // =========================
+    // ROTATION (velocity-based)
+    // =========================
+    const speed = Math.sqrt(vx * vx + vy * vy);
+    rotation += speed * dt * 0.25;
+
+    // =========================
+    // APPLY TRANSFORM
+    // =========================
+    img.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+    img.style.opacity = 1;
+
+    // =========================
+    // EXIT CONDITION
+    // =========================
+    if (y < window.innerHeight + 200) {
+      requestAnimationFrame(frame);
+    } else {
+      img.style.opacity = 0;
+    }
+  }
+
+  requestAnimationFrame(frame);
+}
+
+
+/* =========================
    AUTO INIT
 ========================= */
 document.addEventListener("DOMContentLoaded", async () => {
@@ -342,6 +427,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   load.innerHTML = renderSkeletonLoader();
+  
+  const loaderImg = load.querySelector("img");
+  runLoaderPhysics(loaderImg);
 
   try {
     const MIN_LOAD_TIME = 3500; // 3.5 seconds (tune 3000–4000)
