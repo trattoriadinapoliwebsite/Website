@@ -161,7 +161,7 @@
 }
 
 /* =========================
-   LOADER (REFINED MOTION)
+   LOADER 
 ========================= */
 
 .menu-loader {
@@ -179,83 +179,9 @@
   position: absolute;
   width: 20vw;
   opacity: 0;
-  animation: loaderMotion 4s linear forwards;
   will-change: transform, opacity;
 }
 
-@keyframes loaderMotion {
-
-  /* =========================
-     [DROP] — FAST, NO SLOWDOWN
-  ========================= */
-  0% {
-    transform: translate(5vw, -520px) rotate(0deg);
-    opacity: 0;
-  }
-
-  10% {
-    transform: translate(5vw, 10px) rotate(90deg);
-    opacity: 1;
-  }
-
-  /* =========================
-     [BOUNCE] — QUICK + BIG
-  ========================= */
-  15% {
-    transform: translate(7vw,-70px) rotate(117deg);
-  }
-
-  21% {
-    transform: translate(9vw, 10px) rotate(144deg);
-  }
-
-  28% {
-    transform: translate(10vw, -30px) rotate(178deg);
-  }
-
-  36% {
-    transform: translate(11vw, 10px) rotate(212deg);
-  }
-
-  /* =========================
-     [ROLL] — DECELERATING
-  ========================= */
-
-  /* fast start */
-  60% {
-    transform: translate(50vw, 10px) rotate(500deg);
-  }
-
-  /* slowing */
-  80% {
-    transform: translate(65vw, 10px) rotate(620deg);
-  }
-
-  /* "edge hesitation" */
-  83% {
-    transform: translate(67vw, 10px) rotate(629deg);
-  }
-
-  87% {
-    transform: translate(67vw, 10px) rotate(629deg);
-  }
-   
-  91% {
-    transform: translate(66vw, 10px) rotate(611deg);
-  }
-  /* =========================
-     [FALL] — STRAIGHT DOWN
-  ========================= */
-  93% {
-    transform: translate(68vw, 60vh) rotate(680deg);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(75vw, 160vh) rotate(900deg);
-    opacity: 0;
-  }
-}
 
 /* =========================
    MODAL (PREMIUM)
