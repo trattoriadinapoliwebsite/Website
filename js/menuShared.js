@@ -331,21 +331,31 @@ function runLoaderPhysics(img) {
   let x = window.innerWidth * 0.05;
   let y = -200;
 
-  let vx = 0;
+  let vx = 320;
   let vy = 0;
 
   let rotation = 0;
 
-  const gravity = 2200;     // px/s²
-  const bounce = 0.55;      // energy retention
-  const friction = 0.98;
+  const gravity = 2200;
+  const bounce = 0.55;
+  const friction = 0.985;
 
   const ground = window.innerHeight * 0.6;
 
   let lastTime = performance.now();
   let startTime = performance.now();
 
-  const MAX_TIME = 3200; // force fall timing
+  // =========================
+  // STATES
+  // =========================
+  let isRolling = true;
+  let isBalancing = false;
+
+  const ROLL_TIME = 1800;      // how long it rolls before physics takes over
+  const MAX_TIME = 3200;       // when we force the fall
+  const BALANCE_DURATION = 450;
+
+  let balanceStart = 0;
 
   function frame(now) {
     const dt = (now - lastTime) / 1000;
@@ -354,19 +364,65 @@ function runLoaderPhysics(img) {
     const elapsed = now - startTime;
 
     // =========================
-    // FORCED FALL (timing control)
+    // STATE TRANSITIONS
     // =========================
-    if (elapsed > MAX_TIME) {
-      vy += gravity * dt * 1.8; // heavier drop
-    } else {
-      vy += gravity * dt;
+
+    // End rolling phase
+    if (isRolling && elapsed > ROLL_TIME) {
+      isRolling = false;
+    }
+
+    // Enter balance state
+    if (
+      !isRolling &&
+      !isBalancing &&
+      Math.abs(vx) < 30 &&
+      elapsed > MAX_TIME - 700
+    ) {
+      isBalancing = true;
+      balanceStart = now;
+      vx = 0;
+      vy = 0;
     }
 
     // =========================
-    // MOTION
+    // BALANCE (TEETER)
     // =========================
-    x += vx * dt;
-    y += vy * dt;
+    if (isBalancing) {
+      const t = now - balanceStart;
+
+      // subtle rocking
+      const tilt = Math.sin(t * 0.02) * 8;
+      rotation += tilt * 0.15;
+
+      y = ground;
+
+      if (t > BALANCE_DURATION) {
+        // tip over → fall
+        isBalancing = false;
+        vy = 400;
+        vx = 30;
+      }
+    }
+
+    // =========================
+    // PHYSICS (if not balancing)
+    // =========================
+    if (!isBalancing) {
+      // gravity control
+      if (!isRolling) {
+        // stronger gravity near forced fall
+        if (elapsed > MAX_TIME) {
+          vy += gravity * dt * 1.6;
+        } else {
+          vy += gravity * dt;
+        }
+      }
+
+      // motion
+      x += vx * dt;
+      y += vy * dt;
+    }
 
     // =========================
     // GROUND COLLISION
@@ -374,12 +430,14 @@ function runLoaderPhysics(img) {
     if (y >= ground) {
       y = ground;
 
-      if (elapsed < MAX_TIME) {
+      if (isRolling) {
+        // smooth roll phase (no bounce)
+        vy = 0;
+        vx *= 0.995;
+      } else if (!isBalancing) {
+        // real bounce
         vy *= -bounce;
         vx *= friction;
-
-        // small forward push so it rolls
-        vx += 40;
       }
     }
 
@@ -396,7 +454,7 @@ function runLoaderPhysics(img) {
     img.style.opacity = 1;
 
     // =========================
-    // EXIT CONDITION
+    // EXIT
     // =========================
     if (y < window.innerHeight + 200) {
       requestAnimationFrame(frame);
@@ -407,7 +465,6 @@ function runLoaderPhysics(img) {
 
   requestAnimationFrame(frame);
 }
-
 
 /* =========================
    AUTO INIT
