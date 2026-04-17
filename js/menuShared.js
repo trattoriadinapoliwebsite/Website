@@ -449,6 +449,7 @@ function runLoaderPhysics(img) {
   });
 }
 
+
 /* =========================
    AUTO INIT
 ========================= */
@@ -466,64 +467,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // Inject loader
   load.innerHTML = renderSkeletonLoader();
-  
   const loaderImg = load.querySelector("img");
-  runLoaderPhysics(loaderImg);
 
   try {
-    const MIN_LOAD_TIME = 3500; // 3.5 seconds (tune 3000–4000)
-    const startTime = performance.now();
-  
-    const menuPromise = fetchMenu(menuName);
-  
-    const [menu] = await Promise.all([
-      menuPromise,
-      new Promise(resolve => setTimeout(resolve, MIN_LOAD_TIME))
-    ]);
-  
-    const elapsed = performance.now() - startTime;
-  
-    // (Optional safety: ensure we *at least* hit min time even if Promise.all resolves early)
-    if (elapsed < MIN_LOAD_TIME) {
-      await new Promise(res => setTimeout(res, MIN_LOAD_TIME - elapsed));
-    }
-  
-    // Smooth fade-out of loader
-    load.style.opacity = "0";
-    load.style.transition = "opacity 0.4s ease";
-  
-    const loaderImg = load.querySelector("img");
+    const MIN_LOAD_TIME = 3500;
 
-    // Run BOTH:
-    // - min time (UX)
-    // - physics animation (visual)
-    await Promise.all([
+    // 🔥 Run BOTH in parallel (correctly)
+    const [menu] = await Promise.all([
+      fetchMenu(menuName),
       new Promise(res => setTimeout(res, MIN_LOAD_TIME)),
-      runLoaderPhysics(loaderImg)
+      runLoaderPhysics(loaderImg) // ✅ ONLY call here
     ]);
-    
-    // NOW fade out loader (after fall completes)
+
+    // Fade out loader AFTER physics completes
     load.style.opacity = "0";
     load.style.transition = "opacity 0.4s ease";
-    
+
     setTimeout(() => {
       container.innerHTML = "";
       container.style.opacity = "1";
-    
+
       renderMenu(menu, container);
       buildMenuAnchors(menu);
       initMenuModal(page);
       page.classList.remove("is-loading");
     }, 400);
-    
+
     // Scroll to hash if present
     const hash = window.location.hash.slice(1);
     if (hash) {
       const target = document.getElementById(hash);
       const nav = document.getElementById("menuAnchorNav");
       if (target && nav) {
-        const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - nav.offsetHeight - 8;
+        const offsetPosition =
+          target.getBoundingClientRect().top +
+          window.pageYOffset -
+          nav.offsetHeight -
+          8;
+
         window.scrollTo({ top: offsetPosition });
       }
     }
