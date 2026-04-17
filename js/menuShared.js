@@ -325,19 +325,20 @@ function detectMenuName() {
 }
 
 /* =========================
-   PHYSICS LOADER (rAF)
+   LOADER ANIMATION PHYSICS
 ========================= */
+
 function runLoaderPhysics(img) {
   return new Promise((resolve) => {
 
     let x = window.innerWidth * 0.05;
-    let y = -300;
+    let y = -350;
 
     let vx = 0;
     let vy = 0;
     let rotation = 0;
 
-    const gravity = 2400;
+    const gravity = 2600;
     const bounce = 0.6;
     const friction = 0.992;
 
@@ -349,6 +350,7 @@ function runLoaderPhysics(img) {
     let hasLanded = false;
     let isRolling = false;
     let isBalancing = false;
+    let hasBalanced = false; // ✅ prevents infinite wobble
 
     const ROLL_TIME = 2200;
     const MAX_TIME = 3200;
@@ -363,23 +365,33 @@ function runLoaderPhysics(img) {
 
       const elapsed = now - startTime;
 
+      // =========================
+      // GRAVITY
+      // =========================
       if (!isBalancing) {
         vy += gravity * dt;
       }
 
+      // =========================
+      // MOTION
+      // =========================
       if (!isBalancing) {
         x += vx * dt;
         y += vy * dt;
       }
 
+      // =========================
+      // GROUND COLLISION
+      // =========================
       if (y >= ground) {
         y = ground;
 
         if (!hasLanded) {
           hasLanded = true;
+
           vy *= -bounce;
 
-          vx = 520;
+          vx = 600; // faster roll
           rollStart = now;
           isRolling = true;
         }
@@ -388,67 +400,89 @@ function runLoaderPhysics(img) {
           vy = 0;
           vx *= friction;
 
-          if (now - rollStart > ROLL_TIME || Math.abs(vx) < 25) {
+          if (now - rollStart > ROLL_TIME || Math.abs(vx) < 40) {
             isRolling = false;
           }
         }
 
         else if (!isBalancing) {
-          vy *= -0.25;
+          vy *= -0.2;
           vx *= friction;
         }
       }
 
-      // ENTER BALANCE (later)
+      // =========================
+      // ENTER BALANCE (ONCE ONLY)
+      // =========================
       if (
         hasLanded &&
         !isRolling &&
         !isBalancing &&
+        !hasBalanced &&
         elapsed > MAX_TIME - 400
       ) {
         isBalancing = true;
+        hasBalanced = true; // 🔥 critical fix
         balanceStart = now;
+
         vx = 0;
         vy = 0;
       }
 
-      // BALANCE → FALL
+      // =========================
+      // BALANCE (EDGE TEETER FEEL)
+      // =========================
+      let pivotOffsetX = 0;
+
       if (isBalancing) {
         const t = now - balanceStart;
 
-        const tilt = Math.sin(t * 0.018) * 10;
-        rotation += tilt * 0.2;
+        const tilt = Math.sin(t * 0.02) * 12;
+
+        // fake pivot shift (feels like edge)
+        pivotOffsetX = tilt * 0.6;
+
+        rotation += tilt * 0.25;
 
         y = ground;
 
         if (t > BALANCE_DURATION) {
           isBalancing = false;
 
-          vy = 900;
-          vx = 60;
+          // 🔥 FORCE REAL FALL
+          vy = 1200;
+          vx = 180;
         }
       }
 
-      // ROTATION
+      // =========================
+      // ROTATION (velocity based)
+      // =========================
       const speed = Math.sqrt(vx * vx + vy * vy);
-      rotation += speed * dt * 0.28;
+      rotation += speed * dt * 0.3;
 
-      img.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+      // =========================
+      // APPLY TRANSFORM
+      // =========================
+      img.style.transform =
+        `translate(${x + pivotOffsetX}px, ${y}px) rotate(${rotation}deg)`;
+
       img.style.opacity = 1;
 
-      // ✅ IMPORTANT: resolve ONLY after fall finishes
+      // =========================
+      // EXIT CONDITION
+      // =========================
       if (y < window.innerHeight + 300) {
         requestAnimationFrame(frame);
       } else {
         img.style.opacity = 0;
-        resolve(); // 🔥 tells app "animation is actually done"
+        resolve(); // ✅ guarantees menu loads
       }
     }
 
     requestAnimationFrame(frame);
   });
 }
-
 
 /* =========================
    AUTO INIT
