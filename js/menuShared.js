@@ -493,15 +493,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     load.style.opacity = "0";
     load.style.transition = "opacity 0.4s ease";
   
+    const loaderImg = load.querySelector("img");
+
+    // Run BOTH:
+    // - min time (UX)
+    // - physics animation (visual)
+    await Promise.all([
+      new Promise(res => setTimeout(res, MIN_LOAD_TIME)),
+      runLoaderPhysics(loaderImg)
+    ]);
+    
+    // NOW fade out loader (after fall completes)
+    load.style.opacity = "0";
+    load.style.transition = "opacity 0.4s ease";
+    
     setTimeout(() => {
       container.innerHTML = "";
       container.style.opacity = "1";
-  
+    
       renderMenu(menu, container);
       buildMenuAnchors(menu);
       initMenuModal(page);
       page.classList.remove("is-loading");
     }, 400);
+    
     // Scroll to hash if present
     const hash = window.location.hash.slice(1);
     if (hash) {
