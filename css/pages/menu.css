@@ -179,6 +179,7 @@
   position: absolute;
   width: 20vw;
   opacity: 0;
+  transform-origin: center;
   will-change: transform, opacity;
 }
 
