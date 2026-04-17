@@ -329,9 +329,9 @@ function detectMenuName() {
 ========================= */
 function runLoaderPhysics(img) {
   let x = window.innerWidth * 0.05;
-  let y = -200;
+  let y = -250; // start clearly above screen
 
-  let vx = 320;
+  let vx = 0;   // ❗ no horizontal movement until after first bounce
   let vy = 0;
 
   let rotation = 0;
@@ -348,14 +348,16 @@ function runLoaderPhysics(img) {
   // =========================
   // STATES
   // =========================
-  let isRolling = true;
+  let hasLanded = false;
+  let isRolling = false;
   let isBalancing = false;
 
-  const ROLL_TIME = 1800;      // how long it rolls before physics takes over
-  const MAX_TIME = 3200;       // when we force the fall
+  const ROLL_TIME = 1800;
+  const MAX_TIME = 3200;
   const BALANCE_DURATION = 450;
 
   let balanceStart = 0;
+  let rollStart = 0;
 
   function frame(now) {
     const dt = (now - lastTime) / 1000;
@@ -364,16 +366,63 @@ function runLoaderPhysics(img) {
     const elapsed = now - startTime;
 
     // =========================
-    // STATE TRANSITIONS
+    // GRAVITY (always active unless balancing)
     // =========================
-
-    // End rolling phase
-    if (isRolling && elapsed > ROLL_TIME) {
-      isRolling = false;
+    if (!isBalancing) {
+      if (elapsed > MAX_TIME) {
+        vy += gravity * dt * 1.6;
+      } else {
+        vy += gravity * dt;
+      }
     }
 
-    // Enter balance state
+    // =========================
+    // MOTION
+    // =========================
+    if (!isBalancing) {
+      x += vx * dt;
+      y += vy * dt;
+    }
+
+    // =========================
+    // GROUND COLLISION
+    // =========================
+    if (y >= ground) {
+      y = ground;
+
+      // =========================
+      // FIRST IMPACT → START ROLL
+      // =========================
+      if (!hasLanded) {
+        hasLanded = true;
+
+        vy *= -bounce;
+
+        vx = 320; // 🔥 inject horizontal motion HERE
+        rollStart = now;
+        isRolling = true;
+      }
+
+      else if (isRolling) {
+        vy = 0;
+        vx *= 0.995;
+
+        if (now - rollStart > ROLL_TIME || Math.abs(vx) < 40) {
+          isRolling = false;
+        }
+      }
+
+      else if (!isBalancing) {
+        vy *= -bounce;
+        vx *= friction;
+      }
+    }
+
+    // =========================
+    // ENTER BALANCE
+    // =========================
     if (
+      hasLanded &&
       !isRolling &&
       !isBalancing &&
       Math.abs(vx) < 30 &&
@@ -391,14 +440,12 @@ function runLoaderPhysics(img) {
     if (isBalancing) {
       const t = now - balanceStart;
 
-      // subtle rocking
       const tilt = Math.sin(t * 0.02) * 8;
       rotation += tilt * 0.15;
 
       y = ground;
 
       if (t > BALANCE_DURATION) {
-        // tip over → fall
         isBalancing = false;
         vy = 400;
         vx = 30;
@@ -406,49 +453,13 @@ function runLoaderPhysics(img) {
     }
 
     // =========================
-    // PHYSICS (if not balancing)
-    // =========================
-    if (!isBalancing) {
-      // gravity control
-      if (!isRolling) {
-        // stronger gravity near forced fall
-        if (elapsed > MAX_TIME) {
-          vy += gravity * dt * 1.6;
-        } else {
-          vy += gravity * dt;
-        }
-      }
-
-      // motion
-      x += vx * dt;
-      y += vy * dt;
-    }
-
-    // =========================
-    // GROUND COLLISION
-    // =========================
-    if (y >= ground) {
-      y = ground;
-
-      if (isRolling) {
-        // smooth roll phase (no bounce)
-        vy = 0;
-        vx *= 0.995;
-      } else if (!isBalancing) {
-        // real bounce
-        vy *= -bounce;
-        vx *= friction;
-      }
-    }
-
-    // =========================
-    // ROTATION (velocity-based)
+    // ROTATION
     // =========================
     const speed = Math.sqrt(vx * vx + vy * vy);
     rotation += speed * dt * 0.25;
 
     // =========================
-    // APPLY TRANSFORM
+    // APPLY
     // =========================
     img.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
     img.style.opacity = 1;
