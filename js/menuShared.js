@@ -327,143 +327,129 @@ function detectMenuName() {
 /* =========================
    LOADER ANIMATION PHYSICS
 ========================= */
+function runLoaderPhysics(img, onDone) {
+  let x = window.innerWidth * 0.05;
+  let y = -450;
 
-function runLoaderPhysics(img) {
-  return new Promise((resolve) => {
-    let x = window.innerWidth * 0.05;
-    let y = -400;
+  let vx = 0;
+  let vy = 0;
+  let rot = 0;
 
-    let vx = 0;
-    let vy = 0;
+  const gravity = 3000;
+  const bounce = 0.55;
+  const friction = 0.985;
 
-    let rotation = 0;
+  const ground = window.innerHeight * 0.6;
 
-    const gravity = 2800;
-    const bounce = 0.55;
-    const friction = 0.985;
+  let last = performance.now();
+  let start = last;
 
-    const ground = window.innerHeight * 0.6;
+  let landed = false;
+  let rolling = false;
+  let wobbling = false;
 
-    let lastTime = performance.now();
-    let startTime = performance.now();
+  let rollStart = 0;
+  let wobbleStart = 0;
 
-    // STATES
-    let hasLanded = false;
-    let isRolling = false;
-    let isWobbling = false;
-    let finished = false;
+  const ROLL_TIME = 1600;
+  const WOBBLE_TIME = 700;
 
-    const ROLL_TIME = 1800;
-    const WOBBLE_TIME = 600;
-    const MAX_TIME = 4000;
+  function frame(now) {
+    const dt = (now - last) / 1000;
+    last = now;
+    const t = now - start;
 
-    let rollStart = 0;
-    let wobbleStart = 0;
+    // =====================
+    // GRAVITY
+    // =====================
+    vy += gravity * dt;
 
-    function frame(now) {
-      const dt = (now - lastTime) / 1000;
-      lastTime = now;
+    // =====================
+    // POSITION
+    // =====================
+    x += vx * dt;
+    y += vy * dt;
 
-      const elapsed = now - startTime;
+    // =====================
+    // GROUND COLLISION
+    // =====================
+    if (y >= ground) {
+      y = ground;
 
-      // =========================
-      // GRAVITY (always unless finished)
-      // =========================
-      if (!finished) {
-        vy += gravity * dt;
+      if (!landed) {
+        landed = true;
+
+        vy *= -bounce;
+        vx = 700;
+
+        rolling = true;
+        rollStart = now;
       }
 
-      // =========================
-      // POSITION UPDATE
-      // =========================
-      x += vx * dt;
-      y += vy * dt;
+      else if (rolling) {
+        vy = 0;
+        vx *= friction;
 
-      // =========================
-      // GROUND COLLISION
-      // =========================
-      if (y >= ground) {
-        y = ground;
-
-        // FIRST IMPACT (REAL FALL MOMENT)
-        if (!hasLanded) {
-          hasLanded = true;
-
-          vy *= -bounce;
-          vx = 650;
-
-          isRolling = true;
-          rollStart = now;
-        }
-
-        // ROLL PHASE
-        else if (isRolling) {
-          vy = 0;
-          vx *= friction;
-
-          if (now - rollStart > ROLL_TIME || Math.abs(vx) < 30) {
-            isRolling = false;
-            isWobbling = true;
-            wobbleStart = now;
-          }
-        }
-
-        // WOBBLE PHASE (FINAL SETTLE)
-        else if (isWobbling) {
-          vx *= 0.96;
-          vy = 0;
+        if (now - rollStart > ROLL_TIME || Math.abs(vx) < 35) {
+          rolling = false;
+          wobbling = true;
+          wobbleStart = now;
         }
       }
 
-      // =========================
-      // WOBBLE LOGIC (EDGE TEETER, BUT CLEAN)
-      // =========================
-      let wobble = 0;
-
-      if (isWobbling) {
-        const t = now - wobbleStart;
-
-        // damped oscillation (no fake x offset pivot)
-        const decay = Math.exp(-t / 400);
-        wobble = Math.sin(t * 0.02) * 10 * decay;
-
-        rotation += wobble;
-
-        if (t > WOBBLE_TIME) {
-          isWobbling = false;
-          finished = true;
-
-          // final settle impulse (small “drop out”)
-          vy = 900;
-          vx = 120;
-        }
-      }
-
-      // =========================
-      // ROTATION FROM MOTION (REALISTIC ROLL)
-      // =========================
-      const speed = Math.sqrt(vx * vx + vy * vy);
-      rotation += speed * dt * 0.22;
-
-      // =========================
-      // APPLY
-      // =========================
-      img.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
-      img.style.opacity = 1;
-
-      // =========================
-      // EXIT CONDITION
-      // =========================
-      if (!finished || y < window.innerHeight + 300) {
-        requestAnimationFrame(frame);
-      } else {
-        img.style.opacity = 0;
-        resolve();
+      else if (wobbling) {
+        vx *= 0.97;
+        vy = 0;
       }
     }
 
-    requestAnimationFrame(frame);
-  });
+    // =====================
+    // WOBBLE (damped angular oscillation ONLY)
+    // =====================
+    if (wobbling) {
+      const wt = now - wobbleStart;
+
+      const decay = Math.exp(-wt / 450);
+      const wobble = Math.sin(wt * 0.02) * 12 * decay;
+
+      rot += wobble;
+
+      if (wt > WOBBLE_TIME) {
+        wobbling = false;
+
+        // final settle impulse
+        vy = 1100;
+        vx = 140;
+      }
+    }
+
+    // =====================
+    // ROLLING ROTATION
+    // =====================
+    const speed = Math.sqrt(vx * vx + vy * vy);
+    rot += speed * dt * 0.22;
+
+    // =====================
+    // APPLY
+    // =====================
+    img.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+    img.style.opacity = 1;
+
+    // =====================
+    // EXIT CONDITION (HARD GUARANTEE)
+    // =====================
+    const shouldEnd =
+      t > 6000 || y > window.innerHeight + 400;
+
+    if (!shouldEnd) {
+      requestAnimationFrame(frame);
+    } else {
+      img.style.opacity = 0;
+      onDone?.(); // 🔥 ALWAYS fires
+    }
+  }
+
+  requestAnimationFrame(frame);
 }
 
 /* =========================
@@ -472,10 +458,10 @@ function runLoaderPhysics(img) {
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("menu");
   const load = document.getElementById("loader");
-  if (!container) return;
-
   const page = document.querySelector(".menu-page");
-  
+
+  if (!container || !load) return;
+
   const menuName = detectMenuName();
 
   if (!menuName) {
@@ -483,52 +469,101 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Inject loader
+  // =========================
+  // INIT LOADER
+  // =========================
   load.innerHTML = renderSkeletonLoader();
   const loaderImg = load.querySelector("img");
 
+  // =========================
+  // STATE FLAGS (CRITICAL)
+  // =========================
+  let physicsDone = false;
+  let menuReady = false;
+  let minTimeDone = false;
+
+  // =========================
+  // START PHYSICS (NON-BLOCKING)
+  // =========================
+  runLoaderPhysics(loaderImg, () => {
+    physicsDone = true;
+  });
+
+  // =========================
+  // FETCH + MIN TIMER (PARALLEL)
+  // =========================
+  const MIN_LOAD_TIME = 3500;
+
+  const menuPromise = fetchMenu(menuName);
+  const minTimerPromise = new Promise(res => setTimeout(res, MIN_LOAD_TIME));
+
+  let menu;
+
   try {
-    const MIN_LOAD_TIME = 3500;
-
-    // 🔥 Run BOTH in parallel (correctly)
-    const [menu] = await Promise.all([
-      fetchMenu(menuName),
-      new Promise(res => setTimeout(res, MIN_LOAD_TIME)),
-      runLoaderPhysics(loaderImg) // ✅ ONLY call here
-    ]);
-
-    // Fade out loader AFTER physics completes
-    load.style.opacity = "0";
-    load.style.transition = "opacity 0.4s ease";
-
-    setTimeout(() => {
-      container.innerHTML = "";
-      container.style.opacity = "1";
-
-      renderMenu(menu, container);
-      buildMenuAnchors(menu);
-      initMenuModal(page);
-      page.classList.remove("is-loading");
-    }, 400);
-
-    // Scroll to hash if present
-    const hash = window.location.hash.slice(1);
-    if (hash) {
-      const target = document.getElementById(hash);
-      const nav = document.getElementById("menuAnchorNav");
-      if (target && nav) {
-        const offsetPosition =
-          target.getBoundingClientRect().top +
-          window.pageYOffset -
-          nav.offsetHeight -
-          8;
-
-        window.scrollTo({ top: offsetPosition });
-      }
-    }
-
+    [menu] = await Promise.all([menuPromise, minTimerPromise]);
+    menuReady = true;
+    minTimeDone = true;
   } catch (err) {
     console.error(err);
     container.innerHTML = "<p>Failed to load menu.</p>";
+    return;
   }
+
+  // =========================
+  // ENSURE PHYSICS FINISHES (NON-BLOCKING WAIT)
+  // =========================
+  if (!physicsDone) {
+    await new Promise((resolve) => {
+      const check = () => {
+        if (physicsDone) return resolve();
+        requestAnimationFrame(check);
+      };
+      check();
+    });
+  }
+
+  // =========================
+  // FADE OUT LOADER
+  // =========================
+  load.style.transition = "opacity 0.4s ease";
+  load.style.opacity = "0";
+
+  await new Promise(res => setTimeout(res, 400));
+
+  // =========================
+  // RENDER MENU
+  // =========================
+  container.innerHTML = "";
+  container.style.opacity = "1";
+
+  renderMenu(menu, container);
+  buildMenuAnchors(menu);
+  initMenuModal(page);
+
+  page.classList.remove("is-loading");
+
+  // =========================
+  // HASH SCROLL (SAFE AFTER LAYOUT)
+  // =========================
+  requestAnimationFrame(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+
+    const target = document.getElementById(hash);
+    const nav = document.getElementById("menuAnchorNav");
+
+    if (!target) return;
+
+    const offset =
+      (nav?.offsetHeight || 0) +
+      (document.querySelector("#header")?.offsetHeight || 0) +
+      10;
+
+    const y =
+      target.getBoundingClientRect().top +
+      window.pageYOffset -
+      offset;
+
+    window.scrollTo({ top: y });
+  });
 });
