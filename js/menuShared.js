@@ -330,34 +330,35 @@ function detectMenuName() {
 
 function runLoaderPhysics(img) {
   return new Promise((resolve) => {
-
     let x = window.innerWidth * 0.05;
-    let y = -350;
+    let y = -400;
 
     let vx = 0;
     let vy = 0;
+
     let rotation = 0;
 
-    const gravity = 2600;
-    const bounce = 0.6;
-    const friction = 0.992;
+    const gravity = 2800;
+    const bounce = 0.55;
+    const friction = 0.985;
 
     const ground = window.innerHeight * 0.6;
 
     let lastTime = performance.now();
     let startTime = performance.now();
 
+    // STATES
     let hasLanded = false;
     let isRolling = false;
-    let isBalancing = false;
-    let hasBalanced = false; // ✅ prevents infinite wobble
+    let isWobbling = false;
+    let finished = false;
 
-    const ROLL_TIME = 2200;
-    const MAX_TIME = 3200;
-    const BALANCE_DURATION = 500;
+    const ROLL_TIME = 1800;
+    const WOBBLE_TIME = 600;
+    const MAX_TIME = 4000;
 
-    let balanceStart = 0;
     let rollStart = 0;
+    let wobbleStart = 0;
 
     function frame(now) {
       const dt = (now - lastTime) / 1000;
@@ -366,19 +367,17 @@ function runLoaderPhysics(img) {
       const elapsed = now - startTime;
 
       // =========================
-      // GRAVITY
+      // GRAVITY (always unless finished)
       // =========================
-      if (!isBalancing) {
+      if (!finished) {
         vy += gravity * dt;
       }
 
       // =========================
-      // MOTION
+      // POSITION UPDATE
       // =========================
-      if (!isBalancing) {
-        x += vx * dt;
-        y += vy * dt;
-      }
+      x += vx * dt;
+      y += vy * dt;
 
       // =========================
       // GROUND COLLISION
@@ -386,97 +385,80 @@ function runLoaderPhysics(img) {
       if (y >= ground) {
         y = ground;
 
+        // FIRST IMPACT (REAL FALL MOMENT)
         if (!hasLanded) {
           hasLanded = true;
 
           vy *= -bounce;
+          vx = 650;
 
-          vx = 600; // faster roll
-          rollStart = now;
           isRolling = true;
+          rollStart = now;
         }
 
+        // ROLL PHASE
         else if (isRolling) {
           vy = 0;
           vx *= friction;
 
-          if (now - rollStart > ROLL_TIME || Math.abs(vx) < 40) {
+          if (now - rollStart > ROLL_TIME || Math.abs(vx) < 30) {
             isRolling = false;
+            isWobbling = true;
+            wobbleStart = now;
           }
         }
 
-        else if (!isBalancing) {
-          vy *= -0.2;
-          vx *= friction;
+        // WOBBLE PHASE (FINAL SETTLE)
+        else if (isWobbling) {
+          vx *= 0.96;
+          vy = 0;
         }
       }
 
       // =========================
-      // ENTER BALANCE (ONCE ONLY)
+      // WOBBLE LOGIC (EDGE TEETER, BUT CLEAN)
       // =========================
-      if (
-        hasLanded &&
-        !isRolling &&
-        !isBalancing &&
-        !hasBalanced &&
-        elapsed > MAX_TIME - 400
-      ) {
-        isBalancing = true;
-        hasBalanced = true; // 🔥 critical fix
-        balanceStart = now;
+      let wobble = 0;
 
-        vx = 0;
-        vy = 0;
-      }
+      if (isWobbling) {
+        const t = now - wobbleStart;
 
-      // =========================
-      // BALANCE (EDGE TEETER FEEL)
-      // =========================
-      let pivotOffsetX = 0;
+        // damped oscillation (no fake x offset pivot)
+        const decay = Math.exp(-t / 400);
+        wobble = Math.sin(t * 0.02) * 10 * decay;
 
-      if (isBalancing) {
-        const t = now - balanceStart;
+        rotation += wobble;
 
-        const tilt = Math.sin(t * 0.02) * 12;
+        if (t > WOBBLE_TIME) {
+          isWobbling = false;
+          finished = true;
 
-        // fake pivot shift (feels like edge)
-        pivotOffsetX = tilt * 0.6;
-
-        rotation += tilt * 0.25;
-
-        y = ground;
-
-        if (t > BALANCE_DURATION) {
-          isBalancing = false;
-
-          // 🔥 FORCE REAL FALL
-          vy = 1200;
-          vx = 180;
+          // final settle impulse (small “drop out”)
+          vy = 900;
+          vx = 120;
         }
       }
 
       // =========================
-      // ROTATION (velocity based)
+      // ROTATION FROM MOTION (REALISTIC ROLL)
       // =========================
       const speed = Math.sqrt(vx * vx + vy * vy);
-      rotation += speed * dt * 0.3;
+      rotation += speed * dt * 0.22;
 
       // =========================
-      // APPLY TRANSFORM
+      // APPLY
       // =========================
-      img.style.transform =
-        `translate(${x + pivotOffsetX}px, ${y}px) rotate(${rotation}deg)`;
-
+      img.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
       img.style.opacity = 1;
 
       // =========================
       // EXIT CONDITION
       // =========================
-      if (y < window.innerHeight + 300) {
+      if (!finished || y < window.innerHeight + 300) {
         requestAnimationFrame(frame);
       } else {
         img.style.opacity = 0;
-        resolve(); // ✅ guarantees menu loads
+        resolve();
       }
     }
 
