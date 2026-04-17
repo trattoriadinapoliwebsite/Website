@@ -166,11 +166,11 @@
 
 .menu-loader {
   position: fixed;
-  margin: auto 0;
+  top: 0;
   left: 0;
-  top:60vh;
   width: 100vw;
-  height: 600px;
+  height: 100vh;
+  pointer-events: none;
   z-index: 20;
   overflow: visible;
 }
