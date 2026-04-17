@@ -329,16 +329,16 @@ function detectMenuName() {
 ========================= */
 function runLoaderPhysics(img) {
   let x = window.innerWidth * 0.05;
-  let y = -250; // start clearly above screen
+  let y = -300; 
 
-  let vx = 0;   // ❗ no horizontal movement until after first bounce
+  let vx = 0;
   let vy = 0;
 
   let rotation = 0;
 
-  const gravity = 2200;
-  const bounce = 0.55;
-  const friction = 0.985;
+  const gravity = 2400;
+  const bounce = 0.6;
+  const friction = 0.992;
 
   const ground = window.innerHeight * 0.6;
 
@@ -352,9 +352,9 @@ function runLoaderPhysics(img) {
   let isRolling = false;
   let isBalancing = false;
 
-  const ROLL_TIME = 1800;
+  const ROLL_TIME = 2200;     
   const MAX_TIME = 3200;
-  const BALANCE_DURATION = 450;
+  const BALANCE_DURATION = 500;
 
   let balanceStart = 0;
   let rollStart = 0;
@@ -366,14 +366,10 @@ function runLoaderPhysics(img) {
     const elapsed = now - startTime;
 
     // =========================
-    // GRAVITY (always active unless balancing)
+    // GRAVITY
     // =========================
     if (!isBalancing) {
-      if (elapsed > MAX_TIME) {
-        vy += gravity * dt * 1.6;
-      } else {
-        vy += gravity * dt;
-      }
+      vy += gravity * dt;
     }
 
     // =========================
@@ -390,73 +386,79 @@ function runLoaderPhysics(img) {
     if (y >= ground) {
       y = ground;
 
-      // =========================
-      // FIRST IMPACT → START ROLL
-      // =========================
+      // FIRST IMPACT → BIG BOUNCE + STRONG ROLL
       if (!hasLanded) {
         hasLanded = true;
 
         vy *= -bounce;
 
-        vx = 320; // 🔥 inject horizontal motion HERE
+        vx = 520; 
         rollStart = now;
         isRolling = true;
       }
 
+      // ROLL PHASE
       else if (isRolling) {
         vy = 0;
-        vx *= 0.995;
 
-        if (now - rollStart > ROLL_TIME || Math.abs(vx) < 40) {
+        // smoother deceleration
+        vx *= friction;
+
+        // exit roll later (so wobble happens further right)
+        if (now - rollStart > ROLL_TIME || Math.abs(vx) < 25) {
           isRolling = false;
         }
       }
 
+      // MICRO BOUNCES (subtle realism)
       else if (!isBalancing) {
-        vy *= -bounce;
+        vy *= -0.25;
         vx *= friction;
       }
     }
 
     // =========================
-    // ENTER BALANCE
+    // ENTER BALANCE (DELAYED)
     // =========================
     if (
       hasLanded &&
       !isRolling &&
       !isBalancing &&
-      Math.abs(vx) < 30 &&
-      elapsed > MAX_TIME - 700
+      elapsed > MAX_TIME - 400 
     ) {
       isBalancing = true;
       balanceStart = now;
+
       vx = 0;
       vy = 0;
     }
 
     // =========================
-    // BALANCE (TEETER)
+    // BALANCE (EDGE TEETER)
     // =========================
     if (isBalancing) {
       const t = now - balanceStart;
 
-      const tilt = Math.sin(t * 0.02) * 8;
-      rotation += tilt * 0.15;
+      // tighter, more intentional wobble
+      const tilt = Math.sin(t * 0.018) * 10;
+      rotation += tilt * 0.2;
 
       y = ground;
 
+      // FORCE FALL (guarantees visibility)
       if (t > BALANCE_DURATION) {
         isBalancing = false;
-        vy = 400;
-        vx = 30;
+
+        vy = 900; 
+        vx = 60;  
       }
     }
 
     // =========================
-    // ROTATION
+    // ROTATION (velocity-based)
     // =========================
     const speed = Math.sqrt(vx * vx + vy * vy);
-    rotation += speed * dt * 0.25;
+    rotation += speed * dt * 0.28;
 
     // =========================
     // APPLY
@@ -465,9 +467,9 @@ function runLoaderPhysics(img) {
     img.style.opacity = 1;
 
     // =========================
-    // EXIT
+    // EXIT (allow full fall visibility)
     // =========================
-    if (y < window.innerHeight + 200) {
+    if (y < window.innerHeight + 300) {
       requestAnimationFrame(frame);
     } else {
       img.style.opacity = 0;
