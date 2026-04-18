@@ -328,124 +328,112 @@ function detectMenuName() {
    LOADER ANIMATION PHYSICS
 ========================= */
 function runLoaderPhysics(img, onDone) {
-  let x = window.innerWidth * 0.05;
-  let y = -450;
+  let x = window.innerWidth * 0.08;
+  let y = -500;
 
   let vx = 0;
   let vy = 0;
+
   let rot = 0;
 
-  const gravity = 3000;
-  const bounce = 0.55;
-  const friction = 0.985;
-
+  const gravity = 2600;
   const ground = window.innerHeight * 0.6;
 
   let last = performance.now();
   let start = last;
 
-  let landed = false;
-  let rolling = false;
-  let wobbling = false;
-
+  // STATES
+  let phase = "drop";
   let rollStart = 0;
-  let wobbleStart = 0;
+  let pauseStart = 0;
 
-  const ROLL_TIME = 1600;
-  const WOBBLE_TIME = 700;
+  const ROLL_DURATION = 1400;
+  const PAUSE_DURATION = 500;
 
   function frame(now) {
     const dt = (now - last) / 1000;
     last = now;
-    const t = now - start;
 
-    // =====================
-    // GRAVITY
-    // =====================
-    vy += gravity * dt;
+    // =========================
+    // DROP + BOUNCE PHYSICS
+    // =========================
+    if (phase === "drop" || phase === "bounce") {
+      vy += gravity * dt;
+      y += vy * dt;
 
-    // =====================
-    // POSITION
-    // =====================
-    x += vx * dt;
-    y += vy * dt;
+      if (y >= ground) {
+        y = ground;
 
-    // =====================
-    // GROUND COLLISION
-    // =====================
-    if (y >= ground) {
-      y = ground;
-
-      if (!landed) {
-        landed = true;
-
-        vy *= -bounce;
-        vx = 700;
-
-        rolling = true;
-        rollStart = now;
-      }
-
-      else if (rolling) {
-        vy = 0;
-        vx *= friction;
-
-        if (now - rollStart > ROLL_TIME || Math.abs(vx) < 35) {
-          rolling = false;
-          wobbling = true;
-          wobbleStart = now;
+        if (phase === "drop") {
+          // FIRST IMPACT → vertical bounce
+          vy = -900;        // 🔥 strong vertical bounce
+          vx = 220;         // 🔥 small horizontal push
+          phase = "bounce";
+        } else {
+          // SECOND CONTACT → start roll
+          vy = 0;
+          phase = "roll";
+          rollStart = now;
         }
       }
+    }
 
-      else if (wobbling) {
-        vx *= 0.97;
-        vy = 0;
+    // =========================
+    // ROLL (controlled, not physics chaos)
+    // =========================
+    else if (phase === "roll") {
+      x += vx * dt;
+
+      // friction
+      vx *= 0.985;
+
+      // rotation tied ONLY to horizontal velocity
+      rot += vx * dt * 0.25;
+
+      if (now - rollStart > ROLL_DURATION || Math.abs(vx) < 20) {
+        vx = 0;
+        phase = "pause";
+        pauseStart = now;
       }
     }
 
-    // =====================
-    // WOBBLE (damped angular oscillation ONLY)
-    // =====================
-    if (wobbling) {
-      const wt = now - wobbleStart;
-
-      const decay = Math.exp(-wt / 450);
-      const wobble = Math.sin(wt * 0.02) * 12 * decay;
-
-      rot += wobble;
-
-      if (wt > WOBBLE_TIME) {
-        wobbling = false;
-
-        // final settle impulse
-        vy = 1100;
-        vx = 140;
+    // =========================
+    // PAUSE (edge hesitation)
+    // =========================
+    else if (phase === "pause") {
+      if (now - pauseStart > PAUSE_DURATION) {
+        phase = "fall";
+        vy = 1200;  // 🔥 immediate drop
+        vx = 80;    // slight forward fall
       }
     }
 
-    // =====================
-    // ROLLING ROTATION
-    // =====================
-    const speed = Math.sqrt(vx * vx + vy * vy);
-    rot += speed * dt * 0.22;
+    // =========================
+    // FINAL FALL
+    // =========================
+    else if (phase === "fall") {
+      vy += gravity * dt;
+      y += vy * dt;
+      x += vx * dt;
 
-    // =====================
+      // light spin during fall
+      rot += vx * dt * 0.2;
+    }
+
+    // =========================
     // APPLY
-    // =====================
+    // =========================
     img.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
     img.style.opacity = 1;
 
-    // =====================
-    // EXIT CONDITION (HARD GUARANTEE)
-    // =====================
-    const shouldEnd =
-      t > 6000 || y > window.innerHeight + 400;
-
-    if (!shouldEnd) {
+    // =========================
+    // EXIT (guaranteed)
+    // =========================
+    if (y < window.innerHeight + 300) {
       requestAnimationFrame(frame);
     } else {
       img.style.opacity = 0;
-      onDone?.(); // 🔥 ALWAYS fires
+      onDone?.();
     }
   }
 
