@@ -367,12 +367,12 @@ function runLoaderPhysics(img, onDone) {
         if (phase === "drop") {
           // FIRST IMPACT → vertical bounce
           vy = -900;        // 🔥 strong vertical bounce
-          vx = 220;         // 🔥 small horizontal push
+          vx = 400;         // 🔥 small horizontal push
           phase = "bounce";
         } else {
           // SECOND CONTACT → start roll
           vy = 0;
-          vx = 400;
+          vx = 1000;
           phase = "roll";
           rollStart = now;
         }
