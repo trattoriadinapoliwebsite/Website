@@ -347,8 +347,8 @@ function runLoaderPhysics(img, onDone) {
   let rollStart = 0;
   let pauseStart = 0;
 
-  const ROLL_DURATION = 1400;
-  const PAUSE_DURATION = 500;
+  const ROLL_DURATION = 1600;
+  const PAUSE_DURATION = 300;
 
   function frame(now) {
     const dt = (now - last) / 1000;
@@ -360,15 +360,15 @@ function runLoaderPhysics(img, onDone) {
     if (phase === "drop" || phase === "bounce") {
       vy += gravity * dt;
       y += vy * dt;
+      x += vx * dt;
 
       if (y >= ground) {
         y = ground;
-        x += vx * dt;
 
         if (phase === "drop") {
           // FIRST IMPACT → vertical bounce
-          vy = -900;        // 🔥 strong vertical bounce
-          vx = 500;         // 🔥 small horizontal push
+          vy = -900;        // strong vertical bounce
+          vx = 500;         // small horizontal push
           phase = "bounce";
         } else {
           // SECOND CONTACT → start roll
@@ -406,7 +406,7 @@ function runLoaderPhysics(img, onDone) {
       if (now - pauseStart > PAUSE_DURATION) {
         phase = "fall";
         vy = 1200;  // immediate drop
-        vx = 400;    // slight forward fall
+        vx = 600;    // slight forward fall
       }
     }
 
