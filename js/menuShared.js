@@ -372,6 +372,7 @@ function runLoaderPhysics(img, onDone) {
         } else {
           // SECOND CONTACT → start roll
           vy = 0;
+          vx = 400;
           phase = "roll";
           rollStart = now;
         }
