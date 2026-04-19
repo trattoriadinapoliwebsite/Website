@@ -363,16 +363,17 @@ function runLoaderPhysics(img, onDone) {
 
       if (y >= ground) {
         y = ground;
+        x += vx * dt;
 
         if (phase === "drop") {
           // FIRST IMPACT → vertical bounce
           vy = -900;        // 🔥 strong vertical bounce
-          vx = 750;         // 🔥 small horizontal push
+          vx = 500;         // 🔥 small horizontal push
           phase = "bounce";
         } else {
           // SECOND CONTACT → start roll
           vy = 0;
-          vx = 1500;
+          vx = 2000;
           phase = "roll";
           rollStart = now;
         }
@@ -389,7 +390,7 @@ function runLoaderPhysics(img, onDone) {
       vx *= 0.985;
 
       // rotation tied ONLY to horizontal velocity
-      rot += vx * dt * 0.25;
+      rot += vx * dt * 0.5;
 
       if (now - rollStart > ROLL_DURATION || Math.abs(vx) < 20) {
         vx = 0;
@@ -404,8 +405,8 @@ function runLoaderPhysics(img, onDone) {
     else if (phase === "pause") {
       if (now - pauseStart > PAUSE_DURATION) {
         phase = "fall";
-        vy = 1200;  // 🔥 immediate drop
-        vx = 80;    // slight forward fall
+        vy = 1200;  // immediate drop
+        vx = 400;    // slight forward fall
       }
     }
 
@@ -418,7 +419,7 @@ function runLoaderPhysics(img, onDone) {
       x += vx * dt;
 
       // light spin during fall
-      rot += vx * dt * 0.2;
+      rot += vx * dt * 0.4;
     }
 
     // =========================
