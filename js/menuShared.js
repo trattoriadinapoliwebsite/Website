@@ -337,7 +337,7 @@ function runLoaderPhysics(img, onDone) {
   let rot = 0;
 
   const gravity = 2600;
-  const ground = window.innerHeight * 0.6;
+  const ground = window.innerHeight * 0.45;
 
   let last = performance.now();
   let start = last;
@@ -361,6 +361,7 @@ function runLoaderPhysics(img, onDone) {
       vy += gravity * dt;
       y += vy * dt;
       x += vx * dt;
+      rot += vx * dt * 2;
 
       if (y >= ground) {
         y = ground;
@@ -368,12 +369,12 @@ function runLoaderPhysics(img, onDone) {
         if (phase === "drop") {
           // FIRST IMPACT → vertical bounce
           vy = -900;        // strong vertical bounce
-          vx = 500;         // small horizontal push
+          vx = 400;         // small horizontal push
           phase = "bounce";
         } else {
           // SECOND CONTACT → start roll
           vy = 0;
-          vx = 2000;
+          vx = 1800;
           phase = "roll";
           rollStart = now;
         }
@@ -390,7 +391,7 @@ function runLoaderPhysics(img, onDone) {
       vx *= 0.985;
 
       // rotation tied ONLY to horizontal velocity
-      rot += vx * dt * 0.5;
+      rot += vx * dt * 0.6;
 
       if (now - rollStart > ROLL_DURATION || Math.abs(vx) < 20) {
         vx = 0;
