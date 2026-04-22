@@ -1,6 +1,6 @@
 // js/menuShared.js
 const MENU_ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbz9cPiTEWGhnLM-euQLMSek-TtVDsQzVzEQpH9-ni4vebaqPn0Z0SGEQI6UL0cJTH3F/exec";
+  "https://script.google.com/macros/s/AKfycbxokzUsP8dBCm9giS6khcmUQftqIpug5Rwb9r_F3M3It7wRgwLIFoYwIalIlIOdcGzgdQ/exec";
 
 /* =========================
    FETCH
@@ -70,11 +70,6 @@ function renderItem(item, isCatering = false) {
 
     ${item.description ? `<div class="menu-item-description">${item.description}</div>` : ""}
 
-    ${isCatering && item.servings ? `
-      <div class="menu-item-servings">
-        ${formatCateringServings(item.servings)}
-      </div>
-    ` : ""}
   `;
   return el;
 }
@@ -289,21 +284,14 @@ function initMenuModal(page) {
 /* =========================
    PRICE FORMATTERS
 ========================= */
-function formatPrice({ a, b, fixed }) {
-  if (fixed) return fixed;
+function formatPrice({ a, b }) {
   if (a && b) return `${a} / ${b}`;
   return a || "";
 }
 
-function formatCateringPrice({ a, b, fixed }) {
-  if (fixed) return fixed;
+function formatCateringPrice({ a, b }) {
   if (a && b) return `${a} (Half) / ${b} (Full)`;
   return a || "";
-}
-
-function formatCateringServings({ a, b }) {
-  if (a && b) return `Half serves ${a} · Full serves ${b}`;
-  return "";
 }
 
 /* =========================
