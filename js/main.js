@@ -119,7 +119,7 @@ function initContactForm() {
     formData.append("email", formDataRaw.get("email"));
     formData.append("message", formDataRaw.get("message"));
 
-    const res = await fetch("https://script.google.com/macros/s/AKfycbx7WxxYkfJ3z1zHBII5UYfCVX1bHL-iNaoRZ8xBp2BPVRU56YtYhmxGHYLBLlb9jAKiBQ/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbzq5FRdHlvWWVrhy6G3DQ05rwY3sgUVu1q0djrHE_OLcSb7LXMxZs31uTxQyvVYpbJW2w/exec", {
       method: "POST",
       body: formData
     });
