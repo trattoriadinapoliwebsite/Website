@@ -103,7 +103,7 @@ function initChat() {
 
     if (ask(msg, [["hours"], ["open", "time"], ["closing"], ["today", "hours"], ["close", "time"]]))
       return [
-        "We're open Tue–Thu 11 AM – 9 PM, Fri/Sat 11 AM – 10 PM.",
+        "We're open Tue–Sat 11 AM – 9 PM.",
         "Closed Sunday & Monday."
       ];
 
@@ -262,20 +262,19 @@ function waitForReamaze(callback) {
 // =========================
     window._support = window._support || { ui: {}, user: {} };
   
-    _support.account = "18c313a9-b214-4bfa-a32f-c6ea361943d6";
+    _support.account = "d8f15df5-c2b2-4e01-89d5-0c7e8dba3007";
   
     _support.ui.contactMode = "mixed";
     _support.ui.enableKb = "true";
-    _support.ui.mailbox = "65081234";
+    _support.ui.mailbox = "7918313";
   
     _support.ui.styles = {
       widgetColor: "#ce2b2e",
-      gradient: true
     };
   
     _support.ui.widget = {
       allowBotProcessing: "false",
-      slug: "testersite",
+      slug: "trattoriaex",
       position: "bottom-right"
     };
   
@@ -284,12 +283,6 @@ function waitForReamaze(callback) {
       faq: { enabled: true }
     };
   
-    // =========================
-    // PASS CONTEXT TO AGENT
-    // =========================
-    _support.user = {
-      name: "Website Visitor"
-    };
   
   
     // =========================
