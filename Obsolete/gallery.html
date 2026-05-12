@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Gallery | Trattoria Di Napoli</title>
+  <meta name="description" content="Explore our dishes and atmosphere." />
+
+  <base href="/Website/">
+
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/gallery.css" />
+
+  <link rel="icon" href="assets/favicon.ico" />
+
+  <script type="module" src="js/components/header.js"></script>
+  <script type="module" src="js/components/footer.js"></script>
+</head>
+
+<body>
+
+<div id="header"></div>
+
+<main class="gallery-page">
+
+  <header class="gallery-header">
+    <h1>Gallery</h1>
+    <p>Take a look inside Trattoria Di Napoli</p>
+  </header>
+  
+  <section id="gallery">
+
+    <!-- HERO -->
+    <div id="gallery-hero">
+
+      <button class="nav-arrow left" id="prevBtn">‹</button>
+
+      <img id="hero-image" />
+      <div id="hero-caption"></div>
+
+      <button class="nav-arrow right" id="nextBtn">›</button>
+
+    </div>
+
+    <!-- THUMB WHEEL -->
+    <div id="thumb-wheel"></div>
+
+  </section>
+
+</main>
+
+<div id="footer-root"></div>
+
+<script type="module" src="js/main.js"></script>
+<script type="module" src="js/gallery.js"></script>
+
+</body>
+</html>
