@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Trattoria Di Napoli | Italian Restaurant in Perry, GA</title>
+
+  <meta name="description" content="Authentic Italian dining in Perry, Georgia. Enjoy handcrafted pasta, reservations, and online ordering." />
+  <!-- Favicon -->
+  <link rel="icon" href="./assets/favicon.ico" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/home.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+</head>
+
+<body data-page="contact">
+
+  <div id="header"></div>
+
+  <main id="contact-page">
+
+    <!-- CONTACT -->
+    <section class="contact">
+    
+      <h1>Contact Us!</h1>
+      
+      <div class="contact-card" id="contact-card">
+    
+        <div class="contact-inner">
+    
+          <!-- FRONT -->
+          <div class="contact-front">
+            <h2>Better yet, see us in person!</h2>
+    
+            <p>We love our customers, so feel free to visit during normal business hours.</p>
+    
+            <p><strong>Trattoria Di Napoli</strong></p>
+            <p><a href="https://www.google.com/maps/dir//Trattoria+di+Napoli,+904+Commerce+St,+Perry,+GA+31069/@32.2366293,-83.7287936,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x88f3db003f22ea95:0xc9a2211b2d830bb!2m2!1d-83.7334768!2d32.459004?entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D" target="_blank">904 Commerce Street, Perry, GA</a></p>
+            <p><a href="tel:14782240025">478-224-0025</a></p>
+            <p>Tuesday - Saturday : 11:00AM - 9:00PM</p>
+            <p class="social-label">Check out our socials</p>
+            
+            <div class="socials">
+              <a href="https://www.facebook.com/trattoriadinapoliperryga/" aria-label="Facebook">
+                <svg viewBox="0 0 24 24">
+                  <path d="M13 22v-8h3l1-4h-4V7c0-1 .5-2 2-2h2V1h-3c-3 0-5 2-5 5v3H6v4h3v8z"/>
+                </svg>
+              </a>
+            
+              <a href="https://www.instagram.com/TrattoriaDiNapoli_Perry" aria-label="Instagram">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 2C4 2 2 4 2 7v10c0 3 2 5 5 5h10c3 0 5-2 5-5V7c0-3-2-5-5-5H7zm5 5a5 5 0 110 10 5 5 0 010-10zm6-1a1 1 0 110 2 1 1 0 010-2z"/>
+                </svg>
+              </a>
+            </div>
+    
+            <button id="contact-toggle" class="btn secondary">
+              Contact Us
+            </button>
+          </div>
+    
+          <!-- BACK -->
+          <div class="contact-back">
+            <form class="contact-form" id="contact-form">
+    
+              <!-- SUCCESS STATE -->
+              <div class="form-success-state hidden" id="form-success">
+                <h2>Grazie! 🇮🇹</h2>
+                <p>Your message has been sent. We'll get back to you shortly.</p>
+                <button type="button" id="form-success-close" class="btn">Done</button>
+              </div>
+            
+              <!-- FORM FIELDS -->
+              <div class="form-fields">
+            
+                <!-- HONEYPOT (SPAM TRAP) -->
+                <input type="text" name="company" class="honeypot" autocomplete="off" tabindex="-1">
+            
+                <div class="input-group">
+                  <input type="text" name="name" required />
+                  <label>Name</label>
+                </div>
+            
+                <div class="input-group">
+                  <input type="email" name="email" required />
+                  <label>Email</label>
+                </div>
+            
+                <div class="input-group">
+                  <textarea name="message" required></textarea>
+                  <label>Message</label>
+                </div>
+            
+                <button type="submit" class="submit-btn">
+                  <span class="btn-text">Send</span>
+                  <span class="btn-spinner"></span>
+                </button>
+            
+                <button type="button" id="contact-close" class="btn secondary">
+                  Back
+                </button>
+            
+              </div>
+            
+            </form>
+          </div>
+    
+        </div>
+    
+      </div>
+    
+    </section>
+
+  </main>
+  
+  <div id="footer-root"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
