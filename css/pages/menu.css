@@ -215,13 +215,15 @@
 }
 
 .menu-modal img {
-  max-width: 50vw;
+  max-width: 55vw;
+  max-height: 70vh;
   border-radius: 8px;
+  border: 3px solid var(--border-gold);
 }
 
 .menu-modal p {
   color: var(--white);
-  margin-top: 10px;
+  margin: auto;
 }
 
 /* =========================
@@ -334,4 +336,10 @@
   .menu-category {
     padding: 1.5rem;
   }
+}
+.menu-modal img {
+  max-width: 90vw;
+}
+.menu-loader img {
+  width: 40vw;
 }
