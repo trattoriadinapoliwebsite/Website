@@ -116,6 +116,79 @@
 }
 
 /* =========================
+   REVIEWS
+========================= */
+
+
+.reviews-section {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+}
+
+.reviews-section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.reviews-carousel {
+  overflow: hidden;
+  width: 100%;
+}
+
+#reviews-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#reviews-track::-webkit-scrollbar {
+  display: none;
+}
+
+.review-card {
+  flex: 0 0 350px;
+
+  background: var(--white);
+  border-radius: 16px;
+
+  padding: 1.5rem;
+
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  min-height: 220px;
+}
+
+.review-stars {
+  font-size: 1.25rem;
+  color: #d4af37;
+}
+
+.review-text {
+  flex: 1;
+
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.review-meta {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+
+/* =========================
    RESPONSIVE
 ========================= */
 
@@ -185,5 +258,9 @@
   .contact-card.flipped .contact-back {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  .review-card {
+    flex: 0 0 85%;
   }
 }
