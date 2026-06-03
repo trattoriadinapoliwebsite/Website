@@ -158,7 +158,7 @@ function initContactForm() {
 }
 
 const REVIEW_ENDPOINT =
-  "YOUR_REVIEW_GAS_URL_HERE";
+  "https://script.google.com/macros/s/AKfycbzGqqKUf_l3HrW4n1rAtz60aPMpa5t36HyfhPzT-ktlQg1xi5hmoBPmVRn-iBMatGXSGA/exec";
 
 async function fetchReviews() {
   const res = await fetch(REVIEW_ENDPOINT);
