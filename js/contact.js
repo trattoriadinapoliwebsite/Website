@@ -158,7 +158,7 @@ function initContactForm() {
 }
 
 const REVIEW_ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbz0bc7uxUYKvmbGpQJiGZnbXcumQO5ZzEYn-MJI4w4klBUFdXvn81AOXt-13H3_cAhFcw/exec";
+  "https://script.google.com/macros/s/AKfycbxWYMuE027isj1JIcuRqa-Pp_xoJNr8hlYBOOg9Ois0jLQ_LogYfEJaKaC7JM-7y3O3_w/exec";
 
 async function fetchReviews() {
   const res = await fetch(REVIEW_ENDPOINT);
@@ -171,27 +171,30 @@ async function fetchReviews() {
 }
 
 function renderStars(rating) {
-  const full = Math.floor(rating);
-  const partial = rating - full;
-
   let html = "";
 
-  for (let i = 0; i < full; i++) {
-    html += '<span class="star full">★</span>';
-  }
+  for (let i = 1; i <= 5; i++) {
+    const value = rating - (i - 1);
 
-  if (partial > 0) {
-    html += `
-      <span class="star partial">
-        <span style="width:${partial * 100}%">★</span>
-      </span>
-    `;
-  }
-
-  const remaining = 5 - Math.ceil(rating);
-
-  for (let i = 0; i < remaining; i++) {
-    html += '<span class="star empty">★</span>';
+    if (value >= 1) {
+      html += `<span class="star full">★</span>`;
+    }
+    else if (value > 0) {
+      html += `
+        <span class="star partial">
+          ★
+          <span
+            class="fill"
+            style="width:${value * 100}%"
+          >
+            ★
+          </span>
+        </span>
+      `;
+    }
+    else {
+      html += `<span class="star empty">★</span>`;
+    }
   }
 
   return html;
@@ -219,7 +222,7 @@ function renderReviews(reviews) {
 
       <div class="review-meta">
         <span>${review.name}</span>
-        <span>${review.date}</span>
+        <span>${review.when}</span>
       </div>
     `;
 
@@ -234,30 +237,42 @@ function initReviewCarousel(track) {
 
   if (cards.length <= 1) return;
 
+  const prevBtn = document.getElementById("review-prev");
+  const nextBtn = document.getElementById("review-next");
+
   let current = 0;
 
   const cardWidth =
     cards[0].offsetWidth +
-    parseInt(getComputedStyle(track).gap || 24);
+    parseInt(getComputedStyle(track).gap);
 
-  setInterval(() => {
-    current++;
+  function goTo(index) {
+    current = index;
+
+    if (current < 0) {
+      current = cards.length - 1;
+    }
 
     if (current >= cards.length) {
       current = 0;
-
-      track.scrollTo({
-        left: 0,
-        behavior: "smooth"
-      });
-
-      return;
     }
 
     track.scrollTo({
       left: cardWidth * current,
       behavior: "smooth"
     });
+  }
+
+  nextBtn?.addEventListener("click", () => {
+    goTo(current + 1);
+  });
+
+  prevBtn?.addEventListener("click", () => {
+    goTo(current - 1);
+  });
+
+  setInterval(() => {
+    goTo(current + 1);
   }, 5000);
 }
 
