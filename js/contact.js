@@ -170,6 +170,33 @@ async function fetchReviews() {
   return res.json();
 }
 
+function renderStars(rating) {
+  const full = Math.floor(rating);
+  const partial = rating - full;
+
+  let html = "";
+
+  for (let i = 0; i < full; i++) {
+    html += '<span class="star full">★</span>';
+  }
+
+  if (partial > 0) {
+    html += `
+      <span class="star partial">
+        <span style="width:${partial * 100}%">★</span>
+      </span>
+    `;
+  }
+
+  const remaining = 5 - Math.ceil(rating);
+
+  for (let i = 0; i < remaining; i++) {
+    html += '<span class="star empty">★</span>';
+  }
+
+  return html;
+}
+
 function renderReviews(reviews) {
   const track = document.getElementById("reviews-track");
 
@@ -181,11 +208,9 @@ function renderReviews(reviews) {
     const card = document.createElement("div");
     card.className = "review-card";
 
-    const stars = Math.round(review.rating);
-
     card.innerHTML = `
       <div class="review-stars">
-        ${"★".repeat(stars)}
+        ${renderStars(review.rating)}
       </div>
 
       <p class="review-text">
