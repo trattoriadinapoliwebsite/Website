@@ -177,7 +177,7 @@
 
 .menu-loader img {
   position: absolute;
-  width: 20vw;
+  width: 25vw;
   opacity: 0;
   transform-origin: center; 
   will-change: transform, opacity;
@@ -336,10 +336,11 @@
   .menu-category {
     padding: 1.5rem;
   }
-}
-.menu-modal img {
-  max-width: 90vw;
-}
-.menu-loader img {
-  width: 40vw;
+
+   .menu-modal img {
+     max-width: 90vw;
+   }
+   .menu-loader img {
+     width: 40vw;
+   }
 }
