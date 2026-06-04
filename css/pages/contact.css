@@ -323,15 +323,15 @@
 /* =========================
    REVIEWS
 ========================= */
-
 .reviews-section {
   width: 100%;
   max-width: 1400px;
-  margin-top: 4rem;
+  margin: 4rem auto 0 auto;
+  padding: 0 1rem;
 }
 
 .reviews-section h2 {
-  color: var(--white);
+  color: black;
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -344,10 +344,8 @@
 #reviews-track {
   display: flex;
   gap: 2rem;
-
   overflow-x: auto;
   scroll-behavior: smooth;
-
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -452,36 +450,61 @@
 
 .review-stars {
   display: flex;
-  align-items: center;
-  gap: 2px;
+  gap: 3px;
 }
 
 .star {
   position: relative;
   display: inline-block;
-  font-size: 1.35rem;
-}
-
-.star.full {
-  color: #d4af37;
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+  line-height: 22px;
 }
 
 .star.empty {
   color: rgba(0,0,0,.15);
 }
 
+.star.full {
+  color: #d4af37;
+}
+
 .star.partial {
   color: rgba(0,0,0,.15);
 }
 
-.star.partial span {
+.star.partial .fill {
   position: absolute;
-  inset: 0;
-
+  top: 0;
+  left: 0;
   overflow: hidden;
   white-space: nowrap;
-
   color: #d4af37;
+  height: 100%;
+}
+
+.review-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.review-controls button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 4px 15px rgba(0,0,0,.15);
+  font-size: 1.1rem;
+  transition: all .2s ease;
+}
+
+.review-controls button:hover {
+  transform: translateY(-2px);
 }
 
 /* =========================
