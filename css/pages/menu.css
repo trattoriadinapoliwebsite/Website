@@ -231,40 +231,49 @@
 ========================= */
 
 .weeknight-specials {
+  background: 000000;
   text-align: center;
-  margin-bottom: var(--space-lg);
-  color: var(--accent-red);
-  border: 3px solid var(--border-gold);
-  padding: 10px;
-  border-radius: 25px;
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.05);
-
+  margin-bottom: var(--space-md);
+  color: white;
+  border-bottom: 1px solid var(--border-gold);
 }
 
 .specials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: .5rem;
 }
 
 .special {
   text-align: center;
-  color: var(--dark-text);
-  border: 3px solid var(--page-bg);
-  border-radius: 15px;
+  border-left: 2px solid white;
+  border-right: 2px solid white;
+}
+
+h3{
+  color: var(--green);
+}
+
+h4{
+  color: white;
+  margin-top: 1rem;
+}
+
+.special p{
+  color: var(--accent-red);
+  margin-top: 1rem;
 }
 
 .menu-policy {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid var(--accent-gold);
+  border: 2px solid white;
 }
+
 .catering-banner {
   margin-top: 3rem;
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem 0rem;
   border: 1px solid rgba(255,255,255,0.15);
   background: rgba(255,255,255,0.03);
   text-align: center;
@@ -283,6 +292,7 @@
 
 .catering-link {
   display: inline-block;
+  margin-top: auto;
   padding: 0.75rem 1.5rem;
   border: 1px solid var(--border-gold);
   color: var(--white);
@@ -304,6 +314,8 @@
 }
 
 .catering-option {
+  display: flex;
+  flex-direction: column;
   padding: 1.5rem;
 }
 
