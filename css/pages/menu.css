@@ -241,13 +241,14 @@
 .specials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: .5rem;
+  gap: .35rem;
 }
 
 .special {
   text-align: center;
   border-left: 2px solid white;
   border-right: 2px solid white;
+  padding: .5rem;
 }
 
 h3{
