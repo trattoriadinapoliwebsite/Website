@@ -296,6 +296,31 @@
   color: #000;
 }
 
+.catering-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.catering-option {
+  padding: 1.5rem;
+}
+
+.catering-option:first-child {
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+
+.catering-option h3 {
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.catering-option p {
+  color: #bbb;
+  margin-bottom: 1.5rem;
+}
+
 .menu-policy p {
   text-align: center;
   color: var(--white);
@@ -343,4 +368,15 @@
    .menu-loader img {
      width: 40vw;
    }
+   
+  .catering-options {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .catering-option:first-child {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding-bottom: 2rem;
+  }
 }
