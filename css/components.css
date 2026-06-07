@@ -571,7 +571,7 @@ body.live-chat-active .reamaze-widget-button {
 
 @media (max-width: 768px) {
   #chat-window {
-    width: 60vw;
-    height: 50vh;
+    width: 80vw;
+    height: 70vh;
   }
 }
