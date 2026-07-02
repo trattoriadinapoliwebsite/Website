@@ -68,7 +68,7 @@ function renderItem(item, isCatering = false) {
       </span>
     </div>
 
-    ${item.description ? `<div class="menu-item-description">${item.description}</div>` : ""}
+    ${item.description ? `<div class="menu-item-description">${item.description.replace(/\n/g, "<br>")}</div>` : ""}
 
   `;
   return el;
