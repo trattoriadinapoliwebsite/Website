@@ -324,6 +324,7 @@
    REVIEWS
 ========================= */
 .reviews-section {
+  background: var(--page-bg);
   width: 100%;
   max-width: 1400px;
   margin: 4rem auto 0 auto;
@@ -331,7 +332,7 @@
 }
 
 .reviews-section h2 {
-  color: black;
+  color: white;
   text-align: center;
   margin-bottom: 2rem;
 }
