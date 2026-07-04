@@ -14,7 +14,7 @@
 
 /* shrink state */
 .site-header.scrolled {
-  height: 100px;
+  height: 70px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -27,7 +27,7 @@
 #daily-special-banner {
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 30px;
   font-family: var(--font-body);
   font-size: var(--text-sm);
   letter-spacing: 0.15em;
@@ -35,16 +35,7 @@
   border-top: 2px solid var(--border-gold);
   border-bottom: 2px solid var(--border-gold);
   flex-shrink: 0;
-  background: linear-gradient(
-    90deg,
-    var(--green) 0%,
-    var(--green) 33%,
-    var(--white) 33%,
-    var(--white) 66%,
-    var(--red) 66%,
-    var(--red) 100%
-  );
-
+  background: var(--gray-bg);
   overflow: hidden;
 }
 
@@ -60,6 +51,10 @@
 #slide-track span {
   padding: 0 2rem;
   flex-shrink: 0;             
+}
+span a:hover {
+  text-decoration: underline;
+  color: var(--accent-red);
 }
 
 /* animation */
@@ -92,7 +87,7 @@
 .site-header.scrolled .nav-top {
   position: absolute;
   left: 0;
-  top: 50px;
+  top: 20px;
   width: 50%;
   display: flex;
   align-items: center;
@@ -181,7 +176,7 @@
 .site-header.scrolled .nav-bar {
   position: absolute;
   right: 0;
-  top: 50px;
+  top: 25px;
   width: 50%;
   display: flex;
   align-items: center;
