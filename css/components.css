@@ -337,8 +337,8 @@ span a:hover {
 
 /* TOGGLE */
 #chat-toggle {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background: var(--red);
   color: white;
@@ -355,7 +355,7 @@ span a:hover {
 
 /* WINDOW */
 #chat-window {
-  position: relative; /* REQUIRED */
+  position: relative;
   overflow: visible;
   display: none;
   width: 340px;
@@ -549,8 +549,7 @@ body.live-chat-active .reamaze-widget-button {
 }
 
 .popup-inner {
-  max-width: 500px;
-  width: 90%;
+  max-height: 90%;
   position: relative;
 }
 
@@ -564,9 +563,10 @@ body.live-chat-active .reamaze-widget-button {
    RESPONSIVE
 ========================= */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   #chat-window {
-    width: 80vw;
+    width: 90vw;
     height: 70vh;
   }
+  
 }
