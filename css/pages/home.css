@@ -208,10 +208,32 @@
   font-size: 2rem;
   letter-spacing: 2px;
 }
-.popup-inner {
-  position:absolute;
-  top: 30px;
-  width: 50vw;
+/* =========================
+   POPUP
+========================= */
+
+#event-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none; 
+  justify-content: center;
+  align-items: center;
+  z-index: 4000;
+}
+
+.popup-inner { 
+  position: absolute;
+  top: 20px;
+  max-width:39vw;
+}
+
+#popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width:20px;
+  height:20px;
 }
 /* =========================
    RESPONSIVE
@@ -240,6 +262,6 @@
      object-fit: cover;
   }
   .popup-inner {
-    width: 80vw;
+    max-width: 74vw;
   }
 }
