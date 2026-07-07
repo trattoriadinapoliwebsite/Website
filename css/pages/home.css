@@ -208,8 +208,11 @@
   font-size: 2rem;
   letter-spacing: 2px;
 }
-
-
+.popup-inner {
+  position:absolute;
+  top: 30px;
+  width: 50vw;
+}
 /* =========================
    RESPONSIVE
 ========================= */
@@ -235,5 +238,8 @@
      margin: auto;
      width: 80%;
      object-fit: cover;
+  }
+  .popup-inner {
+    width: 80vw;
   }
 }
