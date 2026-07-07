@@ -4,7 +4,7 @@
 
 .hero {
   max-width: 1600px;
-  margin: 16rem auto var(--space-lg);
+  margin: 12rem auto var(--space-lg);
   display: grid;
   grid-template-columns: 2fr 3fr;
   background: var(--gray-bg);
@@ -89,7 +89,7 @@
 .special-card {
   width: 70%;
   margin-bottom: 60px;
-  max-width: 900px;
+  max-width: 1400px;
   background: var(--page-bg);
   border: 3px solid var(--gray-bg);
   padding:
@@ -135,7 +135,7 @@
 .special-title::after {
   content: "";
   display: block;
-  width: 42px;
+  width: 60px;
   height: 1px;
   background: var(--border-gold);
   margin: 1.25rem auto 0;
@@ -143,80 +143,11 @@
 }
 
 .special-description {
-  font-size: clamp(0.95rem, 4vw, 1.1rem);
+  font-size: clamp(0.95rem, 4vw, 1.5rem);
   color: var(--white);
   line-height: 1.65;
   margin: 0 auto;
-  max-width: 42ch;
-}
-
-/* =========================
-   CARD
-========================= */
-
-.special-card {
-  width: 70%;
-  max-width: 900px;
-  background: var(--page-bg);
-  border: 1px solid var(--gray-bg);
-  padding:
-    clamp(6rem, 12vw, 9rem)
-    clamp(1.5rem, 4vw, 3rem)
-    clamp(2.5rem, 6vw, 4rem);
-  text-align: center;
-  box-shadow:
-    0 0 60px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  opacity: 0;
-  transform: translateY(40px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
-}
-
-.special-feature.is-active .special-card {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================
-   TEXT STYLES
-========================= */
-
-.special-eyebrow {
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--border-gold);
-  margin-bottom: 0.75rem;
-}
-
-.special-title {
-  font-size: clamp(1.5rem, 5vw, 2.3rem);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--white);
-  margin-bottom: 1.25rem;
-  position: relative;
-}
-
-.special-title::after {
-  content: "";
-  display: block;
-  width: 42px;
-  height: 1px;
-  background: var(--border-gold);
-  margin: 1.25rem auto 0;
-  opacity: 0.85;
-}
-
-.special-description {
-  font-size: clamp(0.95rem, 4vw, 1.1rem);
-  color: var(--white);
-  line-height: 1.65;
-  margin: 0 auto;
-  max-width: 42ch;
+  max-width: 100ch;
 }
 
 /* =========================
@@ -291,8 +222,7 @@
 
   .hero-right img {
      margin: auto;
-     width: 60%;
-     height: 60%;
+     width: 100%;
      object-fit: cover;
   }
 
@@ -302,8 +232,7 @@
 
   .resy-image img {
      margin: auto;
-     width: 60%;
-     height: 60%;
+     width: 80%;
      object-fit: cover;
   }
 }
