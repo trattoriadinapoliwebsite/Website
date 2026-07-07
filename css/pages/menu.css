@@ -264,7 +264,7 @@ h4{
 
 .special p{
   color: var(--accent-red);
-  margin-top: 1rem;
+  margin: 1rem auto;
 }
 
 .menu-policy {
