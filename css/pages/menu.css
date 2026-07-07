@@ -76,6 +76,7 @@
   will-change: transform;
 }
 
+
 /* =========================
    CATEGORY (CARD STYLE)
 ========================= */
@@ -367,9 +368,27 @@ h4{
    MOBILE
 ========================= */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .specials-grid {
     grid-template-columns: 1fr;
+  }
+
+  .menu-anchor-nav {
+    justify-content: flex-start;
+    padding: 1rem;
+   }
+   
+  .menu-item-name {
+    font-size: 1.3rem;
+  }
+
+  .menu-item-price {
+    font-size: 1.1rem;
+  }
+
+  .menu-item-description {
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   .menu-category {
