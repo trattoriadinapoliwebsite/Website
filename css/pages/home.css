@@ -218,6 +218,7 @@
 
   .hero {
     grid-template-columns: 1fr;
+    margin: 4rem auto var(--space-lg);
   }
 
   .hero-right img {
