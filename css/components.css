@@ -535,31 +535,6 @@ body.live-chat-active .reamaze-widget-button {
 }
 
 /* =========================
-   POPUP
-========================= */
-
-#event-popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: none; 
-  justify-content: center;
-  align-items: center;
-  z-index: 4000;
-}
-
-.popup-inner {
-  max-height: 90%;
-  position: relative;
-}
-
-#popup-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-/* =========================
    RESPONSIVE
 ========================= */
 
