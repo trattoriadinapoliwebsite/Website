@@ -64,22 +64,6 @@ function initPopup() {
   const closeBtn = document.getElementById("popup-close");
 
   // =========================
-  // HARD EXIT CONDITIONS
-  // =========================
-
-  // No image element at all → remove popup entirely
-  if (!img) {
-    popup.remove();
-    return;
-  }
-
-  // Image exists but has no valid src → remove popup
-  if (!img.getAttribute("src") || img.getAttribute("src").trim() === "") {
-    popup.remove();
-    return;
-  }
-
-  // =========================
   // WAIT FOR IMAGE VALIDATION
   // =========================
 
