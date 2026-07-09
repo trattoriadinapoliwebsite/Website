@@ -23,54 +23,63 @@
 /* =========================
    SPECIALS BANNER (FIXED)
 ========================= */
-
 #daily-special-banner {
   display: flex;
   align-items: center;
   height: 30px;
+  overflow: hidden;
+
   font-family: var(--font-body);
   font-size: var(--text-sm);
   letter-spacing: 0.15em;
   text-transform: uppercase;
+
   border-top: 2px solid var(--border-gold);
   border-bottom: 2px solid var(--border-gold);
-  flex-shrink: 0;
+
   background: var(--gray-bg);
-  overflow: hidden;
 }
 
-/* FIX: prevent wrapping */
-#slide-track {
+.marquee {
+  display: flex;
+  width: max-content;
+}
+
+.marquee-content {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   white-space: nowrap;
-  flex-wrap: nowrap;
-  animation: slide-left 30s linear infinite;
+
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+
+  animation: marquee 30s linear infinite;
 }
 
-#slide-track span {
+.marquee-content span {
   padding: 0 2rem;
-  flex-shrink: 0;             
+  flex-shrink: 0;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+#daily-special-banner:hover .marquee-content {
+  animation-play-state: paused;
 }
 span a:hover {
   text-decoration: underline;
   color: var(--accent-red);
 }
-
-/* animation */
-
-@keyframes slide-left {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/* pause */
-
-#daily-special-banner:hover #slide-track {
-  animation-play-state: paused;
-}
-
 /* =========================
    TOP ROW
 ========================= */
