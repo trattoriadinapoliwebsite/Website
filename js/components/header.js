@@ -13,7 +13,6 @@ export async function loadHeader() {
 /* =========================
    SPECIALS
 ========================= */
-
 function initSpecialBanner() {
   const specialsByDay = {
     0: "Sorry, we're closed today. You can still submit catering requests or make future reservations online.",
@@ -26,16 +25,10 @@ function initSpecialBanner() {
   };
 
   const today = new Date().getDay();
-  const specialEl = document.getElementById("special-text");
-  const track = document.getElementById("slide-track");
 
-  if (specialEl && specialsByDay[today]) {
-    specialEl.textContent = specialsByDay[today];
-  }
-
-  if (track) {
-    track.innerHTML += track.innerHTML;
-  }
+  document.querySelectorAll(".special-text").forEach(el => {
+    el.textContent = specialsByDay[today];
+  });
 }
 
 /* =========================
