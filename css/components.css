@@ -24,57 +24,36 @@
    SPECIALS BANNER (FIXED)
 ========================= */
 #daily-special-banner {
-  display: flex;
-  align-items: center;
-  height: 30px;
   overflow: hidden;
-
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-
+  white-space: nowrap;
+  height: 30px;
+  line-height: 30px;
   border-top: 2px solid var(--border-gold);
   border-bottom: 2px solid var(--border-gold);
-
-  background: var(--gray-bg);
+  padding-left: 100%;
 }
 
-.marquee {
-  display: flex;
-  width: max-content;
-}
-
-.marquee-content {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
+.ticker {
+  display: inline-block;
   white-space: nowrap;
-
+  padding-right: 100%;
   will-change: transform;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-
-  animation: marquee 30s linear infinite;
+  animation: ticker 60s linear infinite;
 }
 
-.marquee-content span {
+.ticker span {
+  display: inline-block;
   padding: 0 2rem;
-  flex-shrink: 0;
 }
 
-@keyframes marquee {
+@keyframes ticker {
   from {
-    transform: translateX(0);
+    transform: translate3d(0,0,0);
   }
 
   to {
-    transform: translateX(-100%);
+    transform: translate3d(-50%,0,0);
   }
-}
-
-#daily-special-banner:hover .marquee-content {
-  animation-play-state: paused;
 }
 span a:hover {
   text-decoration: underline;
