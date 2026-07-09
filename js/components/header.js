@@ -26,9 +26,10 @@ function initSpecialBanner() {
 
   const today = new Date().getDay();
 
-  document.querySelectorAll(".special-text").forEach(el => {
-    el.textContent = specialsByDay[today];
-  });
+  const text = specialsByDay[today];
+  
+  document.getElementById("special-text").textContent = text;
+  document.getElementById("special-text-copy").textContent = text;
 }
 
 /* =========================
