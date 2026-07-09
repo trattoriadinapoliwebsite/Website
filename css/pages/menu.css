@@ -108,7 +108,7 @@
 
 .menu-category-description {
   color: #aaa;
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   margin-bottom: 1.5rem;
 }
 
@@ -141,7 +141,7 @@
 }
 
 .menu-item-description {
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   color: #bbb;
   margin-top: 4px;
 }
@@ -374,55 +374,52 @@ h4{
     margin-top: 2rem;
     padding-top: 1rem;
   }
-
   .menu-anchor-nav {
     justify-content: flex-start;
     padding: 1rem;
     gap: 1rem;
     scrollbar-width: none;
   }
-
   .menu-anchor-nav::-webkit-scrollbar {
     display: none;
   }
-
   .menu-item-name {
-    font-size: 1.3rem;
+    font-size: var(--text-lg);
   }
-
   .menu-item-price {
-    font-size: 1.1rem;
+    font-size: var(--text-md);
   }
-
   .menu-item-description {
-    font-size: 1rem;
+    font-size: var(--text-md);
     line-height: 1.5;
   }
-
   .specials-grid {
     grid-template-columns: 1fr;
   }
-
   .menu-category {
-    padding: 1.5rem;
+    padding: var(--text-lg);
   }
-
   .menu-modal img {
     max-width: 90vw;
   }
-
   .menu-loader img {
     width: 40vw;
   }
-
   .catering-options {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-
   .catering-option:first-child {
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,0.15);
     padding-bottom: 2rem;
   }
+  .menu-loader {
+     width: 90vw;
+     height: 70vh;
+   }
+   
+   .menu-loader img {
+     width: 30vw;
+   }
 }
