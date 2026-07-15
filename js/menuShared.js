@@ -17,7 +17,7 @@ async function fetchMenu(menuName) {
 function renderSkeletonLoader() {
   return `
     <div class="menu-loader">
-      <img src="assets/loadingImage.png" alt="Loading menu" />
+      <img src="/assets/loadingImage.png" alt="Loading menu" />
     </div>
   `;
 }
