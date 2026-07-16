@@ -1,4 +1,4 @@
-const JOBS_API = "https://script.google.com/macros/s/AKfycbxM3kN1Hcx2BUydo7LPhpkJmOlFVauD6BqDsj68edFp5GzJYK6tZFPOukxP231O2wIV/exec";
+const JOBS_API = "https://script.google.com/macros/s/AKfycbzxm41GdKBBvqy2U5gWT5tAC3_VHpS3WD4aAUhs6kdKbX6u_ZO0A5vWgVmvOIFvcRwZ/exec";
 let openings = [];
 let selectedPosition = null;
 document.addEventListener("DOMContentLoaded", () => {
