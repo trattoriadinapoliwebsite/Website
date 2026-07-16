@@ -1,1 +1,141 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Careers | Trattoria Di Napoli</title>
+  <meta name="description" content="Join the Trattoria Di Napoli team. View current restaurant openings and apply today." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://trattoriadinapolidining.net/jobs.html" />
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/favicon.ico" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/jobs.css" />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body data-page="jobs">
+  <div id="header"></div>
+  <main id="app">
+    <!-- JOBS HERO -->
+    <section class="jobs-hero">
+      <div class="jobs-hero-content">
+        <h1>
+          Join Our Team
+        </h1>
+        <p>
+          Become part of the Trattoria Di Napoli family. 
+          Explore current openings and apply today.
+        </p>
+      </div>
+    </section>
+    <!-- OPENINGS -->
+    <section class="openings-section">
+      <div class="section-header">
+        <h2>
+          Current Openings
+        </h2>
+        <p>
+          Select an available position below to begin your application.
+        </p>
+      </div>
+      <div id="job-list" class="job-list">
+        <!-- Populated by jobs.js -->
+      </div>
+    </section>
+    <!-- APPLICATION -->
+    <section class="application-section">
+      <div class="application-card">
+        <div class="section-header">
+          <h2>
+            Employment Application
+          </h2>
+        </div>
+        <form id="application-form">
+          <!-- PERSONAL INFO -->
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="firstName"> First Name </label>
+              <input id="firstName" type="text" name="firstName" required />
+            </div>
+            <div class="form-group">
+              <label for="lastName"> Last Name </label>
+              <input id="lastName" type="text" name="lastName" required />
+            </div>
+            <div class="form-group">
+              <label for="email"> Email</label>
+              <input id="email" type="email" name="email" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input id="phone" type="tel" name="phone" required />
+            </div>
+          </div>
+          <!-- POSITION -->
+          <div class="application-selector">
+            <h3>
+              Position Applying For
+            </h3>
+            <div id="position-selector" class="option-grid">
+              <!-- Generated -->
+            </div>
+          </div>
+          <!-- EMPLOYMENT TYPE -->
+          <div id="employment-container" class="application-selector hidden" >
+            <h3>
+              Employment Type
+            </h3>
+            <div id="employment-selector" class="option-grid" >
+              
+            </div>
+          </div>
+          <!-- SCHEDULE -->
+          <div id="schedule-container" class="application-selector hidden" >
+            <h3>
+              Schedule Preference
+            </h3>
+            <div id="schedule-selector" class="option-grid" >
+              
+            </div>
+          </div>
+          <!-- EXPERIENCE -->
+          <div class="application-selector">
+            <h3>
+              Experience Level
+            </h3>
+            <div class="option-grid">
+              <label class="option-card">
+                <input type="radio" name="experienceLevel" value="Entry Level"  required />
+                <span class="option-content"> Entry Level </span>
+              </label>
+              <label class="option-card">
+                <input type="radio" name="experienceLevel" value="Some Experience" />
+                <span class="option-content"> Some Experience </span>
+              </label>
+              <label class="option-card">
+                <input type="radio" name="experienceLevel" value="Experienced"/>
+                <span class="option-content"> Experienced </span>
+              </label>
+              <label class="option-card"> <input type="radio" name="experienceLevel" value="Management Experience" />
+                <span class="option-content">Management Experience</span>
+              </label>
+            </div>
+          </div>
+          <!-- RESUME -->
+          <div class="resume-upload">
+            <label for="resume"> Resume (Optional) </label>
+            <input id="resume" type="file" accept=".pdf,.doc,.docx" />
+          </div>
+          <button type="submit" class="btn application-submit">Submit Application</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <div id="footer-root"></div>
+  <div id="toast"></div>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/jobs.js"></script>
+</body>
+</html>
