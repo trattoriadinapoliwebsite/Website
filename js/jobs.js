@@ -1,4 +1,4 @@
-const JOBS_API = "https://script.google.com/macros/s/AKfycbxyHg8Km-YkRhvKea7BxsvJoGCDoWAomKC67y3zz7f491wNxLV-_Naz-MB_Blnv_759/exec";
+const JOBS_API = "https://script.google.com/macros/s/AKfycbzxm41GdKBBvqy2U5gWT5tAC3_VHpS3WD4aAUhs6kdKbX6u_ZO0A5vWgVmvOIFvcRwZ/exec";
 let openings = [];
 let selectedPosition = null;
 document.addEventListener("DOMContentLoaded", () => {
@@ -196,16 +196,11 @@ async function submitApplication(e) {
   try {
     const response =
     await fetch(
-      JOBS_API,
-      {
+     `${JOBS_API}?action=submitApplication`,
+     {
         method:"POST",
-        body:
-        JSON.stringify({
-          action:
-          "submitApplication",
-          ...data
-        })
-      }
+        body:JSON.stringify(data)
+     }
     );
     const result =
     await response.json();
