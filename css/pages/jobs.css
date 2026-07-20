@@ -186,8 +186,8 @@
 ========================= */
 #toast {
   position:fixed;
-  right:2rem;
-  bottom:2rem;
+  right:0;
+  bottom:0;
   background: var(--accent-green);
   color: var(--white);
   padding: 1rem 1.5rem;
