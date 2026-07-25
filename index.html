@@ -4,25 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Trattoria Di Napoli | Italian Restaurant in Perry, GA</title>
-
-  <meta name="description" content="Authentic Italian dining in Perry, Georgia. Enjoy handcrafted pasta, reservations, and online ordering." />
+  <!-- SEO -->
+  <title>Trattoria Di Napoli | Authentic Italian Restaurant in Perry, GA</title>
+  
+  <meta name="description" content="Enjoy authentic Italian cuisine in Perry, GA. Fresh pasta, seafood, steak, online ordering, and reservations at Trattoria Di Napoli." />
   <meta name="robots" content="index, follow" />
-
-  <!-- Canonical (custom domain) -->
-  <link rel="canonical" href="https://trattoriadinapolidining.net/" />
+  
+  <!-- Canonical -->
+  <link rel="canonical" href="https://trattoriadinapolidining.com/" />
+  
   <!-- Open Graph -->
-  <meta property="og:title" content="Trattoria Di Napoli" />
-  <meta property="og:description" content="Authentic Italian dining in Perry, GA." />
+  <meta property="og:title" content="Trattoria Di Napoli | Italian Restaurant in Perry, GA" />
+  <meta property="og:description" content="Fresh pasta, seafood, steak, online ordering, and reservations in Perry, Georgia." />
   <meta property="og:image" content="https://trattoriadinapolidining.com/assets/og-image.jpg" />
   <meta property="og:url" content="https://trattoriadinapolidining.com/" />
   <meta property="og:type" content="website" />
-
+  <meta property="og:site_name" content="Trattoria Di Napoli" />
+  
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Trattoria Di Napoli" />
-  <meta name="twitter:description" content="Authentic Italian dining in Perry, GA." />
-  <meta name="twitter:image" content="https://trattoriadinapolidining.com/assets/favicon.ico" />
+  <meta name="twitter:title" content="Trattoria Di Napoli | Italian Restaurant in Perry, GA" />
+  <meta name="twitter:description" content="Fresh pasta, seafood, steak, online ordering, and reservations in Perry, Georgia." />
+  <meta name="twitter:image" content="https://trattoriadinapolidining.com/assets/og-image.jpg" />
 
   <!-- Favicon -->
   <link rel="icon" href="./assets/favicon.ico" />
@@ -36,13 +39,17 @@
   <link rel="stylesheet" href="css/pages/home.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
-  <!-- Local SEO (Structured Data) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Restaurant",
     "name": "Trattoria Di Napoli",
-    "image": "https://trattoriadinapolidining.com/assets/hero.jpg",
+    "image": "https://trattoriadinapolidining.com/assets/hero.webp",
+    "url": "https://trattoriadinapolidining.com",
+    "telephone": "+1-478-224-0025",
+    "servesCuisine": "Italian",
+    "priceRange": "$$",
+    "menu": "https://trattoriadinapolidining.com/menus/dinner",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "904 Commerce Street",
@@ -51,18 +58,33 @@
       "postalCode": "31069",
       "addressCountry": "US"
     },
-    "telephone": "+1-478-224-0025",
-    "url": "https://trattoriadinapolidining.com",
-    "servesCuisine": "Italian",
-    "priceRange": "$$",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "32.459004",
+      "longitude": "-83.7334768"
+    },
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        "dayOfWeek": [
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
         "opens": "11:00",
         "closes": "21:00"
       }
     ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Trattoria Di Napoli",
+    "url": "https://trattoriadinapolidining.com"
   }
   </script>
 </head>
