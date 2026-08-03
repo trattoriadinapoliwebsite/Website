@@ -1,17 +1,18 @@
-const JOBS_API = "https://script.google.com/macros/s/AKfycbzEurRbp_FGhCXci1DihY2MS-Sao-vFkDUk5kj8MX4-9KHG28EGP2KnQZZqGZeN1ECL/exec";
+const JOBS_API = "https://script.google.com/macros/s/AKfycbwyNdmEqcCq_SmXUhxtfQH1fYlB40A_y8adF7DAAX5akvXZWSH9W7Nnyq59Xo_bkiWQ/exec";
 let openings = [];
 let selectedPosition = null;
+let expandedJob = null;
 document.addEventListener("DOMContentLoaded", () => {
   loadOpenings();
-  document
-    .getElementById("application-form")
-    .addEventListener("submit", submitApplication);
+  document.getElementById("application-form").addEventListener("submit", submitApplication);
+  const startButton = document.getElementById("start-application");
+  if(startButton) {
+    startButton.addEventListener("click", () => {scrollToApplication();});
+  }
 });
 async function loadOpenings() {
   try {
-    const response = await fetch(
-      `${JOBS_API}?action=getOpenings`
-    );
+    const response = await fetch(`${JOBS_API}?action=getOpenings`);
     openings = await response.json();
     renderJobs();
     renderPositionSelector();
@@ -21,236 +22,217 @@ async function loadOpenings() {
   }
 }
 function renderJobs() {
-  const container = document.getElementById("job-list");
+  const container =document.getElementById("job-list");
   container.innerHTML = "";
   openings.forEach(job => {
-    const card = document.createElement("div");
+    const card = document.createElement("article");
     card.className = "job-card";
     card.innerHTML = `
-      <h3>${job.title}</h3>
-      <div class="job-meta">
-        <span class="job-tag">
-          ${job.department}
-        </span>
-        <span class="job-tag">
-          ${job.employmentOptions}
-        </span>
+      <div class="job-card-header">
+        <div>
+          <h3>${job.title}</h3>
+          <div class="job-meta">
+            <span class="job-tag">${job.department}</span>
+            <span class="job-tag">${job.employmentOptions}</span>
+            <span class="job-tag">${job.scheduleOptions}</span>
+          </div>
+        </div>
+        <span class="expand-icon">+</span>
       </div>
-      <p>
-        ${job.description || ""}
-      </p>
-      <p>
-        <strong>Wage:</strong>
-        ${job.wage}
-      </p>
+      <div class="job-summary">
+        <p>${job.shortDescription}</p>
+        <p><strong>Starting Pay:</strong>${job.wage}</p>
+      </div>
+      <div class="job-details">
+        <h4>Position Details</h4>
+        <p>${job.fullDescription}</p>
+        <h4>Requirements</h4>
+        <p>${job.requirements}</p>
+        <button class="btn apply-position"> Apply For This Position </button>
+      </div>
     `;
-    card.addEventListener("click", () => {
-      selectPosition(job);
-      document
-        .querySelector(".application-section")
-        .scrollIntoView({
-          behavior: "smooth"
-        });
-    });
+    const header = card.querySelector(".job-card-header");
+    header.addEventListener("click", () => {
+        toggleJob(card);
+      }
+    );
+    const applyButton = card.querySelector(".apply-position");
+    applyButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        selectPosition(job);
+        scrollToApplication();
+      }
+    );
     container.appendChild(card);
   });
 }
+function toggleJob(card) {
+  const details = card.querySelector(".job-details");
+  const icon = card.querySelector(".expand-icon");
+  if(expandedJob && expandedJob !== card) {
+    expandedJob.classList.remove("expanded");
+    expandedJob.querySelector(".expand-icon").textContent ="+";
+  }
+  const expanded = card.classList.contains("expanded");
+  if(expanded) {
+    card.classList.remove("expanded");
+    icon.textContent = "+";
+    expandedJob = null;
+  } else {
+    card.classList.add("expanded");
+    icon.textContent = "−";
+    expandedJob = card;
+  }
+}
 function renderPositionSelector() {
-  const container =
-    document.getElementById("position-selector");
+  const container = document.getElementById("position-selector");
   container.innerHTML = "";
   openings.forEach(job => {
     container.innerHTML += `
       <label class="option-card">
-        <input
-          type="radio"
-          name="position"
-          value="${job.positionId}"
-          required
-        >
-        <span>
-          ${job.title}
-        </span>
-      </label>
-    `;
+        <input type="radio" name="position" value="${job.positionId}" required>
+        <span>${job.title}</span>
+      </label>`;
   });
-  container
-    .querySelectorAll("input")
+  container.querySelectorAll( "input")
     .forEach(input => {
-      input.addEventListener("change", () => {
-        const job =
-          openings.find(
-            item =>
-              item.positionId === input.value
-          );
-        selectPosition(job);
-      });
+      input.addEventListener( "change", () => {
+          const job = openings.find( item => item.positionId === input.value);
+          selectPosition(job);
+        }
+      );
     });
 }
 function selectPosition(job) {
+  if(!job) return;
   selectedPosition = job;
-  renderSelector(
-    "employment-selector",
-    "employment-container",
-    job.employmentOptions,
-    "employmentType"
-  );
-  renderSelector(
-    "schedule-selector",
-    "schedule-container",
-    job.scheduleOptions,
-    "schedulePreference"
-  );
+  const radio = document.querySelector(`input[name="position"][value="${job.positionId}"]`);
+  if(radio) {
+    radio.checked =
+      true;
+  }
+  renderSelector("employment-selector", "employment-container", job.employmentOptions, "employmentType");
+  renderSelector("schedule-selector", "schedule-container", job.scheduleOptions, "schedulePreference");
 }
-function renderSelector(
-  element,
-  container,
-  options,
-  name
-) {
-  const selector =
-    document.getElementById(element);
-  const wrapper =
-    document.getElementById(container);
+function renderSelector( element, container, options, name) {
+  const selector = document.getElementById(element);
+  const wrapper = document.getElementById(container);
   selector.innerHTML = "";
-  const values =
-    options
-      .split(",")
-      .map(value => value.trim());
+  const values = options.split(",").map(value =>value.trim());
+  wrapper.classList.remove("hidden");
   if(values.length === 1) {
-    selector.innerHTML = `
-      <input
-        type="hidden"
-        name="${name}"
-        value="${values[0]}"
-      >
-      <span class="job-tag">
-        ${values[0]}
-      </span>
-    `;
-    wrapper.classList.remove("hidden");
+    selector.innerHTML = `<input type="hidden" name="${name}"value="${values[0]}"><span class="job-tag">${values[0]}</span>`;
     return;
   }
-  wrapper.classList.remove("hidden");
   values.forEach(value => {
     selector.innerHTML += `
-      <label class="option-card">
-        <input
-          type="radio"
-          name="${name}"
-          value="${value}"
-          required
-        >
-        <span>
-          ${value}
-        </span>
-      </label>
-    `;
+      <label class="option-card"><input type="radio" name="${name}" value="${value}" required><span>${value}</span></label>`;
   });
 }
 async function submitApplication(e) {
   e.preventDefault();
-  if(!selectedPosition) {
-    showToast(
-      "Please select a position."
-    );
+  const form = e.target;
+  if(!validateForm()) {
     return;
   }
-  const form = e.target;
-  const submitButton =
-    form.querySelector(
-      "button[type='submit']"
-    );
-  submitButton.disabled = true;
-  submitButton.textContent =
-    "Submitting...";
-  const file =
-    document
-      .getElementById("resume")
-      .files[0];
+  const button = form.querySelector("button[type='submit']");
+  button.disabled = true;
+  button.textContent = "Submitting...";
+  const file = document.getElementById("resume").files[0];
   const data = {
-
     firstName:
-      form.firstName.value,
-
+      form.firstName.value.trim(),
     lastName:
-      form.lastName.value,
-
+      form.lastName.value.trim(),
     email:
-      form.email.value,
-
+      form.email.value.trim(),
     phone:
-      form.phone.value,
-
+      form.phone.value.trim(),
     positionId:
       selectedPosition.positionId,
-
     employmentType:
       getSelected("employmentType"),
-
     schedulePreference:
       getSelected("schedulePreference"),
-
     experienceLevel:
-      form.experienceLevel.value,
-
+      getSelected("experienceLevel"),
     resume:
-      file
-      ? await convertFile(file)
-      : null
+      await convertFile(file)
   };
   try {
-    const response =
-      await fetch(
-        `${JOBS_API}?action=submitApplication`,
-        {
+    const response = await fetch(`${JOBS_API}?action=submitApplication`, {
           method:"POST",
-          body:JSON.stringify(data)
+          body:
+            JSON.stringify(data)
         }
       );
-    const result =
-      await response.json();
+    const result = await response.json();
     if(result.success) {
-      showToast(
-        "Application submitted!"
-      );
+      showToast("Application submitted!");
       form.reset();
       selectedPosition = null;
     } else {
-      showToast(
-        result.message ||
-        "Submission failed."
-      );
+      showToast( result.message || "Submission failed.");
     }
   } catch(error) {
     console.error(error);
-    showToast(
-      "Submission failed."
-    );
+    showToast("Submission failed.");
   }
-  submitButton.disabled = false;
-  submitButton.textContent =
-    "Submit Application";
+  button.disabled = false;
+  button.textContent = "Submit Application";
+}
+function validateForm() {
+  const form = document.getElementById("application-form");
+  const file = document.getElementById("resume").files[0];
+  if(!selectedPosition) {
+    showToast("Please select a position.");
+    return false;
+  }
+  if( !form.email.value.match( /^[^\s@]+@[^\s@]+\.[^\s@]+$/ )) {
+    showToast("Please enter a valid email.");
+    return false;
+  }
+  if( !form.phone.value.match(/^[0-9()\-\s+]{7,}$/)) {
+    showToast("Please enter a valid phone number.");
+    return false;
+  }
+  if(!getSelected("experienceLevel")) {
+    showToast("Please select experience level.");
+    return false;
+  }
+  if(!file) {
+    showToast("Resume is required.");
+    return false;
+  }
+  const allowed = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+  if(!allowed.includes(file.type)) {
+    showToast("Only PDF or Word files accepted.");
+    return false;
+  }
+  if(file.size > 5000000) {
+    showToast("Resume must be under 5MB.");
+    return false;
+  }
+  return true;
 }
 function getSelected(name) {
-  const input =
-    document.querySelector(
-      `input[name="${name}"]:checked`
-    );
+  const input = document.querySelector(`input[name="${name}"]:checked`);
   return input
-    ? input.value
-    : document.querySelector(
-        `input[name="${name}"][type="hidden"]`
-      )?.value || "";
+    ? input.value : document.querySelector(`input[name="${name}"][type="hidden"]`)?.value || "";
 }
 function convertFile(file) {
   return new Promise(resolve => {
-    const reader =
-      new FileReader();
+    const reader = new FileReader();
     reader.onload = () => {
       resolve({
-        name:file.name,
-        mimeType:file.type,
+        name:
+          file.name,
+        mimeType:
+          file.type,
         data:
           reader.result
             .split(",")[1]
@@ -259,14 +241,19 @@ function convertFile(file) {
     reader.readAsDataURL(file);
   });
 }
+function scrollToApplication() {
+  document.querySelector(".application-section")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+}
 function showToast(message) {
-  const toast =
-    document.getElementById("toast");
-  toast.textContent =
-    message;
+  const toast =document.getElementById("toast");
+  toast.textContent = message;
   toast.classList.add("show");
   setTimeout(() => {
-    toast.classList.remove("show");
-  },3000);
-
+      toast.classList.remove("show");
+    },
+    3000
+  );
 }
