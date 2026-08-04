@@ -4,7 +4,7 @@
 .jobs-hero {
   width:100%;
   min-height:45vh;
-  background:linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),url('../../assets/jobsbg.webp') center/cover no-repeat;
+  background:linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),url('../../assets/jobs.webp') center/cover no-repeat;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -12,7 +12,9 @@
   text-align:center;
 }
 .jobs-hero-content {
-  max-width:700px;
+   background: var(--page-bg);
+   max-width:700px;
+   border-radius:25px;
 }
 .jobs-hero h1 {
   color:var(--white);
@@ -47,6 +49,33 @@
   gap:1.25rem;
 }
 /* =========================
+   CARD HEADER / CHEVRON
+========================= */
+
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem 2rem 0;
+}
+
+.expand-icon {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1;
+  color: var(--accent-red);
+  transition: transform .25s ease;
+  flex-shrink: 0;
+}
+
+.job-card.expanded .expand-icon {
+  transform: rotate(90deg);
+}
+/* =========================
    JOB CARD
 ========================= */
 .job-card {
@@ -70,7 +99,6 @@
 }
 .job-summary {
   padding:1.5rem 2rem;
-  cursor:pointer;
 }
 .job-summary-top {
   display:flex;
@@ -105,7 +133,7 @@
   margin-top:1rem;
 }
 .job-tag {
-  background:var(--border-gold);
+  background:var(--page-bg);
   color:var(--white);
   padding:.4rem .8rem;
   border-radius:999px;
