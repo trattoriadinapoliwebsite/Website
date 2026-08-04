@@ -37,7 +37,9 @@ function renderJobs() {
             <span class="job-tag">${job.scheduleOptions}</span>
           </div>
         </div>
-        <span class="expand-icon">+</span>
+        <button type="button" class="expand-icon" aria-label="Expand position">
+          ❯
+        </button>
       </div>
       <div class="job-summary">
         <p>${job.shortDescription}</p>
@@ -52,10 +54,11 @@ function renderJobs() {
       </div>
     `;
     const header = card.querySelector(".job-card-header");
-    header.addEventListener("click", () => {
-        toggleJob(card);
-      }
-    );
+    const expandButton = card.querySelector(".expand-icon");
+    expandButton.addEventListener("click", event => {
+      event.stopPropagation();
+      toggleJob(card);
+    });
     const applyButton = card.querySelector(".apply-position");
     applyButton.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -67,20 +70,15 @@ function renderJobs() {
   });
 }
 function toggleJob(card) {
-  const details = card.querySelector(".job-details");
-  const icon = card.querySelector(".expand-icon");
   if(expandedJob && expandedJob !== card) {
     expandedJob.classList.remove("expanded");
-    expandedJob.querySelector(".expand-icon").textContent ="+";
   }
   const expanded = card.classList.contains("expanded");
   if(expanded) {
     card.classList.remove("expanded");
-    icon.textContent = "+";
     expandedJob = null;
   } else {
     card.classList.add("expanded");
-    icon.textContent = "−";
     expandedJob = card;
   }
 }
