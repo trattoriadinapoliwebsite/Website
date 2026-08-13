@@ -358,11 +358,11 @@ function runMobileLoader(img, onDone) {
   let rot = 0;
   const gravity = 2400;
   const firstLandingY = screenH * 0.16;
-  const stepX = screenW * 0.115;
-  const stepY = screenH * 0.105;
+  const stepX = screenW * 0.075;
+  const stepY = screenH * 0.13;
   const totalSteps = 4;
-  const bounceVelocity = -850;
-  const horizontalVelocity = screenW * 0.38;
+  const bounceVelocity = -980;
+  const horizontalVelocity = screenW * 0.27;
   let phase = "drop";
   let currentStep = 0;
   let last = performance.now();
