@@ -346,112 +346,304 @@ function runDesktopLoader(img, onDone) {
   requestAnimationFrame(frame);
 }
 /* =========================
-  ANIMATION PHYSICS MOBILE
-========================= */
+   MOBILE LOADER PHYSICS
+   ========================= */
 function runMobileLoader(img, onDone) {
-  let x = window.innerWidth * 0.12;
-  let y = -320;
-  let rot = 0;
-  const gravity = 2200;
-  const startX = window.innerWidth * 0.12;
-  const stepX = window.innerWidth * 0.16;
-  const STEPS = 3;
-  const STEP_DURATION = 420;
-  const PAUSE_DURATION = 180;
-  const TILT_DURATION = 350;
-  let phase = "drop";
-  let step = 0;
-  let phaseStart = performance.now();
-  let last = phaseStart;
-  let vy = 0;
+  /*
+   * Mobile animation is deliberately separate
+   * from desktop because the available screen
+   * geometry is much tighter.
+   */
+  const screenW = window.innerWidth;
+  const screenH = window.innerHeight;
+  /* =========================
+     START POSITION
+  ========================= */
+  let x = screenW * 0.10;
+  let y = -360;
   let vx = 0;
+  let vy = 0;
+  let rot = 0;
+  /* =========================
+     PHYSICS
+  ========================= */
+  const gravity = 2400;
+  /*
+   * First landing.
+   * This gives the image somewhere
+   * near the upper portion of the phone
+   * to begin bouncing.
+   */
+  const firstLandingY = screenH * 0.16;
+  /*
+   * Each successive landing moves
+   * diagonally down/right.
+   */
+  const stepX = screenW * 0.17;
+  const stepY = screenH * 0.105;
+  const totalSteps = 4;
+  /*
+   * How high each bounce travels.
+   */
+  const bounceVelocity = -900;
+  /*
+   * Horizontal velocity during each
+   * stair bounce.
+   */
+  const horizontalVelocity = screenW * 0.55;
+  /* =========================
+     STATE
+  ========================= */
+  let phase = "drop";
+  let currentStep = 0;
+  let last = performance.now();
+  /*
+   * Small amount of rotational momentum.
+   */
+  let angularVelocity = 0;
+  /* =========================
+     STEP POSITION
+  ========================= */
+  function getStepPosition(step) {
+    return {
+      x: screenW * 0.10 + step * stepX,
+      y: firstLandingY + step * stepY
+    };
+  }
+  /* =========================
+     INITIAL DROP
+  ========================= */
+  function beginFirstBounce() {
+    const landing = getStepPosition(0);
+    x = landing.x;
+    y = landing.y;
+    /*
+     * Bounce upward and begin
+     * traveling toward the next step.
+     */
+    vy = bounceVelocity;
+    vx = horizontalVelocity;
+    angularVelocity = 0;
+    phase = "bounce";
+    currentStep = 0;
+  }
+  /* =========================
+     BOUNCE
+  ========================= */
+  function updateBounce(dt) {
+    /*
+     * Real projectile motion.
+     */
+    vy += gravity * dt;
+    x += vx * dt;
+    y += vy * dt;
+    /*
+     * Rotate according to horizontal
+     * movement rather than simply
+     * interpolating an angle.
+     */
+    rot += vx * dt * 0.045;
+    /*
+     * Next landing target.
+     */
+    const nextStep = currentStep + 1;
+    if (nextStep > totalSteps) {
+      /*
+       * We've completed the staircase.
+       */
+      phase = "settle";
+      vx = 0;
+      vy = 0;
+      angularVelocity = 0;
+      return;
+    }
+    const landing = getStepPosition(nextStep);
+    /*
+     * Detect the downward crossing
+     * of the next landing.
+     */
+    if (
+      vy > 0 &&
+      y >= landing.y
+    ) {
+      /*
+       * Snap only the tiny final
+       * penetration caused by the frame.
+       */
+      y = landing.y;
+      x = landing.x;
+      currentStep = nextStep;
+      /*
+       * Bounce again.
+       */
+      vy = bounceVelocity * ( 0.94 - currentStep * 0.035 );
+      /*
+       * Slightly reduce forward speed
+       * as it progresses down the stairs.
+       */
+      vx = horizontalVelocity * ( 1 - currentStep * 0.055 );
+      /*
+       * Give the image a little impact
+       * rotation.
+       */
+      rot = currentStep % 2 === 0 ? -5 : 5;
+    }
+  }
+  /* =========================
+     SETTLE
+  ========================= */
+  let settleStart = 0;
+  function updateSettle(now) {
+    if (!settleStart) {
+      settleStart = now;
+    }
+    const elapsed = now - settleStart;
+    /*
+     * Very short settling motion.
+     */
+    const progress = Math.min( elapsed / 220, 1 );
+    /*
+     * Smoothly return rotation
+     * toward neutral.
+     */
+    rot *= 1 - progress * 0.35;
+    /*
+     * Tiny downward compression.
+     */
+    if (progress < 1) {
+      y += Math.sin( progress * Math.PI ) * 3;
+    } else {
+      phase = "pause";
+      settleStart = now;
+      rot = 0;
+    }
+  }
+  /* =========================
+     EDGE PAUSE
+  ========================= */
+  let pauseStart = 0;
+  function updatePause(now) {
+    if (!pauseStart) {
+      pauseStart = now;
+    }
+    /*
+     * Hold for a moment.
+     * This is important visually:
+     * it lets the user register the
+     * object reaching the edge before
+     * it falls.
+     */
+    if (
+      now - pauseStart >= 280
+    ) {
+      phase = "tilt";
+      pauseStart = 0;
+      angularVelocity = 0;
+    }
+  }
+  /* =========================
+     TILT
+  ========================= */
+  let tiltStart = 0;
+  const tiltDuration = 420;
+  function updateTilt(now, dt) {
+    if (!tiltStart) {
+      tiltStart = now;
+    }
+    const progress = Math.min( (now - tiltStart) / tiltDuration, 1 );
+    /*
+     * Smooth ease-in.
+     */
+    const eased = progress * progress * (3 - 2 * progress);
+    /*
+     * Rotate progressively toward
+     * the edge.
+     */
+    rot = eased * 28;
+    /*
+     * Creep forward slightly while
+     * tipping over the edge.
+     */
+    x += screenW * 0.08 * dt;
+    if (progress >= 1) {
+      phase = "fall";
+      /*
+       * Begin the final fall with
+       * a slight forward velocity.
+       */
+      vx = screenW * 0.25;
+      vy = 250;
+      tiltStart = 0;
+    }
+  }
+  /* =========================
+     FINAL FALL
+  ========================= */
+  function updateFall(dt) {
+    vy += gravity * dt;
+    x += vx * dt;
+    y += vy * dt;
+    /*
+     * Increasing rotational momentum
+     * as it drops.
+     */
+    rot += vx * dt * 0.055;
+  }
+  /* =========================
+     MAIN LOOP
+  ========================= */
   function frame(now) {
-    const dt = Math.min( (now - last) / 1000, 0.033 );
+    /*
+     * Cap delta time so a browser
+     * hiccup doesn't launch the image
+     * into another dimension.
+     */
+    const dt =
+      Math.min(
+        (now - last) / 1000,
+        0.033
+      );
     last = now;
     /* =========================
-       INITIAL DROP
+       STATE MACHINE
     ========================= */
     if (phase === "drop") {
+      /*
+       * Initial free fall.
+       */
       vy += gravity * dt;
       y += vy * dt;
-      if ( y >= window.innerHeight * 0.1 ) {
-        y = window.innerHeight * 0.18;
-        vy = -700;
-        phase = "step";
-        step = 0;
-        phaseStart = now;
+      /*
+       * First landing.
+       */
+      if ( y >= firstLandingY ) {
+        beginFirstBounce();
       }
     }
-    /* =========================
-       STAIRSTEP
-    ========================= */
-    else if (phase === "step") {
-      const progress = Math.min( (now - phaseStart) / STEP_DURATION, 1 );
-      const eased = 1 - Math.pow( 1 - progress, 3 );
-      const targetX = startX + (step + 1) * stepX;
-      const targetY = window.innerHeight * ( 0.18 + (step + 1) * 0.10 );
-      const startStepX = startX + step * stepX;
-      const startStepY = window.innerHeight * ( 0.18 + step * 0.10 );
-      x = startStepX + ( targetX - startStepX ) * eased;
-      y = startStepY + ( targetY - startStepY ) * eased;
-      rot = Math.sin( progress * Math.PI ) * ( step % 2 === 0 ? 7 : -7 );
-      if (progress >= 1) {
-        step++;
-        if (step >= STEPS) {
-          phase = "pause";
-          phaseStart = now;
-          rot = 0;
-        } else {
-          phaseStart = now;
-        }
-      }
+    else if (phase === "bounce") {
+      updateBounce(dt);
     }
-    /* =========================
-       EDGE PAUSE
-    ========================= */
+    else if (phase === "settle") {
+      updateSettle(now);
+    }
     else if (phase === "pause") {
-      if (
-        now - phaseStart >=
-        PAUSE_DURATION
-      ) {
-        phase = "tilt";
-        phaseStart = now;
-      }
+      updatePause(now);
     }
-    /* =========================
-       TILT
-    ========================= */
     else if (phase === "tilt") {
-      const progress = Math.min((now - phaseStart) / TILT_DURATION, 1 );
-      const eased = 1 - Math.pow( 1 - progress, 3 );
-      rot = eased * 24;
-      x += 15 * dt;
-      if (progress >= 1) {
-        phase = "fall";
-        vy = 500;
-        vx = 250;
-        phaseStart = now;
-      }
+      updateTilt(now, dt);
     }
-    /* =========================
-       FINAL FALL
-    ========================= */
     else if (phase === "fall") {
-      vy += gravity * dt;
-      x += vx * dt;
-      y += vy * dt;
-      rot += vx * dt * 0.25;
+      updateFall(dt);
     }
     /* =========================
-       APPLY
+       APPLY TRANSFORM
     ========================= */
-    img.style.transform =
-      `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+    img.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${rot}deg)`;
     img.style.opacity = 1;
-    /* =========================
+    /* ========================
        EXIT
     ========================= */
-    if ( y < window.innerHeight + 400 ) {
+    if ( y < screenH + 500 ) {
       requestAnimationFrame(frame);
     } else {
       img.style.opacity = 0;
