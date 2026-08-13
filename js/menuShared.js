@@ -359,7 +359,7 @@ function runMobileLoader(img, onDone) {
   const gravity = 2400;
   const firstLandingY = screenH * 0.25;
   const stepX = screenW * 0.05;
-  const stepY = screenH * 0.2;
+  const stepY = screenH * 0.16;
   const totalSteps = 3;
   const bounceVelocity = -980;
   const horizontalVelocity = screenW * 0.27;
