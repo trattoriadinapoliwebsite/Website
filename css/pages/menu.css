@@ -431,9 +431,8 @@ h4{
     padding-bottom: 2rem;
   }
   .menu-loader-frame {
-    width: 62vw;
-    max-width: 340px;
-    min-width: 210px;
-  }
-
+     width: 32vw;
+     max-width: 175px;
+     min-width: 130px;
+   }
 }
