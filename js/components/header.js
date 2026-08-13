@@ -17,7 +17,7 @@ function initSpecialBanner() {
   const specialsByDay = {
     0: "Sorry, we're closed today. You can still submit catering requests or make future reservations online.",
     1: "Sorry, we're closed today. You can still submit catering requests or make future reservations online.",
-    2: "Join us for Veal Night! Enjoy your favorite pastas prepared with veal.",
+    2: "Tuesday Called. It Wants 10% Off Takeout.  Call in or order online.",
     3: "Join us for Pizza Night! Hand-tossed pizza and wine pairings.",
     4: "Join us for Steak Night! Juicy steaks cooked to perfection.",
     5: "Join us for dinner tonight. Call us or reserve online.",
