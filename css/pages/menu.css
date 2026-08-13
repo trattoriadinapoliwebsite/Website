@@ -163,28 +163,46 @@
 }
 
 /* =========================
-   LOADER 
+   LOADER
 ========================= */
 
 .menu-loader {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
   z-index: 20;
-  overflow: visible;
+  overflow: hidden;
 }
 
-.menu-loader img {
+.menu-loader-frame {
   position: absolute;
   width: 25vw;
-  opacity: 0;
-  transform-origin: center; 
+  max-width: 420px;
+  min-width: 220px;
+  aspect-ratio: 1;
+  transform-origin: center;
   will-change: transform, opacity;
 }
 
+.menu-loader-frame::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 4px solid #000;
+  pointer-events: none;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.menu-loader-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 1;
+}
 
 /* =========================
    MODAL (PREMIUM)
@@ -242,7 +260,7 @@
 
 .specials-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: .35rem;
 }
 
@@ -402,9 +420,6 @@ h4{
   .menu-modal img {
     max-width: 90vw;
   }
-  .menu-loader img {
-    width: 40vw;
-  }
   .catering-options {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -414,12 +429,10 @@ h4{
     border-bottom: 1px solid rgba(255,255,255,0.15);
     padding-bottom: 2rem;
   }
-  .menu-loader {
-     width: 90vw;
-     height: 70vh;
-   }
-   
-   .menu-loader img {
-     width: 30vw;
-   }
+  .menu-loader-frame {
+    width: 62vw;
+    max-width: 340px;
+    min-width: 210px;
+  }
+
 }
