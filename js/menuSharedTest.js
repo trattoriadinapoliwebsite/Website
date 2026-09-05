@@ -1,0 +1,1276 @@
+// js/menuShared.js
+
+const MENU_ENDPOINT =
+  "https://script.google.com/macros/s/AKfycbxte_ZuIVOoaXxA1ZuTJ7J_rk5I8J-pD2HnjTwwr8n23wUPnGmx1QkDfFhs4jSohCetfA/exec";
+
+
+/* =========================
+   FETCH MENU
+========================= */
+
+async function fetchMenu(menuName) {
+  const res = await fetch(`${MENU_ENDPOINT}?menu=${menuName}`);
+
+  if (!res.ok) {
+    throw new Error("Menu fetch failed");
+  }
+
+  const data = await res.json();
+
+  if (data?.error) {
+    throw new Error(data.message || "Menu fetch failed");
+  }
+
+  return data;
+}
+
+
+/* =========================
+   FETCH WEEKLY SPECIALS
+========================= */
+
+async function fetchWeeklySpecials() {
+  const res = await fetch(`${MENU_ENDPOINT}?menu=Weekly_Special`);
+
+  if (!res.ok) {
+    throw new Error("Weekly specials fetch failed");
+  }
+
+  const data = await res.json();
+
+  if (data?.error) {
+    throw new Error(data.message || "Weekly specials fetch failed");
+  }
+
+  return data;
+}
+
+
+/* =========================
+   RENDER WEEKLY SPECIALS
+========================= */
+
+function renderWeeklySpecials(specials) {
+  const grid = document.querySelector(".specials-grid");
+
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  if (!Array.isArray(specials)) {
+    console.error("Weekly specials data is not an array.");
+    return;
+  }
+
+  specials.forEach((special) => {
+    const el = document.createElement("div");
+
+    el.className = "special";
+
+    /*
+      Preserve the existing data-day behavior.
+
+      Sheet:
+        Wednesday → 3
+        Thursday  → 4
+    */
+    el.dataset.day = normalizeSpecialDay(special.day);
+
+    const dayHeading = document.createElement("h3");
+    dayHeading.textContent = formatSpecialDay(special.day);
+
+    const nameHeading = document.createElement("h4");
+
+    const strong = document.createElement("strong");
+    strong.textContent = special.name || "";
+
+    nameHeading.appendChild(strong);
+
+    const description = document.createElement("p");
+    description.textContent = special.description || "";
+
+    el.appendChild(dayHeading);
+    el.appendChild(nameHeading);
+    el.appendChild(description);
+
+    grid.appendChild(el);
+  });
+}
+
+
+/* =========================
+   SPECIAL DAY NORMALIZER
+========================= */
+
+function normalizeSpecialDay(day) {
+  const value = String(day || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+night$/i, "");
+
+  const dayMap = {
+    sunday: "0",
+    monday: "1",
+    tuesday: "2",
+    wednesday: "3",
+    thursday: "4",
+    friday: "5",
+    saturday: "6"
+  };
+
+  /*
+    Also allow numeric values if we ever put
+    numeric day values into the Sheet.
+  */
+  if (/^\d+$/.test(value)) {
+    return value;
+  }
+
+  return dayMap[value] || "";
+}
+
+
+/* =========================
+   SPECIAL DAY DISPLAY
+========================= */
+
+function formatSpecialDay(day) {
+  const value = String(day || "").trim();
+
+  if (!value) {
+    return "";
+  }
+
+  /*
+    Prevent "Wednesday Night Night"
+    if the Sheet ever contains "Wednesday Night".
+  */
+  if (/night$/i.test(value)) {
+    return value;
+  }
+
+  return `${value} Night`;
+}
+
+
+/* =========================
+   LOADER
+========================= */
+
+function renderSkeletonLoader() {
+  return `
+    <div class="menu-loader">
+      <div class="menu-loader-frame">
+        <img src="/assets/loadingImage.png" alt="Loading menu" />
+      </div>
+    </div>
+  `;
+}
+
+
+/* =========================
+   SLUGIFY
+========================= */
+
+function slugify(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
+
+
+/* =========================
+   CATEGORY
+========================= */
+
+function renderCategory(title, description) {
+  const el = document.createElement("section");
+
+  el.className = "menu-category";
+  el.id = slugify(title);
+
+  el.innerHTML = `
+    <h2>${title}</h2>
+    ${description ? `<p class="menu-category-description">${description}</p>` : ""}
+  `;
+
+  return el;
+}
+
+
+/* =========================
+   ITEM
+========================= */
+
+function renderItem(item, isCatering = false) {
+  const el = document.createElement("div");
+
+  el.className = "menu-item";
+
+  const hasImage = !!item.image;
+
+  el.innerHTML = `
+    <div class="menu-item-header">
+      <span class="menu-item-name">
+        ${item.itemName}
+        ${hasImage ? `
+          <span
+            class="menu-item-icon"
+            data-image="${item.image}"
+            data-caption="${item.imageCaption || ""}"
+          >
+            📷
+          </span>` : ""}
+      </span>
+
+      <span class="menu-item-price">
+        ${isCatering ? formatCateringPrice(item.price) : formatPrice(item.price)}
+      </span>
+    </div>
+
+    ${
+      item.description
+        ? `<div class="menu-item-description">${item.description.replace(/\n/g, "<br>")}</div>`
+        : ""
+    }
+  `;
+
+  return el;
+}
+
+
+/* =========================
+   RENDER MENU
+========================= */
+
+function renderMenu(menu, container, options = {}) {
+  const isCatering = options.isCatering || false;
+
+  Object.entries(menu).forEach(([category, data]) => {
+    const cat = renderCategory(category, data.description);
+
+    container.appendChild(cat);
+
+    data.items.forEach(item => {
+      cat.appendChild(renderItem(item, isCatering));
+    });
+  });
+}
+
+
+/* =========================
+   ANCHOR NAV + ACTIVE STATE
+========================= */
+
+function buildMenuAnchors(menu) {
+  const nav = document.getElementById("menuAnchorNav");
+
+  if (!nav) return;
+
+  nav.innerHTML = "";
+
+  // Create underline element
+  const underline = document.createElement("div");
+  underline.className = "menu-anchor-underline";
+
+  nav.appendChild(underline);
+
+  const links = [];
+
+
+  /* =========================
+     BUILD LINKS
+  ========================= */
+
+  Object.keys(menu).forEach((category) => {
+    const id = slugify(category);
+
+    const link = document.createElement("a");
+
+    link.href = "#";
+    link.textContent = category;
+    link.dataset.target = id;
+
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const target = document.getElementById(id);
+
+      if (!target) return;
+
+      const headerOffset =
+        document.querySelector("#header")?.offsetHeight || 0;
+
+      const y =
+        target.getBoundingClientRect().top +
+        window.pageYOffset -
+        headerOffset -
+        10;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth"
+      });
+
+      // Preserve full path
+      const basePath = window.location.pathname;
+
+      history.replaceState(
+        null,
+        "",
+        `${basePath}#${id}`
+      );
+    });
+
+    nav.appendChild(link);
+    links.push(link);
+  });
+
+
+  /* =========================
+     UNDERLINE POSITIONING
+  ========================= */
+
+  function moveUnderline(el) {
+    const rect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+
+    underline.style.width = `${rect.width}px`;
+
+    underline.style.transform =
+      `translateX(${rect.left - navRect.left}px)`;
+  }
+
+
+  function setActive(link) {
+    if (!link) return;
+
+    links.forEach((l) => {
+      l.classList.remove("active");
+    });
+
+    link.classList.add("active");
+
+    moveUnderline(link);
+  }
+
+
+  /* =========================
+     INTERSECTION OBSERVER
+  ========================= */
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+
+      // Pick the MOST visible section
+      const visible = entries
+        .filter((e) => e.isIntersecting)
+        .sort(
+          (a, b) =>
+            b.intersectionRatio - a.intersectionRatio
+        )[0];
+
+      if (!visible) return;
+
+      const id = visible.target.id;
+
+      const activeLink = links.find(
+        (l) => l.dataset.target === id
+      );
+
+      if (activeLink) {
+        setActive(activeLink);
+      }
+    },
+    {
+      rootMargin: "-30% 0px -60% 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    }
+  );
+
+
+  /* =========================
+     OBSERVE SECTIONS
+  ========================= */
+
+  links.forEach((link) => {
+    const section =
+      document.getElementById(link.dataset.target);
+
+    if (section) {
+      observer.observe(section);
+    }
+  });
+
+
+  /* =========================
+     INITIAL STATE
+  ========================= */
+
+  function initFromHash() {
+    const hash =
+      window.location.hash.replace("#", "");
+
+    const match = links.find(
+      (l) => l.dataset.target === hash
+    );
+
+    if (match) {
+      setActive(match);
+
+      const target =
+        document.getElementById(hash);
+
+      if (target) {
+        const headerOffset =
+          document.querySelector("#header")?.offsetHeight || 0;
+
+        const y =
+          target.getBoundingClientRect().top +
+          window.pageYOffset -
+          headerOffset -
+          10;
+
+        window.scrollTo({
+          top: y
+        });
+      }
+
+    } else if (links[0]) {
+      setActive(links[0]);
+    }
+  }
+
+
+  // Wait for layout to settle
+  requestAnimationFrame(() => {
+    initFromHash();
+  });
+
+
+  /* =========================
+     HANDLE RESIZE
+  ========================= */
+
+  window.addEventListener("resize", () => {
+    const active =
+      nav.querySelector("a.active");
+
+    if (active) {
+      moveUnderline(active);
+    }
+  });
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+function initMenuModal(page) {
+  const modal = document.createElement("div");
+
+  modal.className = "menu-modal";
+
+  modal.innerHTML = `
+    <div class="menu-modal-overlay"></div>
+
+    <div class="menu-modal-content">
+      <img />
+      <p></p>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const overlay =
+    modal.querySelector(".menu-modal-overlay");
+
+  const img =
+    modal.querySelector("img");
+
+  const caption =
+    modal.querySelector("p");
+
+
+  function open(src, cap) {
+    img.src = src;
+    caption.textContent = cap || "";
+
+    modal.classList.add("active");
+  }
+
+
+  function close() {
+    modal.classList.remove("active");
+    img.src = "";
+  }
+
+
+  overlay.addEventListener("click", close);
+
+
+  page.addEventListener("click", (e) => {
+    const icon =
+      e.target.closest(".menu-item-icon");
+
+    if (!icon) return;
+
+    open(
+      icon.dataset.image,
+      icon.dataset.caption
+    );
+  });
+}
+
+
+/* =========================
+   PRICE FORMATTERS
+========================= */
+
+function formatPrice({ a, b }) {
+  if (a && b) {
+    return `${a} / ${b}`;
+  }
+
+  return a || "";
+}
+
+
+function formatCateringPrice({ a, b }) {
+  if (a && b) {
+    return `${a} (Half) / ${b} (Full)`;
+  }
+
+  return a || "";
+}
+
+
+/* =========================
+   MENU DETECTION
+========================= */
+
+function detectMenuName() {
+  const h1 =
+    document.querySelector(".menu-header h1");
+
+  if (!h1) return null;
+
+  const title =
+    h1.textContent.trim();
+
+  const mapping = {
+    "Dinner Menu": "Dinner_Menu",
+    "Lunch Menu": "Lunch_Menu",
+    "Fast Bites": "Fast_Bites_Menu",
+    "Catering Menu": "Catering_Menu"
+  };
+
+  return mapping[title] || null;
+}
+
+
+/* =========================
+   LOADER ANIMATION PHYSICS
+========================= */
+
+function runDesktopLoader(img, onDone) {
+  let x = window.innerWidth * 0.08;
+  let y = -500;
+
+  let vx = 0;
+  let vy = 0;
+  let rot = 0;
+
+  const gravity = 2600;
+  const ground = window.innerHeight * 0.45;
+
+  let last = performance.now();
+
+  // STATES
+  let phase = "drop";
+  let rollStart = 0;
+  let pauseStart = 0;
+
+  const ROLL_DURATION = 1600;
+  const PAUSE_DURATION = 300;
+
+
+  function frame(now) {
+    const dt = (now - last) / 1000;
+
+    last = now;
+
+
+    // =========================
+    // DROP + BOUNCE PHYSICS
+    // =========================
+
+    if (phase === "drop" || phase === "bounce") {
+      vy += gravity * dt;
+
+      y += vy * dt;
+      x += vx * dt;
+
+      rot += vx * dt * 2;
+
+
+      if (y >= ground) {
+        y = ground;
+
+        if (phase === "drop") {
+
+          // FIRST IMPACT
+          vy = -900;
+          vx = 400;
+
+          phase = "bounce";
+
+        } else {
+
+          // SECOND CONTACT
+          vy = 0;
+          vx = 1800;
+
+          phase = "roll";
+          rollStart = now;
+        }
+      }
+    }
+
+
+    // =========================
+    // ROLL
+    // =========================
+
+    else if (phase === "roll") {
+
+      x += vx * dt;
+
+      // friction
+      vx *= 0.985;
+
+      // rotation tied to horizontal velocity
+      rot += vx * dt * 0.6;
+
+
+      if (
+        now - rollStart > ROLL_DURATION ||
+        Math.abs(vx) < 20
+      ) {
+        vx = 0;
+
+        phase = "pause";
+        pauseStart = now;
+      }
+    }
+
+
+    // =========================
+    // PAUSE
+    // =========================
+
+    else if (phase === "pause") {
+
+      if (
+        now - pauseStart > PAUSE_DURATION
+      ) {
+        phase = "fall";
+
+        vy = 1200;
+        vx = 600;
+      }
+    }
+
+
+    // =========================
+    // FINAL FALL
+    // =========================
+
+    else if (phase === "fall") {
+
+      vy += gravity * dt;
+
+      y += vy * dt;
+      x += vx * dt;
+
+      rot += vx * dt * 0.4;
+    }
+
+
+    // =========================
+    // APPLY
+    // =========================
+
+    img.style.transform =
+      `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+
+    img.style.opacity = 1;
+
+
+    // =========================
+    // EXIT
+    // =========================
+
+    if (y < window.innerHeight + 300) {
+
+      requestAnimationFrame(frame);
+
+    } else {
+
+      img.style.opacity = 0;
+
+      onDone?.();
+    }
+  }
+
+
+  requestAnimationFrame(frame);
+}
+
+
+/* =========================
+   MOBILE LOADER PHYSICS
+========================= */
+
+function runMobileLoader(img, onDone) {
+  const screenW = window.innerWidth;
+  const screenH = window.innerHeight;
+
+  let x = screenW * 0.10;
+  let y = -360;
+
+  let vx = 0;
+  let vy = 0;
+  let rot = 0;
+
+  const gravity = 2400;
+
+  const firstLandingY = screenH * 0.25;
+  const stepX = screenW * 0.05;
+  const stepY = screenH * 0.14;
+
+  const totalSteps = 3;
+
+  const bounceVelocity = -980;
+  const horizontalVelocity = screenW * 0.27;
+
+  let phase = "drop";
+  let currentStep = 0;
+
+  let last = performance.now();
+
+  let settleStart = 0;
+  let pauseStart = 0;
+  let tiltStart = 0;
+
+  const tiltDuration = 420;
+
+
+  function getStepPosition(step) {
+    return {
+      x: screenW * 0.10 + step * stepX,
+      y: firstLandingY + step * stepY
+    };
+  }
+
+
+  function beginFirstBounce() {
+    const landing =
+      getStepPosition(0);
+
+    x = landing.x;
+    y = landing.y;
+
+    vx = horizontalVelocity;
+    vy = bounceVelocity;
+
+    currentStep = 0;
+    phase = "bounce";
+  }
+
+
+  function updateBounce(dt) {
+    vy += gravity * dt;
+
+    x += vx * dt;
+    y += vy * dt;
+
+    rot += vx * dt * 0.075;
+
+
+    const nextStep =
+      currentStep + 1;
+
+
+    if (nextStep > totalSteps) {
+
+      phase = "settle";
+
+      vx = 0;
+      vy = 0;
+
+      settleStart = 0;
+
+      return;
+    }
+
+
+    const landing =
+      getStepPosition(nextStep);
+
+
+    if (
+      vy > 0 &&
+      y >= landing.y
+    ) {
+      y = landing.y;
+
+      currentStep = nextStep;
+
+      vy =
+        bounceVelocity *
+        (0.96 - currentStep * 0.025);
+
+      vx = horizontalVelocity;
+
+      rot +=
+        currentStep % 2 === 0
+          ? 8 + currentStep * 2
+          : -8 - currentStep * 2;
+    }
+  }
+
+
+  function updateSettle(now) {
+    if (!settleStart) {
+      settleStart = now;
+    }
+
+
+    const progress =
+      Math.min(
+        (now - settleStart) / 220,
+        1
+      );
+
+
+    rot *=
+      1 - progress * 0.35;
+
+
+    if (progress < 1) {
+
+      y +=
+        Math.sin(progress * Math.PI) * 3;
+
+    } else {
+
+      phase = "pause";
+
+      settleStart = 0;
+      pauseStart = now;
+
+      rot = 0;
+    }
+  }
+
+
+  function updatePause(now) {
+    if (!pauseStart) {
+      pauseStart = now;
+    }
+
+
+    if (
+      now - pauseStart >= 280
+    ) {
+      phase = "tilt";
+
+      pauseStart = 0;
+      tiltStart = now;
+    }
+  }
+
+
+  function updateTilt(now, dt) {
+    if (!tiltStart) {
+      tiltStart = now;
+    }
+
+
+    const progress =
+      Math.min(
+        (now - tiltStart) / tiltDuration,
+        1
+      );
+
+
+    const eased =
+      progress * progress *
+      (3 - 2 * progress);
+
+
+    rot = eased * 28;
+
+    x += screenW * 0.08 * dt;
+
+
+    if (progress >= 1) {
+
+      phase = "fall";
+
+      vx = screenW * 0.25;
+      vy = 250;
+
+      tiltStart = 0;
+    }
+  }
+
+
+  function updateFall(dt) {
+    vy += gravity * dt;
+
+    x += vx * dt;
+    y += vy * dt;
+
+    rot += vx * dt * 0.055;
+  }
+
+
+  function frame(now) {
+    const dt =
+      Math.min(
+        (now - last) / 1000,
+        0.033
+      );
+
+    last = now;
+
+
+    /* =========================
+       STATE MACHINE
+    ========================= */
+
+    if (phase === "drop") {
+
+      vy += gravity * dt;
+      y += vy * dt;
+
+      if (y >= firstLandingY) {
+        beginFirstBounce();
+      }
+
+    } else if (phase === "bounce") {
+
+      updateBounce(dt);
+
+    } else if (phase === "settle") {
+
+      updateSettle(now);
+
+    } else if (phase === "pause") {
+
+      updatePause(now);
+
+    } else if (phase === "tilt") {
+
+      updateTilt(now, dt);
+
+    } else if (phase === "fall") {
+
+      updateFall(dt);
+    }
+
+
+    /* =========================
+       APPLY TRANSFORM
+    ========================= */
+
+    img.style.transform =
+      `translate3d(${x}px, ${y}px, 0) rotate(${rot}deg)`;
+
+    img.style.opacity = 1;
+
+
+    /* =========================
+       EXIT
+    ========================= */
+
+    if (y < screenH + 500) {
+
+      requestAnimationFrame(frame);
+
+    } else {
+
+      img.style.opacity = 0;
+
+      onDone?.();
+    }
+  }
+
+
+  requestAnimationFrame(frame);
+}
+
+
+/* =========================
+   PHYSICS INIT
+========================= */
+
+function runLoaderPhysics(img, onDone) {
+  if (window.innerWidth <= 900) {
+
+    runMobileLoader(img, onDone);
+
+    return;
+  }
+
+  runDesktopLoader(img, onDone);
+}
+
+
+/* =========================
+   AUTO INIT
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+    const container =
+      document.getElementById("menu");
+
+    const load =
+      document.getElementById("loader");
+
+    const page =
+      document.querySelector(".menu-page");
+
+
+    if (!container || !load) {
+      return;
+    }
+
+
+    const menuName =
+      detectMenuName();
+
+
+    if (!menuName) {
+
+      container.innerHTML =
+        "<p>Menu not recognized.</p>";
+
+      return;
+    }
+
+
+    // =========================
+    // INIT LOADER
+    // =========================
+
+    load.innerHTML =
+      renderSkeletonLoader();
+
+
+    const loaderFrame =
+      load.querySelector(".menu-loader-frame");
+
+
+    // =========================
+    // STATE FLAGS
+    // =========================
+
+    let physicsDone = false;
+    let menuReady = false;
+    let minTimeDone = false;
+
+
+    // =========================
+    // START PHYSICS
+    // =========================
+
+    runLoaderPhysics(
+      loaderFrame,
+      () => {
+        physicsDone = true;
+      }
+    );
+
+
+    // =========================
+    // FETCH + MIN TIMER
+    // =========================
+
+    const MIN_LOAD_TIME = 3500;
+
+
+    /*
+      Fetch the regular menu and the
+      weekly specials simultaneously.
+    */
+    const menuPromise =
+      fetchMenu(menuName);
+
+    const specialsPromise =
+      fetchWeeklySpecials();
+
+
+    const minTimerPromise =
+      new Promise((res) =>
+        setTimeout(res, MIN_LOAD_TIME)
+      );
+
+
+    let menu;
+    let weeklySpecials = [];
+
+
+    try {
+
+      /*
+        The Dinner Menu is still required
+        for the page to continue.
+
+        Weekly Specials are independent,
+        so failure there will not kill
+        the entire menu.
+      */
+      [menu, weeklySpecials] =
+        await Promise.all([
+          menuPromise,
+          specialsPromise.catch((err) => {
+            console.error(
+              "Weekly specials failed:",
+              err
+            );
+
+            return [];
+          }),
+        ]);
+
+
+      await minTimerPromise;
+
+      menuReady = true;
+      minTimeDone = true;
+
+    } catch (err) {
+
+      console.error(err);
+
+      container.innerHTML =
+        "<p>Failed to load menu.</p>";
+
+      return;
+    }
+
+
+    // =========================
+    // ENSURE PHYSICS FINISHES
+    // =========================
+
+    if (!physicsDone) {
+
+      await new Promise((resolve) => {
+
+        const check = () => {
+
+          if (physicsDone) {
+            return resolve();
+          }
+
+          requestAnimationFrame(check);
+        };
+
+        check();
+      });
+    }
+
+
+    // =========================
+    // FADE OUT LOADER
+    // =========================
+
+    load.style.transition =
+      "opacity 0.4s ease";
+
+    load.style.opacity = "0";
+
+
+    await new Promise((res) =>
+      setTimeout(res, 400)
+    );
+
+
+    // =========================
+    // RENDER WEEKLY SPECIALS
+    // =========================
+
+    renderWeeklySpecials(
+      weeklySpecials
+    );
+
+
+    // =========================
+    // RENDER MENU
+    // =========================
+
+    container.innerHTML = "";
+
+    container.style.opacity = "1";
+
+    renderMenu(
+      menu,
+      container
+    );
+
+    buildMenuAnchors(menu);
+
+    initMenuModal(page);
+
+    page.classList.remove("is-loading");
+
+
+    // =========================
+    // HASH SCROLL
+    // =========================
+
+    requestAnimationFrame(() => {
+
+      const hash =
+        window.location.hash.slice(1);
+
+      if (!hash) return;
+
+
+      const target =
+        document.getElementById(hash);
+
+      const nav =
+        document.getElementById(
+          "menuAnchorNav"
+        );
+
+
+      if (!target) return;
+
+
+      const offset =
+        (nav?.offsetHeight || 0) +
+        (document.querySelector("#header")
+          ?.offsetHeight || 0) +
+        10;
+
+
+      const y =
+        target.getBoundingClientRect().top +
+        window.pageYOffset -
+        offset;
+
+
+      window.scrollTo({
+        top: y
+      });
+    });
+  }
+);
