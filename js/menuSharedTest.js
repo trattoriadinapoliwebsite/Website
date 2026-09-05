@@ -51,39 +51,33 @@ async function fetchWeeklySpecials() {
 ========================= */
 
 function renderWeeklySpecials(specials) {
+  const section = document.querySelector(".weeknight-specials");
   const grid = document.querySelector(".specials-grid");
 
-  if (!grid) return;
+  if (!section || !grid) return;
 
-  grid.innerHTML = "";
-
-  if (!Array.isArray(specials)) {
-    console.error("Weekly specials data is not an array.");
+  // Hide the entire section when there is no active special today
+  if (!Array.isArray(specials) || specials.length === 0) {
+    section.style.display = "none";
     return;
   }
 
+  // Make sure the section is visible when a special exists
+  section.style.display = "";
+
+  grid.innerHTML = "";
+
   specials.forEach((special) => {
     const el = document.createElement("div");
-
     el.className = "special";
-
-    /*
-      Preserve the existing data-day behavior.
-
-      Sheet:
-        Wednesday → 3
-        Thursday  → 4
-    */
     el.dataset.day = normalizeSpecialDay(special.day);
 
     const dayHeading = document.createElement("h3");
     dayHeading.textContent = formatSpecialDay(special.day);
 
     const nameHeading = document.createElement("h4");
-
     const strong = document.createElement("strong");
     strong.textContent = special.name || "";
-
     nameHeading.appendChild(strong);
 
     const description = document.createElement("p");
