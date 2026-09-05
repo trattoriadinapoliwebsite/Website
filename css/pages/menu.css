@@ -227,72 +227,66 @@
   inset: 0;
   background: rgba(0,0,0,0.85);
 }
-
 .menu-modal-content {
   position: relative;
   z-index: 2;
   max-width: 90%;
   text-align: center;
 }
-
 .menu-modal img {
   max-width: 55vw;
   max-height: 70vh;
   border-radius: 8px;
   border: 3px solid var(--border-gold);
 }
-
 .menu-modal p {
   color: var(--white);
   margin: auto;
 }
-
 /* =========================
-   SPECIALS (MATCH STYLE)
+   SPECIALS
 ========================= */
-
 .weeknight-specials {
-  background: 000000;
+  background: #000;
   text-align: center;
   margin-bottom: var(--space-md);
   color: white;
   border-bottom: 1px solid var(--border-gold);
 }
-
 .specials-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: .35rem;
+  grid-template-columns: 1fr;
+  gap: 0;
 }
-
 .special {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   text-align: center;
   border-left: 2px solid white;
   border-right: 2px solid white;
-  padding: .5rem;
+  padding: 1rem 2rem;
 }
-
-h3{
+.weeknight-specials h3 {
   color: var(--green);
+  margin: 0;
 }
-
-h4{
+.weeknight-specials h4 {
   color: white;
   margin-top: 1rem;
+  margin-bottom: 0;
 }
-
-.special p{
+.special p {
   color: var(--accent-red);
   margin: 1rem auto;
+  max-width: 750px;
 }
-
 .menu-policy {
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid white;
 }
-
 .catering-banner {
   margin-top: 3rem;
   padding: 2rem 1.5rem 0rem;
@@ -301,17 +295,14 @@ h4{
   text-align: center;
   border-radius: 12px;
 }
-
 .catering-banner-inner h2 {
   color: var(--white);
   margin-bottom: 0.5rem;
 }
-
 .catering-banner-inner p {
   color: #bbb;
   margin-bottom: 1rem;
 }
-
 .catering-link {
   display: inline-block;
   margin-top: auto;
@@ -322,48 +313,39 @@ h4{
   letter-spacing: 0.08em;
   transition: 0.25s ease;
 }
-
 .catering-link:hover {
   background: var(--border-gold);
   color: #000;
 }
-
 .catering-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   margin-top: 2rem;
 }
-
 .catering-option {
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
 }
-
 .catering-option:first-child {
   border-right: 1px solid rgba(255,255,255,0.15);
 }
-
 .catering-option h3 {
   color: var(--white);
   margin-bottom: 0.75rem;
 }
-
 .catering-option p {
   color: #bbb;
   margin-bottom: 1.5rem;
 }
-
 .menu-policy p {
   text-align: center;
   color: var(--white);
 }
-
 /* =========================
        Loading State
 ========================= */
-
 .menu-page.is-loading #menu,
 .menu-page.is-loading .menu-anchor-nav,
 .menu-page.is-loading .weeknight-specials,
@@ -373,7 +355,6 @@ h4{
   pointer-events: none;
   transform: translateY(10px);
 }
-
 .menu-page #menu,
 .menu-page .menu-anchor-nav,
 .menu-page .weeknight-specials,
@@ -381,14 +362,10 @@ h4{
 .menu-page .catering-banner {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-
-
 /* =========================
    MOBILE
 ========================= */
-
 @media (max-width: 900px) {
-
   .menu-page {
     margin-top: 2rem;
     padding-top: 1rem;
