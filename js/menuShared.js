@@ -108,11 +108,21 @@ function formatSpecialDay(day) {
 /* =========================
    LOADER
 ========================= */
-function renderSkeletonLoader() {
+function renderSkeletonLoader(menuName) {
+  const loaderImage =
+    menuName === "Bar_Menu"
+      ? "/assets/barLoadingImage.png"
+      : "/assets/loadingImage.png";
+
+  const loaderAlt =
+    menuName === "Bar_Menu"
+      ? "Loading bar menu"
+      : "Loading menu";
+
   return `
     <div class="menu-loader">
       <div class="menu-loader-frame">
-        <img src="/assets/loadingImage.png" alt="Loading menu" />
+        <img src="${loaderImage}" alt="${loaderAlt}" />
       </div>
     </div>
   `;
@@ -666,7 +676,7 @@ document.addEventListener(
     // INIT LOADER
     // =========================
     load.innerHTML =
-      renderSkeletonLoader();
+      renderSkeletonLoader(menuName);
     const loaderFrame =
       load.querySelector(".menu-loader-frame");
     // =========================
