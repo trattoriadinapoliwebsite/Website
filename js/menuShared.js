@@ -207,18 +207,12 @@ function buildMenuAnchors(menu) {
       const target = document.getElementById(id);
       if (!target) return;
       const headerOffset = document.querySelector("#header")?.offsetHeight || 0;
-      const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - 10;
-      window.scrollTo({
-        top: y,
-        behavior: "smooth"
-      });
+      const navOffset = nav.offsetHeight || 0;
+      const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - navOffset - 10;
+      window.scrollTo({ top: y, behavior: "smooth" });
       // Preserve full path
       const basePath = window.location.pathname;
-      history.replaceState(
-        null,
-        "",
-        `${basePath}#${id}`
-      );
+      history.replaceState( null, "", `${basePath}#${id}` );
     });
     nav.appendChild(link);
     links.push(link);
@@ -284,10 +278,9 @@ function buildMenuAnchors(menu) {
       const target = document.getElementById(hash);
       if (target) {
         const headerOffset = document.querySelector("#header")?.offsetHeight || 0;
-        const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - 10;
-        window.scrollTo({
-          top: y
-        });
+        const navOffset = nav.offsetHeight || 0;
+        const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - navOffset - 10;
+        window.scrollTo({ top: y });
       }
     } else if (links[0]) {
       setActive(links[0]);
