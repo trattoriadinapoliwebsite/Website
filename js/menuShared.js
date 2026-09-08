@@ -371,7 +371,7 @@ function detectMenuName() {
   const mapping = {
     "Dinner Menu": "Dinner_Menu",
     "Lunch Menu": "Lunch_Menu",
-    "Fast Bites": "Fast_Bites_Menu",
+    "At The Bar": "Bar_Menu",
     "Catering Menu": "Catering_Menu"
   };
   return mapping[title] || null;
