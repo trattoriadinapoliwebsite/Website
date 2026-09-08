@@ -1,7 +1,4 @@
-/* =========================
-   MENU PAGE (PREMIUM THEME)
-========================= */
-
+/*MENU PAGE (PREMIUM THEME)*/
 .menu-page {
   max-width: 1100px;
   min-height: 60vh;
@@ -9,31 +6,21 @@
   padding: 2rem 1rem 4rem;
   color: var(--white);
 }
-
-/* =========================
-   HEADER
-========================= */
-
+/* HEADER*/
 .menu-header {
   text-align: center;
   margin-bottom: var(--space-lg);
 }
-
 .menu-header h1 {
   color: var(--white);
 }
-
 .menu-subtitle {
   margin: auto;
   text-align: center;
   color: #ccc;
   font-size: var(--text-md);
 }
-
-/* =========================
-   ANCHOR NAV — ACTIVE LINE
-========================= */
-
+/* ANCHOR NAV — ACTIVE LINE*/
 .menu-anchor-nav {
   position: sticky;
   top: 3.5rem;
@@ -47,7 +34,6 @@
   border-bottom: 1px solid rgba(255,255,255,0.1);
   background: var(--page-bg);
 }
-
 .menu-anchor-nav a {
   position: relative;
   font-size: var(--text-sm);
@@ -57,11 +43,9 @@
   white-space: nowrap;
   transition: color 0.25s ease;
 }
-
 .menu-anchor-nav a.active {
   color: var(--white);
 }
-
 /* Sliding underline element */
 .menu-anchor-underline {
   position: absolute;
@@ -69,34 +53,22 @@
   left: 0;
   height: 2px;
   background: var(--border-gold);
-  transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    width 0.35s ease;
-
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.35s ease;
   will-change: transform;
 }
-
-
-/* =========================
-   CATEGORY (CARD STYLE)
-========================= */
-
+/*CATEGORY (CARD STYLE)*/
 .menu-category {
   margin-bottom: 3rem;
   padding: 2rem;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
 }
-
 .menu-category h2 {
   color: var(--white);
   margin-bottom: 0.5rem;
   position: relative;
 }
-
 .menu-category h2::after {
   content: "";
   display: block;
@@ -105,67 +77,49 @@
   background: var(--border-gold);
   margin-top: 0.75rem;
 }
-
 .menu-category-description {
   color: #aaa;
   font-size: var(--text-md);
   margin-bottom: 1.5rem;
 }
-
-/* =========================
-   MENU ITEMS
-========================= */
-
+/* MENU ITEMS*/
 .menu-item {
   margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-
 .menu-item-header {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
-
 .menu-item-name {
   font-size: var(--text-lg);
   font-family: var(--font-display);
   color: var(--white);
 }
-
 .menu-item-price {
   font-size: var(--text-md);
   color: var(--border-gold);
   white-space: nowrap;
 }
-
 .menu-item-description {
   font-size: var(--text-md);
   color: #bbb;
   margin-top: 4px;
 }
-
-/* =========================
-   ICON
-========================= */
-
+/* ICON*/
 .menu-item-icon {
   margin-left: 6px;
   cursor: pointer;
   opacity: 0.5;
   transition: all 0.2s ease;
 }
-
 .menu-item-icon:hover {
   opacity: 1;
   transform: scale(1.2);
 }
-
-/* =========================
-   LOADER
-========================= */
-
+/*LOADER*/
 .menu-loader {
   position: fixed;
   inset: 0;
@@ -175,7 +129,6 @@
   z-index: 20;
   overflow: hidden;
 }
-
 .menu-loader-frame {
   position: absolute;
   width: 25vw;
@@ -185,18 +138,16 @@
   transform-origin: center;
   will-change: transform, opacity;
 }
-
 .menu-loader-frame::after {
   content: "";
   position: absolute;
-  inset: -2px;
+  inset: -4px;
   border: 4px solid #000;
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
   box-sizing: border-box;
 }
-
 .menu-loader-frame img {
   display: block;
   width: 100%;
@@ -204,24 +155,18 @@
   object-fit: contain;
   opacity: 1;
 }
-
-/* =========================
-   MODAL (PREMIUM)
-========================= */
-
+/*MODAL*/
 .menu-modal {
   position: fixed;
   inset: 0;
   display: none;
   z-index: 9999;
 }
-
 .menu-modal.active {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .menu-modal-overlay {
   position: absolute;
   inset: 0;
