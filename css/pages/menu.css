@@ -130,7 +130,6 @@
   overflow: hidden;
 }
 .menu-loader-frame {
-  background: #FF7C0A;
   position: absolute;
   width: 25vw;
   max-width: 420px;
@@ -138,16 +137,6 @@
   aspect-ratio: 1;
   transform-origin: center;
   will-change: transform, opacity;
-}
-.menu-loader-frame::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border: 4px solid #000;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 2;
-  box-sizing: border-box;
 }
 .menu-loader-frame img {
   display: block;
