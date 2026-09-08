@@ -141,8 +141,7 @@
 .menu-loader-frame::after {
   content: "";
   position: absolute;
-  inset: -8px;
-  border: 6px solid #000;
+  border: 6px inset #000;
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
